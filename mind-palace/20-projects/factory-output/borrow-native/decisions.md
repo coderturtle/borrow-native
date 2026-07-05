@@ -1,4 +1,4 @@
-# Decisions: Rust Workshop
+# Decisions: Borrow Native
 
 | Date | Decision | Rationale |
 |---|---|---|

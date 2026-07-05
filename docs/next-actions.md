@@ -1,4 +1,4 @@
-# Next Actions: Rust Workshop
+# Next Actions: Borrow Native
 
 ## Immediate
 

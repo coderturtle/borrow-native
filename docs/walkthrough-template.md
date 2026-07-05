@@ -1,7 +1,7 @@
 # Walkthrough: {Session Title}
 
 **Date:** YYYY-MM-DD
-**Project:** Rust Workshop
+**Project:** Borrow Native
 **Prompt / Session:** N
 
 ## What changed in plain English
@@ -10,7 +10,7 @@
 
 ## The simple analogy
 
-## How this ties to Rust Workshop
+## How this ties to Borrow Native
 
 ## How this ties to the Hekton factory vision
 

@@ -1,4 +1,4 @@
-# Session Log: Rust Workshop
+# Session Log: Borrow Native
 
 ## 2026-07-05 - Initial scaffold
 

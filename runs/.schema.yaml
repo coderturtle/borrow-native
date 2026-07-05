@@ -1,15 +1,15 @@
 # Machine-readable run ledger schema.
 # Read by hekton-status and cross-project dashboard aggregators.
-# Scaffolded 2026-07-05 — run standardise-runs-ledger.py --project rust-workshop --force to enrich.
+# Scaffolded 2026-07-05 — run standardise-runs-ledger.py --project borrow-native --force to enrich.
 schema_version: "1"
-project: rust-workshop
+project: borrow-native
 project_type: factory-output
 id_prefix: RW
 task_types:
   - task
   - review
   - session
-run_description: "A unit of work in Rust Workshop that produces a traceable result requiring human review."
+run_description: "A unit of work in Borrow Native that produces a traceable result requiring human review."
 fields:
   run_id: string
   project: string

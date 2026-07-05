@@ -1,12 +1,12 @@
-# CLAUDE.md — Rust Workshop
+# CLAUDE.md — Borrow Native
 
 ## Project Classification
 
 - **Type:** factory-output
-- **Name:** rust-workshop
-- **Title:** Rust Workshop
-- **Local repo:** /Users/hekton/Development/hekton/factory-output/rust-workshop
-- **Vault control plane:** /Users/hekton/vaults/hekton-mind-palace/20-projects/factory-output/rust-workshop
+- **Name:** borrow-native
+- **Title:** Borrow Native
+- **Local repo:** /Users/hekton/Development/hekton/factory-output/borrow-native
+- **Vault control plane:** /Users/hekton/vaults/hekton-mind-palace/20-projects/factory-output/borrow-native
 - **Lifecycle stage:** active
 - **Promotion target:** none
 - **Privacy boundary:** public
@@ -20,7 +20,7 @@ Follow all rules in `~/hekton/CLAUDE.md` — including the **Hekton Repository T
 Specific to this project:
 - Classification is **factory-output** — respect the corresponding naming and path conventions
 - Inspect `.hekton/project.yaml` before making structural changes
-- Do not create files outside `/Users/hekton/Development/hekton/factory-output/rust-workshop` without confirmation
+- Do not create files outside `/Users/hekton/Development/hekton/factory-output/borrow-native` without confirmation
 - Do not write to the vault without explicit authorisation (`vault_mutation_allowed: false`)
 - Record all design decisions in `docs/decisions.md`
 - Keep risks current in `docs/risks.md` and `.hekton/risk-register.yaml`

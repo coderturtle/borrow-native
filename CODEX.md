@@ -1,11 +1,11 @@
-# CODEX.md — Rust Workshop
+# CODEX.md — Borrow Native
 
 ## Project Classification
 
 - **Type:** factory-output
-- **Name:** rust-workshop
-- **Local repo:** /Users/hekton/Development/hekton/factory-output/rust-workshop
-- **Vault control plane:** /Users/hekton/vaults/hekton-mind-palace/20-projects/factory-output/rust-workshop
+- **Name:** borrow-native
+- **Local repo:** /Users/hekton/Development/hekton/factory-output/borrow-native
+- **Vault control plane:** /Users/hekton/vaults/hekton-mind-palace/20-projects/factory-output/borrow-native
 - **Lifecycle stage:** active
 - **Promotion target:** none
 - **Privacy boundary:** public

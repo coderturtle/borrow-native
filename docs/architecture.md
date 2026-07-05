@@ -1,4 +1,4 @@
-# Architecture: Rust Workshop
+# Architecture: Borrow Native
 
 ## Overview
 

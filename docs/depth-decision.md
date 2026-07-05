@@ -1,4 +1,4 @@
-# Depth Decision: Rust Workshop
+# Depth Decision: Borrow Native
 
 ## Depth Decision
 

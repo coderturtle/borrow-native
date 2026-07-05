@@ -1,4 +1,4 @@
-# Rust Workshop — Plain-English Project Walkthrough
+# Borrow Native — Plain-English Project Walkthrough
 
 ## What this project is in one paragraph
 

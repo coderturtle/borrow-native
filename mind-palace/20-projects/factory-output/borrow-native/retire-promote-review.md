@@ -1,4 +1,4 @@
-# Retire / Promote Review: Rust Workshop
+# Retire / Promote Review: Borrow Native
 
 Review default: factory output does not automatically promote to platform, but learnings may become templates or platform backlog.
 

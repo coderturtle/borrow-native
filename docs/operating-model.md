@@ -1,4 +1,4 @@
-# Operating Model: Rust Workshop
+# Operating Model: Borrow Native
 
 ## Classification
 
