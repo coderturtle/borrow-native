@@ -148,4 +148,73 @@ agent_runs:
     next_actions:
       - "Decide whether Module 02's Module-01 prerequisite should be mechanically enforced or reworded as conceptual-only."
       - "Try a cheap deterministic clone-count check before Coachgremlin's subjective read, starting Module 03."
+
+  - id: RUN-0006
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Coachgremlin (Module 05 content-authoring dry run)"
+    intent: "Author Module 05 (Error Handling) with the same dry-run discipline as Modules 01-04: a correct attempt, a deliberately naive attempt, and a lighter targeted check, all real cargo code actually run."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: pending
+    files_touched:
+      - "fixtures/relay/SPEC.md"
+      - "fixtures/relay/src/lib.rs"
+      - "fixtures/relay/tests/parse_config.rs"
+      - "fixtures/relay/tests/write_handoff_summary.rs"
+      - "modules/05-error-handling/README.md"
+      - ".claude/skills/custom-error-type-template/SKILL.md"
+      - "runs/2026-07-05-module-05-dry-run/"
+      - "runs/run-20260705-RW-006.yaml"
+      - "docs/decisions.md"
+      - "docs/next-actions.md"
+      - "docs/session-log.md"
+    validation:
+      - "cargo build/test: Modules 01-04's own test suites re-run before and after the addition, identical still-failing-on-todo output (ARB step 0)"
+      - "cargo test 32/32 pass on attempt-good; identical on attempt-naive-stringified-io-error"
+      - "cargo clippy -- -D warnings clean on both; pedantic/nursery identical between both; full restriction group run and diffed programmatically (--message-format=json)"
+      - "Second check (manual match instead of ?) run separately: cargo clippy -- -D warnings genuinely fails it (clippy::question_mark) - confirmed real, not assumed"
+      - "scripts/clone-count-check.sh run against both diffs: true negative, baseline 0"
+      - "Takeaway Skill validated against a second, unrelated retry-policy-parsing problem (runs/2026-07-05-module-05-dry-run/takeaway-validation/)"
+    risks:
+      - "Same single-grader limitation as Modules 01-04's dry runs: one session constructed and graded both attempts plus the extra check. An independent blind pass would be a stronger test."
+      - "Recommendation only - human_confirmed: false in runs/run-20260705-RW-006.yaml, awaiting coderturtle's review per Coachgremlin's Human Gate."
+    next_actions:
+      - "coderturtle reviews this dry run and flips human_confirmed to true, or requests changes."
+      - "Author Module 06 (Fearless Concurrency) next, same discipline."
+      - "Batch-review cadence not due yet (1 of 2-3 modules since the Modules 03+04 panel) - check again once Module 06 or 07 completes the window."
       - "Author Module 03 with the same dry-run discipline."
+
+  - id: RUN-0007
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Coachgremlin (Module 05 dry run confirmation + thiserror dependency migration)"
+    intent: "Record coderturtle's confirmation of Module 05's dry run, and carry out the thiserror dependency authorization: add the dependency, migrate ConfigError/HandoffError to derive-based error types, and re-verify the module's finding against the migrated code rather than assume it carries over."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: approved
+    files_touched:
+      - "fixtures/relay/Cargo.toml"
+      - "fixtures/relay/Cargo.lock"
+      - "fixtures/relay/src/lib.rs"
+      - "fixtures/relay/SPEC.md"
+      - "modules/05-error-handling/README.md"
+      - ".claude/skills/custom-error-type-template/SKILL.md"
+      - "runs/2026-07-05-module-05-dry-run/grading.md"
+      - "runs/2026-07-05-module-05-dry-run/retro.md"
+      - "runs/run-20260705-RW-006.yaml"
+      - "CLAUDE.md"
+      - "docs/decisions.md"
+      - "docs/next-actions.md"
+      - "docs/session-log.md"
+    validation:
+      - "cargo add thiserror; cargo build/test/clippy -- -D warnings clean on the migrated shipped stub, 32/32 tests still correctly fail on unsolved todo!()s"
+      - "Both attempts rebuilt against thiserror-derived given code in a scratch pass: cargo test 32/32 pass identically, clippy -D warnings clean identically"
+      - "Full clippy::restriction group re-run programmatically post-migration: missing_trait_methods no longer fires (0 both) - a real correction to the original dry run's secondary claim, not assumed away"
+      - "fixtures/relay/src/lib.rs diffed byte-for-byte against its pre-scratch-verification state after reverting - confirmed clean"
+    risks:
+      - "None new - this session corrected one already-recorded secondary claim (a lint signal that no longer applies post-migration) rather than introducing a new one."
+    next_actions:
+      - "Author Module 06 (Fearless Concurrency) next, same dry-run discipline."

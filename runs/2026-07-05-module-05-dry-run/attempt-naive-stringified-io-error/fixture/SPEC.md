@@ -322,38 +322,32 @@ pub enum NotifierKind {
     Stdout,
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug)]
 pub enum ConfigError {
-    #[error("missing required config key: {0}")]
     MissingKey(String),
-    #[error("invalid value for {key}: {value:?} is not a valid number of seconds")]
     InvalidInterval { key: String, value: String },
-    #[error("unknown notifier: {0:?} (expected \"desktop\", \"bell\", or \"stdout\")")]
     UnknownNotifier(String),
 }
+// Display + std::error::Error already implemented - see src/lib.rs
 
 pub fn parse_config(input: &str) -> Result<RelayConfig, ConfigError> {
     todo!()
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug)]
 pub enum HandoffError {
-    #[error("failed to write handoff summary: {0}")]
     Io(String), // shipped shape - whether you keep it is the exercise
 }
+// Display + std::error::Error already implemented for the shipped shape
 
 pub fn write_handoff_summary(path: &std::path::Path, session: &Session) -> Result<(), HandoffError> {
     todo!()
 }
 ```
 
-- `relay`'s `Cargo.toml` depends on `thiserror` (added specifically for this module, with
-  coderturtle's explicit approval - this project's `.hekton/governance.yaml` gates dependency
-  changes as human-required, so this wasn't added unilaterally). `RelayConfig`, `NotifierKind`,
-  `ConfigError`'s three variants (with their `#[error(...)]` messages already written via
-  `#[derive(thiserror::Error)]`), and `HandoffError`'s `Io` variant name (with its own `#[error(...)]`
-  message already written for whatever shape `Io` ends up holding) are all given - this module's
-  exercise is the two
+- `RelayConfig`, `NotifierKind`, `ConfigError`'s three variants (with their `Display`/`Error` impls
+  already written), and `HandoffError`'s `Io` variant name (with its `Display`/`Error` impls already
+  written for whatever shape `Io` ends up holding) are all given - this module's exercise is the two
   functions' bodies, and, specifically, whatever inner type `HandoffError::Io` ends up holding. The
   stub ships `Io(String)` because that's the shape that compiles with the least ceremony
   (`.to_string()` the underlying `std::io::Error` immediately, at the point it's caught). Whether

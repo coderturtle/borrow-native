@@ -1,0 +1,46 @@
+Module 05 dry run - extra-check-manual-match-no-question-mark
+
+Not a full attempt with its own diff.patch/confirm-loop cycle (matching Module 04's
+own "extra-check" precedent) - a lighter, targeted check against the module's other
+learning objective (LO3: use `?` to propagate without manual match boilerplate),
+isolated from the HandoffError finding above.
+
+Started from attempt-good's fixture. Rewrote parse_config's four `?` uses (two
+Option->Result conversions via .ok_or_else(...)?, two Result->Result passthroughs
+via parse_interval(..)?/parse_notifier_kind(..)?) as explicit `match` blocks with
+identical behavior:
+
+    let interval_raw = match interval_raw {
+        Some(v) => v,
+        None => return Err(ConfigError::MissingKey("checkpoint_interval_secs".to_string())),
+    };
+    ...
+    let checkpoint_interval_secs = match parse_interval(interval_raw) {
+        Ok(v) => v,
+        Err(e) => return Err(e),
+    };
+
+$ cargo test --no-fail-fast
+   ... all 32 tests pass, identical to attempt-good and attempt-naive-stringified-io-error.
+
+$ cargo clippy -- -D warnings
+error: this `match` expression can be replaced with `?`
+   --> src/lib.rs:348 (the parse_interval(..) match)
+error: this `match` expression can be replaced with `?`
+   --> src/lib.rs:352 (the parse_notifier_kind(..) match)
+error: could not compile `relay` (lib) due to 2 previous errors
+
+Real, checked finding: clippy::question_mark (default "style" group, part of the
+default lint set - no -W flag needed) DOES catch this shape, but only PARTIALLY.
+It flagged both `Result -> Result` passthrough matches (Ok(v) => v, Err(e) => return
+Err(e), with no error transformation) but NOT either `Option -> Result` match
+(Some(v) => v, None => return Err(..)) - those two compiled warning-free. Confirmed
+by re-running clippy with only the two Option matches present (the two Result
+matches temporarily reverted to `?`): zero warnings.
+
+This means the LO3 naive shape (skip `?`, write manual matches) is NOT invisible to
+the deterministic gate the way the LO2 finding (HandoffError early-stringify) is -
+default clippy -D warnings genuinely fails a solution that manually matches a
+same-error-type Result instead of using `?`, though it stays silent on the
+Option-to-Result conversion case. First module in this workshop where default
+clippy (not pedantic, not restriction) rescues part of a naive shape outright.

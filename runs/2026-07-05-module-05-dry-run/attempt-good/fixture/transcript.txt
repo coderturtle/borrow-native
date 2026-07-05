@@ -1,0 +1,40 @@
+Module 05 dry run - attempt-good
+
+Task: implement parse_config(input: &str) -> Result<RelayConfig, ConfigError> and
+write_handoff_summary(path: &Path, session: &Session) -> Result<(), HandoffError> in
+fixtures/relay/src/lib.rs. Modules 01-04 arrive already solved (this learner's own
+prior work); only Module 05's two todo!() stubs are open.
+
+Read src/lib.rs's given code first: RelayConfig, NotifierKind, ConfigError (three
+variants, Display/Error already implemented) are fixed - not part of this exercise.
+HandoffError ships with `Io(String)` and its own Display/Error impls already written
+for that shape.
+
+parse_config: split on lines, trim, skip blanks, split each non-blank line on the
+first '='. Unrecognized keys are ignored per SPEC.md. Two required keys:
+checkpoint_interval_secs (parse::<u64>, mapped to ConfigError::InvalidInterval on
+failure) and notifier (matched against "desktop"/"bell"/"stdout", mapped to
+ConfigError::UnknownNotifier on no match). Missing either key -> ConfigError::MissingKey
+naming which one. Wrote two small private helpers (parse_interval, parse_notifier_kind)
+so the main function reads as a straight-line `?` chain instead of nested matches.
+
+write_handoff_summary: rendered the summary first (private render_handoff_summary
+helper, one `- {goal}: {summary} (risks: {joined or "none"})` line per checkpoint),
+then called std::fs::write(path, content)?. That `?` only compiles once HandoffError
+implements From<std::io::Error> - added that impl, and while doing so, reconsidered
+whether HandoffError::Io should keep holding a String at all. Decided against it:
+a String thrown away the original std::io::Error's structure (its ErrorKind, its
+source() chain) for no benefit today, so changed Io to wrap std::io::Error directly
+and implemented Error::source() to return it. This is a bigger diff than the shipped
+stub technically requires, but the shipped stub's String shape only "works" by
+discarding information nothing in this exercise asked to discard.
+
+$ cd fixtures/relay
+$ cargo test
+   ... 32 passed (5 Module 01, 6 Module 02, 5 Module 03, 6 Module 04, 8+2 Module 05)
+$ cargo clippy -- -D warnings
+   Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+   (clean, no warnings)
+
+Stop condition met: cargo test green, cargo clippy -D warnings clean, diff touches
+only src/lib.rs.

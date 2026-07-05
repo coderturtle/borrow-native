@@ -1,0 +1,28 @@
+Takeaway validation for custom-error-type-template - retry-policy-validation crate
+
+$ cargo build   # naive version (RetryPolicyError::Malformed(String) catch-all,
+                # ParseIntError stringified via e.to_string() inside a manual match)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.59s
+
+$ cargo clippy -- -D warnings   # naive version
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+    (clean, no warnings)
+
+$ cargo clippy -- -W clippy::pedantic   # naive version
+warning: item in documentation is missing backticks (x2, doc-comment only)
+warning: docs for function returning `Result` missing `# Errors` section
+    (3 warnings total, none related to the error-type shape or the manual match)
+
+--- applied diff.patch: MissingField/InvalidNumber{field,source} replacing the single
+    Malformed(String) catch-all; InvalidNumber wraps the real std::num::ParseIntError
+    and Error::source() returns it; manual matches replaced with .map_err(...)? ---
+
+$ cargo build   # fixed version
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.40s
+
+$ cargo clippy -- -D warnings   # fixed version
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+    (clean, no warnings - identical to naive)
+
+$ cargo clippy -- -W clippy::pedantic   # fixed version
+    (same 3 warnings, same lines, same text - byte-identical to naive's pedantic output)

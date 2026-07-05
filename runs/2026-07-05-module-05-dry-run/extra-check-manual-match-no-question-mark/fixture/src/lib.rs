@@ -34,7 +34,16 @@ pub struct Session {
 /// a single draft, multiple drafts preserving order, and risks (including an
 /// empty list) preserved exactly as given.
 pub fn finalize_session(label: String, drafts: Vec<DraftCheckpoint>) -> Session {
-    todo!("implement per SPEC.md")
+    let checkpoints = drafts
+        .into_iter()
+        .map(|draft| CheckpointRecord {
+            goal: draft.goal,
+            summary: draft.summary,
+            risks: draft.risks,
+            elapsed_secs: draft.elapsed_secs,
+        })
+        .collect();
+    Session { label, checkpoints }
 }
 
 /// Summary statistics over a session's checkpoint gaps, computed by borrowing
@@ -59,7 +68,35 @@ pub struct SessionStats {
 /// session (no checkpoints), a single checkpoint, and multiple checkpoints
 /// with a tie for the longest gap (first occurrence wins).
 pub fn session_stats(session: &Session) -> SessionStats {
-    todo!("implement per SPEC.md")
+    let checkpoints = &session.checkpoints;
+
+    if checkpoints.is_empty() {
+        return SessionStats {
+            checkpoint_count: 0,
+            average_gap_secs: 0.0,
+            longest_gap_secs: 0,
+            longest_gap_goal: String::new(),
+        };
+    }
+
+    let total: u64 = checkpoints.iter().map(|c| c.elapsed_secs).sum();
+    let average_gap_secs = total as f64 / checkpoints.len() as f64;
+
+    let mut longest_gap_secs = checkpoints[0].elapsed_secs;
+    let mut longest_gap_goal = checkpoints[0].goal.clone();
+    for checkpoint in checkpoints.iter().skip(1) {
+        if checkpoint.elapsed_secs > longest_gap_secs {
+            longest_gap_secs = checkpoint.elapsed_secs;
+            longest_gap_goal = checkpoint.goal.clone();
+        }
+    }
+
+    SessionStats {
+        checkpoint_count: checkpoints.len(),
+        average_gap_secs,
+        longest_gap_secs,
+        longest_gap_goal,
+    }
 }
 
 /// Why a checkpoint fired. Exactly one reason per checkpoint, by construction -
@@ -100,7 +137,15 @@ pub enum NextAction {
 /// `CheckpointTrigger` fired - only `Ignored`'s outcome depends on the trigger,
 /// and only for one specific trigger.
 pub fn next_action(trigger: &CheckpointTrigger, response: &HumanResponse) -> NextAction {
-    todo!("implement per SPEC.md")
+    match response {
+        HumanResponse::Acknowledged => NextAction::Continue,
+        HumanResponse::Snoozed(secs) => NextAction::PauseFor(*secs),
+        HumanResponse::Ignored => match trigger {
+            CheckpointTrigger::ContextBudget(_) => NextAction::EndSession,
+            CheckpointTrigger::TimeElapsed(_) => NextAction::Continue,
+            CheckpointTrigger::ToolCallCount(_) => NextAction::Continue,
+        },
+    }
 }
 
 impl Session {
@@ -166,25 +211,40 @@ impl Notifier for StdoutNotifier {
 
 /// A record of one checkpoint notification: which session it belongs to,
 /// what message was sent, and whether the notifier reported success.
-pub struct CheckpointAlert {
-    pub session_label: String,
+/// `session_label` borrows straight from the `Session` that produced this
+/// alert rather than cloning it.
+pub struct CheckpointAlert<'a> {
+    pub session_label: &'a str,
     pub message: String,
     pub sent: bool,
 }
 
 /// Build a checkpoint's alert message and hand it to any `Notifier`.
 ///
-/// Edge cases this must handle (see `SPEC.md` for the full message-format
-/// table): a distinct, exactly-formatted message per `CheckpointTrigger`
-/// variant, a `sent` field that reflects whatever `notifier.notify`
-/// actually returns rather than an assumed `true`, and a `session_label`
-/// that identifies the session passed in, not a different one.
-pub fn alert_checkpoint<N: Notifier>(
+/// `'a` is tied only to `session` - the one reference this function's
+/// output actually borrows from.
+pub fn alert_checkpoint<'a, N: Notifier>(
     notifier: &N,
-    session: &Session,
+    session: &'a Session,
     trigger: &CheckpointTrigger,
-) -> CheckpointAlert {
-    todo!("implement per SPEC.md")
+) -> CheckpointAlert<'a> {
+    let message = match trigger {
+        CheckpointTrigger::TimeElapsed(secs) => {
+            format!("Checkpoint: {secs}s since last checkpoint")
+        }
+        CheckpointTrigger::ToolCallCount(n) => {
+            format!("Checkpoint: {n} tool calls since last checkpoint")
+        }
+        CheckpointTrigger::ContextBudget(frac) => {
+            format!("Checkpoint: {:.0}% of context budget used", frac * 100.0)
+        }
+    };
+    let sent = notifier.notify(&message);
+    CheckpointAlert {
+        session_label: session.label(),
+        message,
+        sent,
+    }
 }
 
 /// A parsed, valid relay configuration.
@@ -211,15 +271,28 @@ pub enum NotifierKind {
 /// might be recoverable with a hardcoded default upstream; an unknown
 /// notifier name never is. This shape is given; the exercise is
 /// `parse_config`'s body, not this enum.
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug)]
 pub enum ConfigError {
-    #[error("missing required config key: {0}")]
     MissingKey(String),
-    #[error("invalid value for {key}: {value:?} is not a valid number of seconds")]
     InvalidInterval { key: String, value: String },
-    #[error("unknown notifier: {0:?} (expected \"desktop\", \"bell\", or \"stdout\")")]
     UnknownNotifier(String),
 }
+
+impl std::fmt::Display for ConfigError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ConfigError::MissingKey(key) => write!(f, "missing required config key: {key}"),
+            ConfigError::InvalidInterval { key, value } => {
+                write!(f, "invalid value for {key}: {value:?} is not a valid number of seconds")
+            }
+            ConfigError::UnknownNotifier(value) => {
+                write!(f, "unknown notifier: {value:?} (expected \"desktop\", \"bell\", or \"stdout\")")
+            }
+        }
+    }
+}
+
+impl std::error::Error for ConfigError {}
 
 /// Parse a relay config file: newline-separated `key=value` lines (blank
 /// lines ignored, unrecognized keys ignored). Required keys:
@@ -228,20 +301,111 @@ pub enum ConfigError {
 /// edge-case table this must satisfy - in particular, every failure this
 /// function can hit must come back as an `Err(ConfigError::..)`, never a
 /// panic, and never lose which specific thing went wrong.
-pub fn parse_config(input: &str) -> Result<RelayConfig, ConfigError> {
-    todo!("implement per SPEC.md")
+fn parse_interval(value: &str) -> Result<u64, ConfigError> {
+    value.parse::<u64>().map_err(|_| ConfigError::InvalidInterval {
+        key: "checkpoint_interval_secs".to_string(),
+        value: value.to_string(),
+    })
 }
 
-/// Everything that can go wrong writing a handoff summary to disk. Shipped
-/// with `Io` wrapping a `String`, not the real `std::io::Error` - that's the
-/// shape that compiles today with the least ceremony (`.to_string()` the
-/// underlying error immediately). Whether that's the shape you keep is this
-/// module's real exercise; see the module's README for what changing it
-/// actually buys you.
-#[derive(Debug, thiserror::Error)]
+fn parse_notifier_kind(value: &str) -> Result<NotifierKind, ConfigError> {
+    match value {
+        "desktop" => Ok(NotifierKind::Desktop),
+        "bell" => Ok(NotifierKind::TerminalBell),
+        "stdout" => Ok(NotifierKind::Stdout),
+        other => Err(ConfigError::UnknownNotifier(other.to_string())),
+    }
+}
+
+pub fn parse_config(input: &str) -> Result<RelayConfig, ConfigError> {
+    let mut interval_raw: Option<&str> = None;
+    let mut notifier_raw: Option<&str> = None;
+
+    for line in input.lines() {
+        let line = line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        let Some((key, value)) = line.split_once('=') else {
+            continue;
+        };
+        match key {
+            "checkpoint_interval_secs" => interval_raw = Some(value),
+            "notifier" => notifier_raw = Some(value),
+            _ => {} // unrecognized keys are ignored, forward-compatibly
+        }
+    }
+
+    let interval_raw = match interval_raw {
+        Some(v) => v,
+        None => return Err(ConfigError::MissingKey("checkpoint_interval_secs".to_string())),
+    };
+    let notifier_raw = match notifier_raw {
+        Some(v) => v,
+        None => return Err(ConfigError::MissingKey("notifier".to_string())),
+    };
+
+    let checkpoint_interval_secs = match parse_interval(interval_raw) {
+        Ok(v) => v,
+        Err(e) => return Err(e),
+    };
+    let notifier_kind = match parse_notifier_kind(notifier_raw) {
+        Ok(v) => v,
+        Err(e) => return Err(e),
+    };
+
+    Ok(RelayConfig {
+        checkpoint_interval_secs,
+        notifier_kind,
+    })
+}
+
+/// Everything that can go wrong writing a handoff summary to disk. Wraps the
+/// real `std::io::Error` rather than stringifying it early, so a caller (or
+/// this type's own `source()`) still has the underlying error to inspect -
+/// see the module's README for why the shipped `Io(String)` stub's
+/// early-stringify shape gives that up for no behavioral difference today.
+#[derive(Debug)]
 pub enum HandoffError {
-    #[error("failed to write handoff summary: {0}")]
-    Io(String),
+    Io(std::io::Error),
+}
+
+impl std::fmt::Display for HandoffError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            HandoffError::Io(inner) => write!(f, "failed to write handoff summary: {inner}"),
+        }
+    }
+}
+
+impl std::error::Error for HandoffError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            HandoffError::Io(inner) => Some(inner),
+        }
+    }
+}
+
+impl From<std::io::Error> for HandoffError {
+    fn from(inner: std::io::Error) -> Self {
+        HandoffError::Io(inner)
+    }
+}
+
+fn render_handoff_summary(session: &Session) -> String {
+    let mut out = String::new();
+    for checkpoint in &session.checkpoints {
+        let risks = if checkpoint.risks.is_empty() {
+            "none".to_string()
+        } else {
+            checkpoint.risks.join(", ")
+        };
+        out.push_str(&format!(
+            "- {}: {} (risks: {risks})\n",
+            checkpoint.goal, checkpoint.summary
+        ));
+    }
+    out
 }
 
 /// Render a session's checkpoints into a restartable-handoff summary and
@@ -251,5 +415,7 @@ pub enum HandoffError {
 /// including a real I/O failure (e.g. `path`'s parent directory doesn't
 /// exist), which must come back as an `Err`, not a panic.
 pub fn write_handoff_summary(path: &std::path::Path, session: &Session) -> Result<(), HandoffError> {
-    todo!("implement per SPEC.md")
+    let content = render_handoff_summary(session);
+    std::fs::write(path, content)?;
+    Ok(())
 }

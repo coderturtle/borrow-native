@@ -1,0 +1,118 @@
+--- /tmp/module05-baseline/lib.rs	2026-07-05 17:59:35
++++ attempt-good/fixture/src/lib.rs	2026-07-05 17:56:40
+@@ -301,19 +301,60 @@
+ /// edge-case table this must satisfy - in particular, every failure this
+ /// function can hit must come back as an `Err(ConfigError::..)`, never a
+ /// panic, and never lose which specific thing went wrong.
++fn parse_interval(value: &str) -> Result<u64, ConfigError> {
++    value.parse::<u64>().map_err(|_| ConfigError::InvalidInterval {
++        key: "checkpoint_interval_secs".to_string(),
++        value: value.to_string(),
++    })
++}
++
++fn parse_notifier_kind(value: &str) -> Result<NotifierKind, ConfigError> {
++    match value {
++        "desktop" => Ok(NotifierKind::Desktop),
++        "bell" => Ok(NotifierKind::TerminalBell),
++        "stdout" => Ok(NotifierKind::Stdout),
++        other => Err(ConfigError::UnknownNotifier(other.to_string())),
++    }
++}
++
+ pub fn parse_config(input: &str) -> Result<RelayConfig, ConfigError> {
+-    todo!("implement per SPEC.md")
++    let mut interval_raw: Option<&str> = None;
++    let mut notifier_raw: Option<&str> = None;
++
++    for line in input.lines() {
++        let line = line.trim();
++        if line.is_empty() {
++            continue;
++        }
++        let Some((key, value)) = line.split_once('=') else {
++            continue;
++        };
++        match key {
++            "checkpoint_interval_secs" => interval_raw = Some(value),
++            "notifier" => notifier_raw = Some(value),
++            _ => {} // unrecognized keys are ignored, forward-compatibly
++        }
++    }
++
++    let interval_raw = interval_raw
++        .ok_or_else(|| ConfigError::MissingKey("checkpoint_interval_secs".to_string()))?;
++    let notifier_raw =
++        notifier_raw.ok_or_else(|| ConfigError::MissingKey("notifier".to_string()))?;
++
++    Ok(RelayConfig {
++        checkpoint_interval_secs: parse_interval(interval_raw)?,
++        notifier_kind: parse_notifier_kind(notifier_raw)?,
++    })
+ }
+ 
+-/// Everything that can go wrong writing a handoff summary to disk. Shipped
+-/// with `Io` wrapping a `String`, not the real `std::io::Error` - that's the
+-/// shape that compiles today with the least ceremony (`.to_string()` the
+-/// underlying error immediately). Whether that's the shape you keep is this
+-/// module's real exercise; see the module's README for what changing it
+-/// actually buys you.
++/// Everything that can go wrong writing a handoff summary to disk. Wraps the
++/// real `std::io::Error` rather than stringifying it early, so a caller (or
++/// this type's own `source()`) still has the underlying error to inspect -
++/// see the module's README for why the shipped `Io(String)` stub's
++/// early-stringify shape gives that up for no behavioral difference today.
+ #[derive(Debug)]
+ pub enum HandoffError {
+-    Io(String),
++    Io(std::io::Error),
+ }
+ 
+ impl std::fmt::Display for HandoffError {
+@@ -324,8 +365,36 @@
+     }
+ }
+ 
+-impl std::error::Error for HandoffError {}
++impl std::error::Error for HandoffError {
++    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
++        match self {
++            HandoffError::Io(inner) => Some(inner),
++        }
++    }
++}
+ 
++impl From<std::io::Error> for HandoffError {
++    fn from(inner: std::io::Error) -> Self {
++        HandoffError::Io(inner)
++    }
++}
++
++fn render_handoff_summary(session: &Session) -> String {
++    let mut out = String::new();
++    for checkpoint in &session.checkpoints {
++        let risks = if checkpoint.risks.is_empty() {
++            "none".to_string()
++        } else {
++            checkpoint.risks.join(", ")
++        };
++        out.push_str(&format!(
++            "- {}: {} (risks: {risks})\n",
++            checkpoint.goal, checkpoint.summary
++        ));
++    }
++    out
++}
++
+ /// Render a session's checkpoints into a restartable-handoff summary and
+ /// write it to `path`. One line per checkpoint: goal, summary, and risks
+ /// (comma-joined, or `none` if empty), in checkpoint order. See `SPEC.md`'s
+@@ -333,5 +402,7 @@
+ /// including a real I/O failure (e.g. `path`'s parent directory doesn't
+ /// exist), which must come back as an `Err`, not a panic.
+ pub fn write_handoff_summary(path: &std::path::Path, session: &Session) -> Result<(), HandoffError> {
+-    todo!("implement per SPEC.md")
++    let content = render_handoff_summary(session);
++    std::fs::write(path, content)?;
++    Ok(())
+ }

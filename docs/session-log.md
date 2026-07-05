@@ -286,3 +286,68 @@ Pending — see next commit's mirror sync.
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 05 (Error Handling) authored + dry run
+
+### What happened
+
+- **Ran Coachgremlin's Workflow step 0 (ARB check)** before touching `fixtures/relay/src/lib.rs`/`SPEC.md`: clean baseline confirmed, correct fire after adding Module 05's given code and stubs, resolved by confirming `cargo build` succeeds and Modules 01-04's own tests fail identically to before the change.
+- **Authored Module 05's real exercise**: `parse_config(input: &str) -> Result<RelayConfig, ConfigError>` and `write_handoff_summary(path: &Path, session: &Session) -> Result<(), HandoffError>`, added to `fixtures/relay/src/lib.rs`/`SPEC.md` with 10 new tests (`tests/parse_config.rs`, `tests/write_handoff_summary.rs`). Real requirement surfaced immediately: `std::error::Error: Debug + Display` meant `ConfigError`/`HandoffError`/`RelayConfig`/`NotifierKind` all needed `#[derive(Debug)]`, not obvious from the given code alone until `cargo build` actually failed on it.
+- **Ran the first real dry run for Module 05** (`runs/2026-07-05-module-05-dry-run/`): a correct attempt (`HandoffError::Io` wrapping the real `std::io::Error`, `From`/`source()` added), a deliberately naive attempt (keeps the shipped `Io(String)`, stringifies the I/O error the instant it's caught), and a lighter second check (manual `match` instead of `?` in `parse_config`). Both primary attempts pass `cargo test` (32/32) and `cargo clippy -- -D warnings` identically - checked at `pedantic`/`nursery`/full `restriction` (diffed programmatically via `--message-format=json`), finding one weak generic partial signal and one wrong-direction lint, same pattern as Module 04. The lighter check found the opposite: default `clippy::question_mark` genuinely fails a same-type `Result -> Result` manual match, the first time default clippy alone has rescued part of a naive shape in this workshop.
+- **Packaged and validated the takeaway**: `.claude/skills/custom-error-type-template/SKILL.md`, validated against a second, unrelated retry-policy-config-parsing problem (`runs/2026-07-05-module-05-dry-run/takeaway-validation/`) - the validation refined the Skill's own `question_mark` claim (also silent on a type-converting manual match, not just same-type passthroughs) rather than just confirming it.
+- **Rewrote `modules/05-error-handling/README.md`** from skeleton to real authored content: rubric, learning objectives, and a "why this is hard" section reflecting this dry run's actual evidence.
+- **Decided against adding `thiserror` as a dependency** for the error types - `.hekton/governance.yaml` gates dependency changes as human-required, and this didn't warrant an unscoped mid-session addition. Manual `impl Error`/`Display` used instead; recorded in `docs/decisions.md`.
+- Recorded `runs/run-20260705-RW-006.yaml` (`human_confirmed: false`), `.hekton/change-log.yaml`'s CHG-0006, and a new `.hekton/agent-run-log.yaml` entry (RUN-0006).
+
+### Decisions Made
+
+- See `docs/decisions.md`'s two newest rows (the `thiserror`-vs-manual choice, and the full Module 05 finding).
+
+### Risks
+
+- Same single-grader limitation as every prior module's dry run: one session constructed and graded both attempts plus the extra check. Recorded in `retro.md`, not new here.
+- Recommendation only - `human_confirmed: false`, awaiting coderturtle's review per Coachgremlin's Human Gate.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: get coderturtle's review on Module 05's dry run, then author Module 06 (Fearless Concurrency) with the same discipline. Batch-review cadence not due yet (1 of 2-3 modules since the Modules 03+04 batch).
+
+### Validation Status
+
+- `cargo build`/`cargo test`/`cargo clippy -- -D warnings` all run for real, output captured in `runs/2026-07-05-module-05-dry-run/*/fixture/transcript.txt`, not narrated.
+- Modules 01-04's own test suites re-run before and after the `src/lib.rs` addition, identical still-failing-on-`todo!()` output confirmed (no regression).
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 05 dry run confirmed; `thiserror` authorized and migrated; CLAUDE.md dependency-flagging rule added
+
+### What happened
+
+- **coderturtle reviewed and confirmed Module 05's dry run (go)** - `runs/run-20260705-RW-006.yaml` flipped to `human_confirmed: true`.
+- **coderturtle authorized adding `thiserror`** as a real Cargo dependency, reversing the prior session's manual-`impl` choice (which was gated on approval, not a design objection). Ran `cargo add thiserror` in `fixtures/relay/`; migrated `ConfigError`/`HandoffError` from a manual `impl Error`/`Display` to `#[derive(thiserror::Error)]` with `#[error("...")]` attributes; the correct-attempt reference shape for `HandoffError::Io` simplified to `Io(#[from] std::io::Error)`, one attribute replacing a manual `impl From` plus `source()` override.
+- **Re-verified the module's finding against the migrated code, not assumed to carry over**: rebuilt both the correct and naive attempts against the `thiserror`-derived given code (in a scratch copy, then reverted `fixtures/relay/src/lib.rs` exactly back to its shipped `todo!()` stub afterward, diffed to confirm). Primary finding held (`cargo test` 32/32, `cargo clippy -- -D warnings` identical on both). One secondary claim did **not** survive unchanged: the original dry run's `clippy::restriction`-group finding (`clippy::missing_trait_methods` giving one weak partial signal) disappears entirely once the `Error` impl is derived rather than hand-written (0 occurrences on both attempts, re-checked via `--message-format=json`). Corrected across `modules/05-error-handling/README.md`, `.claude/skills/custom-error-type-template/SKILL.md`, and addenda appended to `runs/2026-07-05-module-05-dry-run/{grading.md,retro.md}` (not silently rewritten) - the finding is now stated as *starker* (no lint at any level rescues it) than originally recorded.
+- **Added a "Dependency changes" rule to this repo's `CLAUDE.md`**: future sessions must flag dependency questions to the user explicitly, naming the cons of *not* adding the dependency, rather than deciding unilaterally around a governance gate.
+- `fixtures/relay/SPEC.md` and `modules/05-error-handling/README.md`'s given-code blocks updated to show the `thiserror`-derived shape.
+
+### Decisions Made
+
+- See `docs/decisions.md`'s newest row.
+
+### Risks
+
+- None new. The re-verification found a claim that needed correcting (a lint signal that no longer applies), which was corrected rather than left stale - the same discipline this workshop has applied to every prior tooling-behavior claim.
+
+### Next Actions
+
+- Author Module 06 (Fearless Concurrency) with the same dry-run discipline.
+
+### Validation Status
+
+- `cargo build`/`cargo test`/`cargo clippy -- -D warnings` all re-run for real against the `thiserror`-migrated shipped stub; 32/32 tests still correctly fail on their own unsolved `todo!()`s (no regression from the dependency migration).
+- The scratch verification (both attempts rebuilt, tested, linted, then reverted) confirmed `fixtures/relay/src/lib.rs` was restored byte-for-byte to its shipped stub state (`diff` empty) before this session ended.
+
+### Mind-palace updated
+
+Yes — repo-local `mind-palace/20-projects/factory-output/borrow-native/{decisions,next-actions,session-log}.md` synced this commit, covering every session back to the last sync point (Modules 01+02 Review Panel batch). Condensed, not verbatim - see `docs/decisions.md`/`docs/next-actions.md`/`docs/session-log.md` in this repo for full per-decision detail. Live vault untouched (`vault_mutation_allowed: false`).

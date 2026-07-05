@@ -101,4 +101,51 @@ changes:
       - "docs/review-panel/2026-07-05-modules-03-04-personas/"
       - "docs/decisions.md"
       - "docs/next-actions.md"
+
+  - id: CHG-0006
+    date: 2026-07-05
+    title: "Module 05 (Error Handling) authored: parse_config, write_handoff_summary, ConfigError/HandoffError"
+    intent: "Give Module 05 a real, dry-run-evidenced exercise - custom error-type design and ?/From-based propagation, the first in this workshop to exercise these mechanisms."
+    changed_by: "claude-sonnet-5"
+    change_type: feature
+    risk_level: medium
+    validation:
+      - "cargo test: 32/32 pass on the correct dry-run attempt; identical on the naive stringified-io-error attempt"
+      - "cargo clippy -- -D warnings: clean on both attempts"
+      - "cargo clippy -- -W clippy::pedantic / -W clippy::nursery / -W clippy::restriction: all run and diffed between attempts (restriction diffed programmatically via --message-format=json), not just default"
+      - "Second, lighter check (manual match instead of ?) run separately: cargo clippy -- -D warnings genuinely fails it (clippy::question_mark), isolating a partially deterministic-gate-visible result distinct from the HandoffError finding"
+      - "ARB trigger fired and was resolved (Modules 01-04's own test suites re-run, identical still-failing-on-todo output confirmed) before the shared-type change landed"
+      - "scripts/clone-count-check.sh: run against both diffs, correctly reports a true negative (baseline 0, this failure mode isn't clone-shaped)"
+      - "Takeaway Skill validated against a second, unrelated retry-policy-parsing problem, which also refined one of the Skill's own claims"
+    approvals:
+      required: true
+      status: approved
+    links:
+      - "runs/2026-07-05-module-05-dry-run/"
+      - "runs/run-20260705-RW-006.yaml"
+      - "docs/decisions.md"
+      - "docs/session-log.md"
       - ".hekton/review-log.yaml"
+
+  - id: CHG-0007
+    date: 2026-07-05
+    title: "thiserror authorized and added; ConfigError/HandoffError migrated; Module 05 finding re-verified"
+    intent: "coderturtle confirmed Module 05's dry run and authorized thiserror as a real dependency, reversing the prior manual-impl choice made solely to respect the dependency_changes: human_required governance gate."
+    changed_by: "claude-sonnet-5"
+    change_type: refactor
+    risk_level: low
+    validation:
+      - "cargo add thiserror in fixtures/relay/; cargo build/test/clippy -- -D warnings clean on the migrated shipped stub (32/32 tests still correctly fail on their own unsolved todo!()s, no regression)"
+      - "Both correct and naive attempts rebuilt against the thiserror-derived given code in a scratch pass: cargo test 32/32 pass identically, cargo clippy -- -D warnings clean identically"
+      - "Full clippy::restriction group re-run programmatically (--message-format=json) against both migrated attempts: the prior dry run's missing_trait_methods partial signal no longer fires (0 occurrences both) - corrected, not silently dropped, in modules/05-error-handling/README.md and .claude/skills/custom-error-type-template/SKILL.md"
+      - "fixtures/relay/src/lib.rs restored byte-for-byte to its shipped todo!() stub (diff empty) after the scratch verification"
+    approvals:
+      required: true
+      status: approved
+    links:
+      - "runs/2026-07-05-module-05-dry-run/grading.md"
+      - "runs/2026-07-05-module-05-dry-run/retro.md"
+      - "runs/run-20260705-RW-006.yaml"
+      - "docs/decisions.md"
+      - "docs/session-log.md"
+      - "CLAUDE.md"

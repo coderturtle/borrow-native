@@ -12,6 +12,3 @@ path = "src/lib.rs"
 [[bin]]
 name = "relay"
 path = "src/main.rs"
-
-[dependencies]
-thiserror = "2.0.18"

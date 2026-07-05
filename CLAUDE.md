@@ -25,6 +25,12 @@ Specific to this project:
 - Record all design decisions in `docs/decisions.md`
 - Keep risks current in `docs/risks.md` and `.hekton/risk-register.yaml`
 - Append to `docs/session-log.md` at end of every session
+- **Dependency changes** (`.hekton/governance.yaml`'s `dependency_changes: human_required`): never
+  add a new Cargo/npm/etc. dependency unilaterally to work around this gate (e.g. by writing a
+  manual equivalent just to avoid asking). Instead, flag the question to the user directly - name
+  the dependency, what it buys you, and explicitly the **cons of *not* using it** (extra
+  boilerplate, more manual maintenance, a less idiomatic/less reviewer-familiar shape) so the user
+  is weighing a real tradeoff, not just rubber-stamping a bare yes/no ask.
 
 ## Hekton Documentation Contract
 

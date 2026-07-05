@@ -1,0 +1,35 @@
+Module 05 dry run - attempt-naive-stringified-io-error
+
+Task: same as attempt-good (implement parse_config and write_handoff_summary against
+Modules 01-04 already solved). This attempt is a deliberately naive, honest
+(non-adversarial) one: an experienced developer's first-instinct shape, not a
+rubric-gaming attempt.
+
+parse_config: implemented identically to attempt-good (same helper-function,
+`?`-chain shape) - this module's config-parsing half isn't where this attempt's
+naive instinct actually shows up; isolating the finding to one half of the exercise
+at a time, same discipline as prior modules' dry runs.
+
+write_handoff_summary: rendered the summary with the same render_handoff_summary
+helper, then called std::fs::write(path, content). std::fs::write returns
+io::Result<()>, but HandoffError::Io is a String, and there's no From<io::Error>
+for HandoffError in scope (didn't add one) - so `?` doesn't compile against it
+directly. Reached for the obvious fix: match on the Result and convert the error to
+a message at the point it's caught (`Err(e) => Err(HandoffError::Io(e.to_string()))`).
+This compiles immediately, needs no new impl, and is indistinguishable in every test
+from attempt-good's version - same message text, same Err on a missing directory,
+same Ok on success. Kept the shipped Io(String) shape rather than reconsidering it,
+because nothing forced the question: the shipped stub already compiles and every
+test passes with the shape as given.
+
+$ cd fixtures/relay
+$ cargo test
+   ... 32 passed (5 Module 01, 6 Module 02, 5 Module 03, 6 Module 04, 8+2 Module 05)
+   -- identical pass count to attempt-good
+$ cargo clippy -- -D warnings
+   Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+   (clean, no warnings -- identical to attempt-good)
+
+Stop condition met on the deterministic tier: cargo test green, cargo clippy -D
+warnings clean, diff touches only src/lib.rs. Whether this is the *right* shape is
+a separate, conceptual-tier question - see grading.md.
