@@ -74,6 +74,12 @@ Each module's gate produces a takeaway, not just proof: a real, keepable artifac
 | 07 | Async Programming | An async-vs-threads decision guide, paired with Module 06's as a matched set |
 | 08 | Synthesis capstone | A personal Rust diagnostic playbook compressing the whole arc into one checklist |
 
+Plus one cross-cutting, non-scored takeaway every module points to, not owned by any single one:
+[`.claude/skills/agentic-learning-discipline/SKILL.md`](../.claude/skills/agentic-learning-discipline/SKILL.md)
+- a self-check for whether you actually learned a module's concept or your coding agent just
+demonstrated it for you. See [`docs/workshop-design.md`](../docs/workshop-design.md)'s "A second,
+named skill running underneath the Rust arc" for why this exists.
+
 ## Why this order
 
 This is this workshop's own editorial synthesis, not an independently validated pedagogical finding (same honesty caveat `terminal-velocity` applied to its own harness/loop split). Ownership has no prerequisite because everything else in Rust is a consequence of it. Borrowing is unusable without ownership underneath it. Structs/enums wait on borrowing because methods take `&self`/`&mut self`. Generics/traits/lifetimes stay one module (the Book itself teaches these three together) and depend on Module 03 because the module's real exercises implement traits on custom types, not bare primitives. Error handling waits on both enums (03) and generic error propagation (04). Concurrency depends on ownership/borrowing specifically (01-02), not on 04's machinery: `Send`/`Sync` are taught directly within it. Async (07), added after checking this arc against the Ardan Labs certification's real exam topics, depends on both 04 (`Future` is a trait; `async fn` desugars to a generic state machine) and 06 (easiest to tell apart from threads once you've done one of them for real) - and follows the Rust Book's own sequencing, which places its async chapter directly after concurrency. Full reasoning and the curriculum-anchor research behind it: [`docs/workshop-design.md`](../docs/workshop-design.md).

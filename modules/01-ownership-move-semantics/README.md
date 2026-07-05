@@ -24,13 +24,14 @@ build-out table). Module 01 adds the project's core domain types and its first f
 1. **`cargo test` green (gate, deterministic).** All 5 provided tests pass.
 2. **`cargo clippy -- -D warnings` clean (gate, deterministic).** Zero output.
 3. **Diff touches only `fixtures/relay/src/lib.rs`, not the test file (gate, anti-gaming).**
-4. **No `.clone()` on data the function could have moved instead (scored, conceptual).** `drafts`
-   arrives by value; every `DraftCheckpoint` and every field of every `DraftCheckpoint` in it is
-   yours to move.
-5. **Ownership shape matches what the body actually needs (scored, conceptual).** If your loop
-   only ever borrows `drafts` (`for draft in &drafts`), ask why the function still takes it by
-   value - a `Vec<DraftCheckpoint>` parameter that's never consumed is a signal you borrowed when
-   you could have owned.
+4. **Every `String`/`Vec` field in your output `CheckpointRecord`s is the same allocation the
+   corresponding `DraftCheckpoint` field already held - none is a new buffer holding a duplicate of
+   data this function already owned (scored, conceptual).** `drafts` arrives by value; check
+   whether your implementation actually uses that fact.
+5. **Nothing in your implementation reads `drafts` through a shared reference while the function
+   itself already holds full ownership of it (scored, conceptual).** Trace where each field of your
+   output came from - if the path runs through `&drafts` or `&draft` anywhere, ask why, given that
+   `drafts: Vec<DraftCheckpoint>` was never going to be used again after this call.
 
 **Before trusting a green `cargo test` and a clean `cargo clippy` as proof you're done:** they are
 not the same claim as "this solution demonstrates ownership, not habit." A solution that clones
@@ -44,14 +45,14 @@ can't catch this on their own.
 ## Required to advance / stop condition
 
 Produce an implementation of `finalize_session` that passes `cargo test` and `cargo clippy -- -D
-warnings`, touches only `fixtures/relay/src/lib.rs`, and moves rather than clones every field used
-to build the result. Reading this page does not count: you advance on a working implementation
-Coachgremlin has actually reviewed against the rubric above, not on having read it.
+warnings`, touches only `fixtures/relay/src/lib.rs`, and allocates nothing new for data this
+function already owns outright. Reading this page does not count: you advance on a working
+implementation Coachgremlin has actually reviewed against the rubric above, not on having read it.
 
-**Valid alternate terminal:** if your first working solution does clone somewhere, that's not a
-failure, it's the actual exercise. Go back to the diff, name which clone it is, and check: is
-`drafts` (or the field you cloned) ever used again after that point? If not, rewrite the borrow to
-a move and remove the clone.
+**Valid alternate terminal:** if your first working solution does duplicate some data it already
+owned, that's not a failure, it's the actual exercise. Go back to the diff, name the spot, and
+check: is `drafts` (or the field in question) ever used again after that point? If not, rewrite
+whatever reads it through a reference so it takes ownership directly instead.
 
 ## Where it sits in the arc
 
@@ -97,6 +98,15 @@ in &drafts`, a borrow, out of habit, even though `drafts: Vec<DraftCheckpoint>` 
 never used again after the loop. The move-based one just... doesn't borrow, because nothing
 required it to. The skill this module teaches isn't "avoid `.clone()`," it's "before writing one,
 check whether you already own what you're about to clone."
+
+**One honest question before you move on, not scored, not gated:** if you handed this exercise's
+prompt to your own coding agent with no attempt of your own first, it would very likely have
+produced the move-based version in one shot - it's not a hard problem for a model that already
+knows Rust. That's not cheating; the deterministic gate doesn't care how the diff got written. But
+if that's what happened here, what did *you* just learn, versus what did your agent just
+demonstrate? There's no rubric line for that question on purpose - it's yours to answer honestly,
+not Coachgremlin's to grade. (See `.claude/skills/agentic-learning-discipline/SKILL.md` if you want
+a concrete way to check your own answer before moving to Module 02.)
 
 ## Harness
 

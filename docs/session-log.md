@@ -351,3 +351,69 @@ Pending — see next commit's mirror sync.
 ### Mind-palace updated
 
 Yes — repo-local `mind-palace/20-projects/factory-output/borrow-native/{decisions,next-actions,session-log}.md` synced this commit, covering every session back to the last sync point (Modules 01+02 Review Panel batch). Condensed, not verbatim - see `docs/decisions.md`/`docs/next-actions.md`/`docs/session-log.md` in this repo for full per-decision detail. Live vault untouched (`vault_mutation_allowed: false`).
+
+## 2026-07-05 - Rubric-spoiler tension decided and implemented; agentic-learning-discipline Skill added
+
+### What happened
+
+- **Decided the rubric-spoiler tension**, following up on the same-day research
+  (`docs/rubric-spoiler-research.md`): adopted Candidate A (property-phrased rubric criteria -
+  state an observable fact about the finished artifact, not the technique that produces it)
+  plus all three items from that doc's Proposal section. Reasoning against B/C/D recorded in
+  the research doc's new "Decision" section and `docs/decisions.md`'s newest row.
+- **Rewrote every scored/conceptual rubric criterion in Modules 01-05** to property-phrased
+  form - e.g. Module 04 criterion 6 went from "borrows `session` with an explicit lifetime,
+  rather than owning a clone" to "it is a compile error for a `CheckpointAlert` to be used after
+  the `Session` it describes has been dropped." Also reworded each module's "Required to
+  advance" line to match, since it named the same technique directly. Left "Valid alternate
+  terminal" sections and "Why this is hard" as-is - those are explicitly framed as the
+  after-a-first-attempt reveal, not pre-attempt spoilers, and this decision didn't touch that
+  framing.
+- **Added a short, ungated reflective closing beat to every module** ("if you'd handed this to
+  your agent with no attempt first, it would've one-shotted the answer - what did *you* learn
+  versus what did your agent demonstrate?"), right after each module's "Why this is hard"
+  section. Not scored, not gated - a habit, not a criterion.
+- **Created `.claude/skills/agentic-learning-discipline/SKILL.md`**: a cross-cutting,
+  non-scored self-check (name the concept without looking at the code; predict whether the diff
+  passes `cargo clippy` before running it; name how a plausible naive attempt would have gotten
+  it wrong) - referenced from every module's reflective beat and from `modules/README.md`'s
+  takeaway table, not owned by any single module.
+- **Added a new subsection to `docs/workshop-design.md`** ("A second, named skill running
+  underneath the Rust arc") naming this as an explicit, workshop-wide second thing the workshop
+  teaches, not just a rubric patch.
+- Historical `runs/*/grading.md`/`retro.md` files were **not** rewritten - the underlying
+  pass/fail distinction each dry run already tested doesn't change when the rubric's wording
+  does; only what a future learner reads before attempting is different.
+
+### Decisions Made
+
+- See `docs/decisions.md`'s newest row for the full reasoning.
+
+### Risks
+
+- The property-phrased criteria are a first attempt at this shape across 5 already-shipped
+  modules - not independently reviewed yet. Added to `docs/next-actions.md`: get the third
+  content-level Review Panel batch (due once Module 06 or 07 completes the window) to
+  sanity-check the new phrasing, same as any other new pattern this workshop has adopted.
+- This decision explicitly does not claim the agentic-short-circuit problem is solved - see the
+  research doc's "Decision" section's own "What this does not claim" paragraph. It's a real,
+  bounded improvement (more honest rubric wording, an explicit acknowledgment of what wording
+  alone can't fix), not a closed case.
+
+### Next Actions
+
+- Apply the same property-phrasing + reflective-beat pattern to Modules 06-08 as they're
+  authored, rather than letting the old spoiler-shaped pattern creep back in.
+- Author Module 06 (Fearless Concurrency) next, same dry-run discipline.
+- Get the third Review Panel batch's read on the new rubric pattern once it's due.
+
+### Validation Status
+
+- No code changed this session (rubric/doc wording and a new Skill file only);
+  `fixtures/relay`'s state is unchanged, no `cargo test`/`clippy` re-run needed.
+- `scripts/check-brand-lint.sh` and `scripts/check-mirror-drift.sh` both run clean after all
+  edits.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.

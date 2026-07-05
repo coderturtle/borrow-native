@@ -7,13 +7,15 @@
 - [x] Two content-level Workshop Review Panel batches complete (Modules 01+02, Modules 03+04)
 - [ ] Get a human to enable GitHub Pages and trigger the first real deploy
 - [ ] Triage RISK-0002 (4 inherited `npm audit` vulnerabilities) before that first real deploy
-- [ ] Decide the rubric-spoils-the-answer tension (Modules 03+04 panel finding - a real structural
-  question, not a quick text edit, and recurring in every module authored since)
+- [x] Rubric-spoils-the-answer tension decided: property-phrased criteria + a workshop-wide
+  reflective closing beat + `agentic-learning-discipline` Skill, adopted across Modules 01-05
 
 ## This Week
 
-- [ ] Author Module 06 (Fearless Concurrency) with the same dry-run discipline
-- [ ] Third content-level Review Panel batch due once Module 06 or 07 completes the 2-3-module window
+- [ ] Author Module 06 (Fearless Concurrency) with the same dry-run discipline, following the new
+  property-phrasing + reflective-beat rubric pattern
+- [ ] Third content-level Review Panel batch due once Module 06 or 07 completes the 2-3-module
+  window - should also sanity-check the new rubric phrasing
 - [ ] Address the "audit report, not a pitch" structural complaint (workshop-wide page-structure pass)
 - [ ] Harden `scripts/arb-trigger-check.sh`'s governance-file parser (fails open on reformat)
 - [ ] Fully harmonize "gate"/"tier" rubric vocabulary across all modules

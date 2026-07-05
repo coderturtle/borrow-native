@@ -63,11 +63,11 @@ checkpoint fires, given why it fired and how the human responded.
 4. **`Ignored` + `ContextBudget` correctly resolves to `EndSession` (gate, deterministic).** The one
    behavioral case this exercise's own test suite catches directly - a wrong default here fails
    `cargo test`, no conceptual judgment required.
-5. **Every `CheckpointTrigger` variant is listed explicitly under `Ignored`, not covered by a `_`
-   wildcard (scored, conceptual).** `TimeElapsed` and `ToolCallCount` both resolve to `Continue`
-   today - the same outcome, reached by two separate, explicit arms rather than one wildcard arm.
-   That's deliberate, not padding: see "Why this is hard" below for what a wildcard arm actually
-   costs here, and why `clippy::pedantic` will try to talk you out of it.
+5. **Adding a fourth `CheckpointTrigger` variant tomorrow, without touching `next_action`'s
+   `Ignored` arm at all, would fail to compile - not silently fall through to whatever a wildcard
+   currently resolves to (scored, conceptual).** See "Why this is hard" below for what actually
+   determines whether this is true of your implementation, and why `clippy::pedantic` will try to
+   talk you out of the shape that makes it true.
 
 **Before trusting a green `cargo test` and a clean `cargo clippy` as proof you're done:** they are
 not the same claim as "this modeling will still be correct after the next change." A solution that
@@ -80,16 +80,15 @@ order/refund-status example too (`runs/2026-07-05-module-03-dry-run/takeaway-val
 ## Required to advance / stop condition
 
 Produce an implementation of `next_action` that passes `cargo test` and `cargo clippy -- -D
-warnings`, touches only `fixtures/relay/src/lib.rs`, and lists every `CheckpointTrigger` variant
-explicitly under the `Ignored` arm rather than folding any of them into a `_` wildcard. Reading this
-page does not count: you advance on a working implementation Coachgremlin has actually reviewed
-against the rubric above, not on having read it.
+warnings`, touches only `fixtures/relay/src/lib.rs`, and would fail to compile - not silently
+continue working - if a fourth `CheckpointTrigger` variant were added tomorrow without anyone
+revisiting this match. Reading this page does not count: you advance on a working implementation
+Coachgremlin has actually reviewed against the rubric above, not on having read it.
 
-**Valid alternate terminal:** if your first working solution does use a `_` wildcard somewhere in
-this match, that's not a failure, it's the actual exercise. Go back to the diff and ask: if a new
-`CheckpointTrigger` variant were added to this enum tomorrow, would this arm silently swallow it, or
-would the compiler force someone to decide what it should do? If the former, replace the wildcard
-with the variants it was actually standing in for.
+**Valid alternate terminal:** if your first working solution wouldn't actually fail to compile
+under that test, that's not a failure, it's the actual exercise. Go back to the diff and find the
+arm that's doing double duty for more than one variant, and ask: would the compiler force someone
+to decide what it should do for a new variant, or would it silently inherit today's answer?
 
 ## Where it sits in the arc
 
@@ -171,6 +170,16 @@ error the moment a fourth `CheckpointTrigger` variant shows up anywhere in the c
 whoever adds it to decide what `Ignored` should do for it instead of inheriting `Continue` by default.
 The skill this module teaches isn't "never use `_`," it's "reach for `_` only when the cases really
 are interchangeable forever, not just for however many variants happen to exist right now."
+
+**One honest question before you move on, not scored, not gated:** if you handed this exercise's
+prompt to your own coding agent with no attempt of your own first, it would very likely have
+written all three arms out explicitly in one shot - exhaustive matching isn't a hard problem for a
+model that already knows Rust. That's not cheating; the deterministic gate doesn't care how the
+diff got written. But if that's what happened here, what did *you* just learn, versus what did
+your agent just demonstrate? There's no rubric line for that question on purpose - it's yours to
+answer honestly, not Coachgremlin's to grade. (See
+`.claude/skills/agentic-learning-discipline/SKILL.md` if you want a concrete way to check your own
+answer before moving to Module 04.)
 
 ## Harness
 

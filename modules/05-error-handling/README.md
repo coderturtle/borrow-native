@@ -97,18 +97,19 @@ config file, and writing a handoff summary to disk.
 5. **Failure propagates via `Result`/`?`, never `.unwrap()`/`.expect()`/`panic!()` on a recoverable
    error (gate, deterministic-adjacent).** A panicking implementation fails test case 8
    (`io_failure_comes_back_as_err_not_a_panic`) directly.
-6. **`HandoffError::Io` preserves the real underlying error rather than discarding its structure into
-   a `String` the instant it's caught (scored, conceptual).** The shipped stub's `Io(String)` shape,
-   built via `.to_string()`, passes every test above identically to a version that wraps the real
-   `std::io::Error` and exposes it through `source()` - see "Why this is hard" below for what
-   changing it actually buys you, and why almost no clippy lint at any level catches the difference.
-7. **Fallible steps are propagated with `?`, not hand-rolled `match`/`return Err` boilerplate that
-   adds no behavior (scored, conceptual - partially checked by clippy).** A `match { Ok(v) => v,
-   Err(e) => return Err(e) }` in place of `?` on a **same-type** `Result` *is* caught by default
-   `cargo clippy -- -D warnings` (`clippy::question_mark`) - but the same manual-match shape on an
-   `Option` (`Some(v) => v, None => return Err(..)`), or on a `Result` whose `Err` arm *converts* the
-   error type, is not. Don't assume a green `cargo clippy -D warnings` means every fallible step uses
-   `?` - it only guarantees the same-type-passthrough cases do.
+6. **Something downstream of `write_handoff_summary` can distinguish *which* kind of I/O failure
+   occurred (e.g. match on `std::io::ErrorKind`) without re-parsing a message string (scored,
+   conceptual).** The shipped stub's `Io(String)` shape passes every test above without this
+   property holding at all - see "Why this is hard" below for what actually determines whether your
+   implementation has it, and why almost no clippy lint at any level catches the difference.
+7. **No `match` expression in your implementation exists solely to pass a `Result`/`Option`'s
+   existing variant back to the caller unchanged (scored, conceptual - partially checked by
+   clippy).** A `match { Ok(v) => v, Err(e) => return Err(e) }` that adds no behavior beyond what
+   `?` already does *is* caught by default `cargo clippy -- -D warnings` (`clippy::question_mark`)
+   when it's a **same-type** `Result` - but the same shape on an `Option` (`Some(v) => v, None =>
+   return Err(..)`), or on a `Result` whose `Err` arm *converts* the error type, is not. Don't assume
+   a green `cargo clippy -D warnings` means no such match exists anywhere - it only guarantees the
+   same-type-passthrough cases are gone.
 
 **Before trusting a green `cargo test` and a clean `cargo clippy` as proof you're done:** they prove
 today's behavior is correct, never that `HandoffError`'s shape is one that preserves what a caller
@@ -123,10 +124,10 @@ itself, checked and confirmed rather than assumed to be as invisible as Module 0
 
 Produce implementations of `parse_config` and `write_handoff_summary` that pass `cargo test` and
 `cargo clippy -- -D warnings`, touch only `fixtures/relay/src/lib.rs`, propagate every failure via
-`Result`/`?` rather than panicking, and give `HandoffError::Io` a shape that preserves the real
-underlying `std::io::Error` (via `#[from]`, exposed through `source()`) rather than discarding it
-into a `String` at the point it's caught. Reading this page does not count: you advance on a working
-implementation Coachgremlin has actually reviewed against the rubric above, not on having read it.
+`Result`/`?` rather than panicking, and give `HandoffError::Io` a shape that lets something
+downstream distinguish which kind of I/O failure occurred without re-parsing a message string.
+Reading this page does not count: you advance on a working implementation Coachgremlin has
+actually reviewed against the rubric above, not on having read it.
 
 **Valid alternate terminal:** if your first working solution does convert the I/O error to a
 `String` the moment `write_handoff_summary` catches it (`Err(e) => Err(HandoffError::Io(e.to_string()))`),
@@ -236,6 +237,16 @@ nothing forces the question" the actual reason this is hard, not "the correct an
 effort." The skill this module teaches isn't "never convert an error to a string," it's "convert to
 a string only at the point something actually displays it to a human, not at the point you catch
 it" - true regardless of which mechanism (manual `impl` or `thiserror`) is available to express it.
+
+**One honest question before you move on, not scored, not gated:** if you handed this exercise's
+prompt to your own coding agent with no attempt of your own first, it would very likely have
+reached for `#[from]` in one shot - preserving a wrapped error isn't a hard problem for a model
+that already knows `thiserror`. That's not cheating; the deterministic gate doesn't care how the
+diff got written. But if that's what happened here, what did *you* just learn, versus what did
+your agent just demonstrate? There's no rubric line for that question on purpose - it's yours to
+answer honestly, not Coachgremlin's to grade. (See
+`.claude/skills/agentic-learning-discipline/SKILL.md` if you want a concrete way to check your own
+answer before moving to Module 06.)
 
 ## Harness
 

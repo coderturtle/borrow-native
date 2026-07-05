@@ -90,17 +90,16 @@ through any of three real channels, generically.
 5. **`alert_checkpoint` is generic over `N: Notifier` (scored, structural).** Not `&dyn Notifier`,
    not a hardcoded concrete `Notifier` type - checked by reading the signature, not by `cargo test`,
    since a `&dyn Notifier` version would compile and pass every test in this suite identically.
-6. **`CheckpointAlert.session_label` borrows `session` with an explicit lifetime, rather than owning
-   a clone of it (scored, conceptual).** The shipped stub's owned-`String` shape passes every test
-   above identically to a borrowed `&'a str` shape - see "Why this is hard" below for what changing
-   it actually buys you, and why no clippy lint at any level catches the difference.
-7. **If a lifetime parameter is added, it's scoped to only the reference actually borrowed into the
-   output - not unified across every reference parameter defensively (scored, conceptual).** A
-   signature like `fn alert_checkpoint<'a, N: Notifier>(notifier: &'a N, session: &'a Session,
-   trigger: &'a CheckpointTrigger) -> CheckpointAlert<'a>` compiles and passes every test above
-   identically to one that ties `'a` only to `session` - checked directly
-   (`runs/2026-07-05-module-04-dry-run/grading.md`'s over-annotation check) - but over-constrains a
-   caller whose three arguments don't happen to share a lifetime already.
+6. **It is a compile error, not merely unlikely, for a `CheckpointAlert` to be used after the
+   `Session` it describes has been dropped (scored, conceptual).** The shipped stub's owned-`String`
+   shape passes every test above without this property holding at all - see "Why this is hard"
+   below for what actually determines whether your implementation has it, and why no clippy lint at
+   any level catches the difference.
+7. **A caller may pass `notifier` and `trigger` with a strictly shorter lifetime than `session`, and
+   `alert_checkpoint` still compiles (scored, conceptual).** Checked directly
+   (`runs/2026-07-05-module-04-dry-run/grading.md`'s over-annotation check): a signature that
+   doesn't have this property compiles and passes every test above identically to one that does -
+   but over-constrains a caller whose three arguments don't happen to share a lifetime already.
 
 **Before trusting a green `cargo test` and a clean `cargo clippy` as proof you're done:** they prove
 today's behavior is correct, never that `CheckpointAlert`'s shape is the one a reviewer would want.
@@ -113,17 +112,17 @@ their own.
 ## Required to advance / stop condition
 
 Produce an implementation of `alert_checkpoint` that passes `cargo test` and `cargo clippy -- -D
-warnings`, touches only `fixtures/relay/src/lib.rs`, stays generic over `N: Notifier`, and gives
-`CheckpointAlert.session_label` an explicit lifetime borrowing from `session` rather than an owned
-clone. Reading this page does not count: you advance on a working implementation Coachgremlin has
-actually reviewed against the rubric above, not on having read it.
+warnings`, touches only `fixtures/relay/src/lib.rs`, stays generic over `N: Notifier`, and makes it
+a compile error for a `CheckpointAlert` to outlive the `Session` it describes. Reading this page
+does not count: you advance on a working implementation Coachgremlin has actually reviewed against
+the rubric above, not on having read it.
 
-**Valid alternate terminal:** if your first working solution does clone `session.label` into an
-owned `String` to sidestep the lifetime question, that's not a failure, it's the actual exercise. Go
-back to the diff and ask: does `session_label` need to outlive `session` itself anywhere a caller
-would actually use this? If not - and in this exercise, it doesn't - replace the clone with a
-borrow, add the lifetime parameter the compiler will now ask for, and connect it to `session` alone,
-not to every reference parameter in the signature.
+**Valid alternate terminal:** if your first working solution does duplicate `session.label` into an
+owned `String` to sidestep the question, that's not a failure, it's the actual exercise. Go back to
+the diff and ask: does `session_label` need to outlive `session` itself anywhere a caller would
+actually use this? If not - and in this exercise, it doesn't - replace the copy with a borrow, add
+the lifetime parameter the compiler will now ask for, and connect it to `session` alone, not to
+every reference parameter in the signature.
 
 ## Where it sits in the arc
 
@@ -212,6 +211,16 @@ outlives the `Session` it borrowed from, catching a class of bug the cloned vers
 express as an error. The skill this module teaches isn't "never clone a reference," it's "clone only
 when the value genuinely needs to outlive its source, not whenever facing a lifetime you haven't
 worked out yet."
+
+**One honest question before you move on, not scored, not gated:** if you handed this exercise's
+prompt to your own coding agent with no attempt of your own first, it would very likely have
+produced the correctly-scoped `<'a>` in one shot, no clone anywhere in sight - this isn't a hard
+problem for a model that already knows Rust. That's not cheating; the deterministic gate doesn't
+care how the diff got written. But if that's what happened here, what did *you* just learn, versus
+what did your agent just demonstrate? There's no rubric line for that question on purpose - it's
+yours to answer honestly, not Coachgremlin's to grade. (See
+`.claude/skills/agentic-learning-discipline/SKILL.md` if you want a concrete way to check your own
+answer before moving to Module 05.)
 
 ## Optional graded extension: Iterators & Closures
 

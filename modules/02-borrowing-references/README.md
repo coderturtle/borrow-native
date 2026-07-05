@@ -27,18 +27,17 @@ build-out table). Module 02 adds session statistics computed by *borrowing* the 
 1. **`cargo test` green (gate, deterministic).** All 6 provided tests pass.
 2. **`cargo clippy -- -D warnings` clean (gate, deterministic).** Zero output.
 3. **Diff touches only `fixtures/relay/src/lib.rs`, not the test file (gate, anti-gaming).**
-4. **`session` is read through the borrow, not copied into an owned local first (scored,
-   conceptual).** `session: &Session` arrives borrowed; every field you need to read
-   (`session.checkpoints`, and each checkpoint's `elapsed_secs`/`goal`) is reachable directly
-   through that reference. Building an owned `Vec<CheckpointRecord>` (or cloning the whole
-   `Session`) before working with the data is the habit this module targets.
-5. **Only the one necessary clone exists (scored, conceptual).** `SessionStats` (as currently
-   defined, before this workshop reaches lifetimes in Module 04) has no lifetime parameter, so
-   `longest_gap_goal: String` must be owned to leave the function - cloning *that one field, once*
-   is the correct move given that type shape, not a smell. Cloning anything else - or cloning that
-   same field once per checkpoint instead of once at the end - is the defensive-cloning habit, not
-   the fix. (A `SessionStats<'a> { longest_gap_goal: &'a str, .. }` would remove even this clone -
-   out of scope here, but worth noticing once you've met Module 04.)
+4. **No second, independent copy of `session.checkpoints` (or of `session` itself) exists anywhere
+   in your implementation before you finish reading it (scored, conceptual).** `session: &Session`
+   arrives borrowed; every field you need is reachable directly through that reference. Check
+   whether your implementation actually reads through it, or reads a rebuilt copy instead.
+5. **Exactly one allocation in your implementation is not already required by `SessionStats`'s own
+   return type (scored, conceptual).** `SessionStats` (as currently defined, before this workshop
+   reaches lifetimes in Module 04) has no lifetime parameter, so `longest_gap_goal: String` must be
+   owned to leave the function - one allocation here is unavoidable, not a smell. Count how many your
+   implementation actually performs, and where each one happens. (A `SessionStats<'a> {
+   longest_gap_goal: &'a str, .. }` would remove even this one - out of scope here, but worth
+   noticing once you've met Module 04.)
 
 **Before trusting a green `cargo test` and a clean `cargo clippy` as proof you're done:** they are
 not the same claim as "this solution demonstrates borrowing, not habit." A solution that clones the
@@ -53,14 +52,14 @@ criteria 1 and 2 provably can't catch this on their own.
 
 Produce an implementation of `session_stats` that passes `cargo test` and `cargo clippy -- -D
 warnings`, touches only `fixtures/relay/src/lib.rs`, reads `session` through the borrow rather than
-copying it, and contains exactly the one clone this type shape currently requires
-(`longest_gap_goal`). Reading this page does not count: you advance on a working implementation
-Coachgremlin has actually reviewed against the rubric above, not on having read it.
+a rebuilt copy, and performs exactly the one allocation this type shape currently requires.
+Reading this page does not count: you advance on a working implementation Coachgremlin has
+actually reviewed against the rubric above, not on having read it.
 
-**Valid alternate terminal:** if your first working solution does clone the whole collection
+**Valid alternate terminal:** if your first working solution does duplicate the whole collection
 somewhere, that's not a failure, it's the actual exercise. Go back to the diff and ask: does the
-value I cloned need to outlive this borrow, or was I just cloning to feel safer about reading
-through a reference? If the latter, delete the clone and read `session.checkpoints` directly.
+value I duplicated need to outlive this borrow, or was I just building a copy to feel safer about
+reading through a reference? If the latter, delete it and read `session.checkpoints` directly.
 
 ## Where it sits in the arc
 
@@ -121,6 +120,16 @@ once, at the point where an owned value genuinely needs to escape the borrow
 (`longest_gap_goal`). The skill this module teaches isn't "never clone under a borrow," it's "clone
 only the specific piece that must outlive the borrow, not the whole structure as a first
 step."
+
+**One honest question before you move on, not scored, not gated:** if you handed this exercise's
+prompt to your own coding agent with no attempt of your own first, it would very likely have read
+`session.checkpoints` directly in one shot - borrowing correctly isn't a hard problem for a model
+that already knows Rust. That's not cheating; the deterministic gate doesn't care how the diff got
+written. But if that's what happened here, what did *you* just learn, versus what did your agent
+just demonstrate? There's no rubric line for that question on purpose - it's yours to answer
+honestly, not Coachgremlin's to grade. (See
+`.claude/skills/agentic-learning-discipline/SKILL.md` if you want a concrete way to check your own
+answer before moving to Module 03.)
 
 ## Harness
 
