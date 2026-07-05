@@ -17,3 +17,4 @@
 | 2026-07-05 | Designed the full module-to-feature mapping for relay (Modules 01-08) | Rust's additive concept arc maps to one growing project, not five lenses on one static fixture (terminal-velocity's shape). |
 | 2026-07-05 | coderturtle reviewed and confirmed both Module 01 dry runs | Both runs flipped to human_confirmed: true. |
 | 2026-07-05 | Added a scoped ARB trigger for relay's shared files, plus a Coachgremlin workflow step | ARB is a mechanical governance.yaml file-pattern trigger, not a persona panel; catches a later module silently breaking an earlier module's shipped gate. |
+| 2026-07-05 | Confirmed Coachgremlin lacked the persona panel too; added a batch-review cadence (every 2-3 modules) | ARB catches structural regression, the panel catches content quality; neither substitutes for the other. First batch due after Module 02. |
