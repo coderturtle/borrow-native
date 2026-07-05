@@ -258,3 +258,31 @@ Pending — see next commit's mirror sync.
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 04 dry run confirmed; scoped the Certification Alignment Retrofit phase
+
+### What happened
+
+- **coderturtle reviewed and confirmed Module 04's dry run (go)** - `runs/run-20260705-RW-005.yaml` flipped to `human_confirmed: true`; `.hekton/change-log.yaml`'s CHG-0004 (Module 04 authoring) and CHG-0005 (Modules 03+04 Review Panel batch) approvals flipped to `approved`. Committed.
+- **Scoped a deferred Certification Alignment Retrofit phase**, at coderturtle's direction, ahead of authoring Module 05: map each module to the real Ardan Labs exam's structure, and give a learner's harness an interactive way to verify and tick off progress - but not built now, since the only Ardan topic information available today is a four-category marketing-page list, not the exam's actual structure. Added a full-reasoning section to `docs/workshop-design.md`, expanded `docs/next-actions.md`'s existing "sit the exam" item into an explicit two-step phase (Step 1: sit the exam, record a retrospective - topic coverage/confidence, format notes, explicitly not verbatim exam content; Step 2: once that retrospective exists and all 8 modules + capstone are authored, build the real mapping and tracker), and logged the decision in `docs/decisions.md`.
+- Created two skeleton files, decided shape but no real content, mirroring the same idiom Modules 05-08 already use for themselves: `docs/certification-mapping.md` (the mapping doc, with today's four placeholder categories explicitly marked pre-exam/unverified) and `.claude/skills/certification-tracker/SKILL.md` (decided mechanism: re-run a module's own deterministic gate before ticking off its mapped topics in a learner-local progress file, never a self-reported checkbox). Added `.cert-progress.local.yaml` to `.gitignore`.
+
+### Decisions Made
+
+- See `docs/decisions.md`'s newest row for the full reasoning.
+
+### Risks
+
+- None new - this session added no real content claims, only a scoped, honestly-labeled skeleton for a phase gated on real future evidence (the exam retrospective).
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: author Module 05 (Error Handling) with the same dry-run discipline. The certification retrofit phase's Step 1 (sitting the exam) can happen independently, whenever scheduled - it isn't blocking Module 05.
+
+### Validation Status
+
+- No code changed this session (docs/skeletons only); `fixtures/relay`'s state is unchanged from the prior session's confirmed-clean build.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.

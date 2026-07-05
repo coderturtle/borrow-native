@@ -16,6 +16,25 @@ This gives Borrow Native a genuine, falsifiable external claim `terminal-velocit
 
 Checking this arc against Ardan's published topic list is what caught the one real gap in the original 6-module design: **async programming** wasn't covered at all. Module 07 (Async Programming) exists specifically because of this check, not because async was independently identified as important during the original curriculum-anchor research. Worth naming honestly: the original research anchored to the Book/Rustlings/Exercism and still missed something a real external exam's topic list caught in one pass — a concrete argument for external validation as a check on curriculum-anchor research, not a redundant step layered on top of it.
 
+### Certification Alignment Retrofit (deferred phase, scoped 2026-07-05)
+
+**The idea, and why it's a phase, not a feature built now:** map each module to what the Ardan exam actually tests, and give a learner's own harness a way to interactively tick off cert-relevant progress as they complete modules — not a passive checklist, in keeping with this workshop's hands-on-by-design principle. Scoped at coderturtle's direction, deliberately **not built yet**: the only Ardan topic information available today is the four-category marketing-page list already quoted above (memory safety, type systems, async, testing/debugging). A module-by-module mapping built from four marketing categories would be precision this workshop can't back up — exactly the kind of claim its own Skeptical Critic Review Panel persona exists to catch. This phase exists so the feature has a real input before it's authored, not a plausible-looking guess.
+
+**Trigger:** both of the following, whichever completes second -
+1. All 8 modules + the synthesis capstone are authored (not skeletons).
+2. coderturtle has sat the real Ardan exam and recorded a post-exam retrospective.
+
+The exam-sitting itself (already an existing commitment, see above) is not gated on this phase or on all 8 modules existing - it can happen as soon as it's scheduled. The *retrofit* - building the actual mapping - needs both: a real retrospective to map *from*, and a complete arc to map *onto*.
+
+**What the retrospective captures (and what it deliberately doesn't):** per-topic-category confidence and coverage notes (which felt well-prepared-for by a specific module, which felt thin or surprising, any topic tested that this arc doesn't cover at all), plus format observations (time pressure, question style, difficulty balance) - recorded regardless of pass/fail, per the existing dogfooding commitment above. **Not** verbatim questions or answer content: Ardan's exam is a real proctored, paid credential, and reproducing its actual questions here would be a confidentiality problem independent of anything about this workshop's own honesty standards. The retrospective is Coachgremlin/coderturtle's own experience of the exam, not a transcript of it.
+
+**What the retrofit phase produces, once triggered:**
+- `docs/certification-mapping.md`, authored for real from the retrospective (see skeleton at that path now - decided shape, no real content yet, same idiom Modules 05-08 use for themselves).
+- `.claude/skills/certification-tracker/SKILL.md`, an interactive tracker a learner's harness invokes per module: it re-runs that module's own deterministic gate (`cargo test`/`cargo clippy`) to confirm genuine completion - not a self-reported checkbox - then ticks off the cert topics that module maps to in a learner-local progress file (not committed; each learner's own copy). See the skeleton at that path for the decided mechanism.
+- A short "Certification alignment" cross-reference added to each of the 8 module READMEs, pointing at the new mapping doc. A real, if small, edit to every module page - worth a scoped Review Panel re-run afterward (a few relevant personas, not the full seven, per the panel's own guidance on re-running selectively for a small change) rather than skipped as "just a link."
+
+**Governed like any other real content addition:** an ADR in `docs/decisions.md` when the retrofit actually happens, a `runs/` entry, and `human_confirmed` sign-off before the mapping is treated as more than a draft - the same discipline every module's dry run already follows, since this is a real, learner-facing claim about exam alignment, not internal tooling.
+
 ## Audience
 
 Agent-literate practitioners: comfortable with git, the CLI, reading a diff, and driving a coding agent daily — but **new to Rust specifically**. Not a true-beginner programming workshop (general programming fluency is assumed) and not an intro-to-agents workshop (harness fluency is assumed) — the one thing assumed unfamiliar is Rust's own model: ownership, borrowing, the trait system, and what the compiler is actually telling you.
