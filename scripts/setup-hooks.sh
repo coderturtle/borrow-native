@@ -2,7 +2,11 @@
 # setup-hooks.sh: Install git hooks for this project.
 #
 # Installs a pre-push hook that warns when the repo-local mind-palace mirror has
-# drifted from repo docs. Run once after cloning or after scaffolding.
+# drifted from repo docs, or when published content violates docs/brand.md's
+# hard rules (em dashes, banned phrases). Run once after cloning or after
+# scaffolding. Both checks are verification loops (see modules/README.md's
+# gate-tier vocabulary): bounded scope, a fixed pass/fail condition,
+# human-readable output.
 #
 # Usage: scripts/setup-hooks.sh [--force]
 set -uo pipefail
@@ -25,7 +29,8 @@ fi
 
 cat > "$DEST" <<'HOOK'
 #!/usr/bin/env bash
-# pre-push: warn if the mind-palace mirror has drifted from repo docs.
+# pre-push: warn if the mind-palace mirror has drifted, or published content
+# violates docs/brand.md's hard rules. Both warn-only; push proceeds either way.
 set -uo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 if [[ -x "$ROOT/scripts/check-mirror-drift.sh" ]]; then
@@ -36,7 +41,15 @@ if [[ -x "$ROOT/scripts/check-mirror-drift.sh" ]]; then
     echo ''
   fi
 fi
+if [[ -x "$ROOT/scripts/check-brand-lint.sh" ]]; then
+  if ! "$ROOT/scripts/check-brand-lint.sh" --check; then
+    echo ''
+    echo 'WARN: published content violates docs/brand.md hard rules.'
+    echo 'Warning only; push proceeds. Fix with: scripts/check-brand-lint.sh'
+    echo ''
+  fi
+fi
 HOOK
 
 chmod +x "$DEST"
-echo "Installed pre-push mirror drift check in $HOOKS_DIR"
+echo "Installed pre-push mirror-drift + brand-lint checks in $HOOKS_DIR"
