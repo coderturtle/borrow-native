@@ -1,4 +1,4 @@
-# Module 07: Synthesis Capstone
+# Module 08: Synthesis Capstone
 
 ## The question this module answers
 
@@ -6,7 +6,7 @@ Given a broken or non-idiomatic Rust program, which concept is actually the root
 
 ## Where it sits in the arc
 
-Seventh and final module. Prerequisite: all six core modules - this capstone only makes sense once ownership, borrowing, structs/enums, generics/traits/lifetimes, error handling, and concurrency are each individually fluent; diagnosing which one is the actual bottleneck requires being able to rule the others out. No next module. See [`modules/README.md`](../README.md) for the full arc and why this order.
+Eighth and final module. Prerequisite: all seven core modules - this capstone only makes sense once ownership, borrowing, structs/enums, generics/traits/lifetimes, error handling, concurrency, and async are each individually fluent; diagnosing which one is the actual bottleneck requires being able to rule the others out. No next module. See [`modules/README.md`](../README.md) for the full arc and why this order.
 
 ## Learning objectives (placeholder - finalized when content is authored)
 
@@ -16,7 +16,7 @@ Seventh and final module. Prerequisite: all six core modules - this capstone onl
 
 ## Exercise material to draw from (not a spec - Coachgremlin authors the real exercise later)
 
-A small, multi-file, deliberately broken or non-idiomatic Rust program spanning 3+ arc concepts - mirrors `terminal-velocity`'s own capstone format (diagnose the bottleneck, fix it, defend the diagnosis in writing). Not yet built; Coachgremlin's content-building pass should decide how many of the six core concepts the shipped fixture actually covers, honestly, the way `terminal-velocity`'s own capstone shipped 2 of 4 layers as required and documented the other 2 as negative controls rather than silently pretending full coverage.
+A small, multi-file, deliberately broken or non-idiomatic Rust program spanning 3+ arc concepts - mirrors `terminal-velocity`'s own capstone format (diagnose the bottleneck, fix it, defend the diagnosis in writing). Not yet built; Coachgremlin's content-building pass should decide how many of the seven core concepts the shipped fixture actually covers, honestly, the way `terminal-velocity`'s own capstone shipped 2 of 4 layers as required and documented the other 2 as negative controls rather than silently pretending full coverage.
 
 ## Required gate (added 2026-07-05 during this workshop's own design review - the initial draft left this undefined, a Review Panel finding)
 

@@ -6,7 +6,7 @@ How does the compiler let me share state across threads safely, and when should 
 
 ## Where it sits in the arc
 
-Sixth module - last of the core arc before the capstone. Prerequisite: [Module 01](../01-ownership-move-semantics/README.md) and [Module 02](../02-borrowing-references/README.md) - "fearless" concurrency is a direct payoff of ownership and borrowing, not a new set of rules; `Send`/`Sync` are taught directly within this module, not derived from Module 04's generics/traits machinery (an earlier draft of this arc overstated that dependency - corrected during this workshop's own design review). Next: [Module 07, Synthesis capstone](../07-synthesis-capstone/README.md). See [`modules/README.md`](../README.md) for the full arc and why this order.
+Sixth module - last of the core arc before the capstone. Prerequisite: [Module 01](../01-ownership-move-semantics/README.md) and [Module 02](../02-borrowing-references/README.md) - "fearless" concurrency is a direct payoff of ownership and borrowing, not a new set of rules; `Send`/`Sync` are taught directly within this module, not derived from Module 04's generics/traits machinery (an earlier draft of this arc overstated that dependency - corrected during this workshop's own design review). Next: [Module 07, Async Programming](../07-async-programming/README.md) - the hinge is that async solves a variant of the same "run many things at once" problem as threads, and the two are easiest to tell apart once you've done one of them for real. See [`modules/README.md`](../README.md) for the full arc and why this order.
 
 ## Learning objectives (placeholder - finalized when content is authored)
 
