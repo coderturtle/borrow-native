@@ -218,3 +218,24 @@ agent_runs:
       - "None new - this session corrected one already-recorded secondary claim (a lint signal that no longer applies post-migration) rather than introducing a new one."
     next_actions:
       - "Author Module 06 (Fearless Concurrency) next, same dry-run discipline."
+
+  - id: RUN-0008
+    date: 2026-07-05
+    agent: "Claude Sonnet 5"
+    role: "Coachgremlin (content authoring + workshop-wide rubric decision)"
+    intent: "Module 05 authored + thiserror migration + rubric-spoiler tension decided — Authored Module 05 (parse_config/write_handoff_summary, custom error types), authorized and migrated to thiserror, then decided the rubric-spoiler tension: adopted property-phrased rubric criteria plus a workshop-wide reflective closing beat and agentic-learning-discipline Skill across Modules 01-05."
+    autonomy_level: 3
+    approvals:
+      required: false
+      status: not_required
+    files_touched:
+      - "docs/next-actions.md"
+      - "docs/session-log.md"
+      - "docs/gremlin-radar.md"
+    validation:
+      - "not recorded"
+    risks:
+      - "Property-phrased criteria are a first attempt at this shape across 5 already-shipped modules, not yet independently reviewed - flagged for the next Workshop Review Panel batch."
+    next_actions:
+      - "Author Module 06 with the new rubric pattern"
+      - "Get the third Review Panel batch's read on the new phrasing once due"

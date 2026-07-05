@@ -51,3 +51,8 @@
 - [ ] Register this workshop and its Workshop-Gremlin/Coachgremlin augmentation in the mind-palace Gremlin Registry once vault mutation is explicitly authorised for that purpose
 - [ ] Decide whether a custom domain (matching `terminal-velocity.coderturtle.io`'s pattern) is wanted for this workshop too, once it has real content to point a domain at
 - [ ] A third, differently-shaped-again workshop is still needed before the Workshop Gremlin, the Review Panel, or Coachgremlin's two-tier grading extension can claim v1 stability (see `~/hekton/gremlins/workshop/workshop-gremlin.md`)
+
+## Session Update: 2026-07-05 — Module 05 authored + thiserror migration + rubric-spoiler tension decided
+
+- [ ] Author Module 06 with the new rubric pattern
+- [ ] Get the third Review Panel batch's read on the new phrasing once due

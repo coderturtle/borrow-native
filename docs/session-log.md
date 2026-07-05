@@ -417,3 +417,29 @@ Yes — repo-local `mind-palace/20-projects/factory-output/borrow-native/{decisi
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+---
+
+## Session: Module 05 authored + thiserror migration + rubric-spoiler tension decided
+
+**Date:** 2026-07-05 21:06
+
+### What Changed
+
+Authored Module 05 (parse_config/write_handoff_summary, custom error types), authorized and migrated to thiserror, then decided the rubric-spoiler tension: adopted property-phrased rubric criteria plus a workshop-wide reflective closing beat and agentic-learning-discipline Skill across Modules 01-05.
+
+### Decisions
+
+Adopted Candidate A (property-phrased criteria) over B/C/D; full reasoning in docs/rubric-spoiler-research.md's Decision section. Explicitly does not claim the agentic-short-circuit problem is fully solved.
+
+### Assumptions
+
+*(none)*
+
+### Risks
+
+Property-phrased criteria are a first attempt at this shape across 5 already-shipped modules, not yet independently reviewed - flagged for the next Workshop Review Panel batch.
+
+### Next Actions
+
+- [ ] Author Module 06 with the new rubric pattern
+- [ ] Get the third Review Panel batch's read on the new phrasing once due

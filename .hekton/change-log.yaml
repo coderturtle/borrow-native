@@ -149,3 +149,18 @@ changes:
       - "docs/decisions.md"
       - "docs/session-log.md"
       - "CLAUDE.md"
+
+  - id: CHG-0008
+    date: 2026-07-05
+    title: "Rubric-spoiler tension decided: property-phrased criteria + agentic-learning-discipline Skill adopted across Modules 01-05"
+    intent: "Authored Module 05 (parse_config/write_handoff_summary, custom error types), authorized and migrated to thiserror, then decided the rubric-spoiler tension: adopted property-phrased rubric criteria plus a workshop-wide reflective closing beat and agentic-learning-discipline Skill across Modules 01-05."
+    changed_by: "Claude Sonnet 5"
+    change_type: feature
+    risk_level: medium
+    validation:
+      - "not recorded"
+    approvals:
+      required: false
+      status: not_required
+    links:
+      - "docs/session-log.md"
