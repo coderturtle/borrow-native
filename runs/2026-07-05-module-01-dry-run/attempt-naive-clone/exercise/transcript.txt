@@ -1,0 +1,31 @@
+=== cargo test ===
+   Compiling module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running unittests src/lib.rs (target/debug/deps/ledger-f651645db1e4c5ee)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/merge_customer_totals.rs (target/debug/deps/merge_customer_totals-84314b8d1d045510)
+
+running 6 tests
+test empty_input_produces_empty_map ... ok
+test customer_names_are_case_sensitive ... ok
+test multiple_distinct_customers_do_not_leak_totals ... ok
+test duplicate_customer_same_case_sums ... ok
+test single_order_produces_one_entry ... ok
+test zero_cent_order_still_creates_entry ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+=== cargo clippy -- -D warnings ===
+    Checking module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s

@@ -1,0 +1,28 @@
+=== cargo clippy -- -W clippy::pedantic -D warnings (NOT part of this module's stated gate; run to check whether a stricter lint level catches the over-cloning) ===
+    Checking module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise)
+error: this function could have a `#[must_use]` attribute
+  --> src/lib.rs:16:8
+   |
+16 | pub fn merge_customer_totals(orders: Vec<Order>) -> HashMap<String, u64> {
+   |        ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#must_use_candidate
+   = note: `-D clippy::must-use-candidate` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::must_use_candidate)]`
+help: add the attribute
+   |
+16 + #[must_use]
+17 | pub fn merge_customer_totals(orders: Vec<Order>) -> HashMap<String, u64> {
+   |
+
+error: this argument is passed by value, but not consumed in the function body
+  --> src/lib.rs:16:38
+   |
+16 | pub fn merge_customer_totals(orders: Vec<Order>) -> HashMap<String, u64> {
+   |                                      ^^^^^^^^^^ help: consider changing the type to: `&[Order]`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#needless_pass_by_value
+   = note: `-D clippy::needless-pass-by-value` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::needless_pass_by_value)]`
+
+error: could not compile `module-01-ownership-move-semantics` (lib) due to 2 previous errors

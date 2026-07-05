@@ -1,0 +1,26 @@
+schema_version: "1"
+run_id: run-20260705-RW-001
+project: borrow-native
+task_id: coachgremlin-module-01-core-dry-run
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: false
+human_notes: >
+  Coachgremlin's first real run for this workshop (previously draft, no
+  Rust-context run behind it). Two constructed attempts against the same
+  exercise (merge_customer_totals): a correct move-based one and a
+  deliberately naive, honest (non-adversarial) clone-heavy one. Finding:
+  both pass cargo test and default cargo clippy identically; only
+  Coachgremlin's conceptual tier distinguishes them. See
+  runs/2026-07-05-module-01-dry-run/retro.md for the full go/no-go
+  reasoning. Recommendation is a go on authoring Modules 02-08 with the
+  same dry-run discipline. This run also fed a real, evidenced update
+  back into ~/hekton/gremlins/coaching/coachgremlin.md's Status/Version
+  and Review Trigger run count (2 of 3+ needed for v0, alongside
+  terminal-velocity's Module 04 dry run). Not yet reviewed by coderturtle;
+  human_confirmed stays false until that review happens, per Coachgremlin's
+  own Human Gate.
+output_artifact: runs/2026-07-05-module-01-dry-run/
+failure_reason: ""

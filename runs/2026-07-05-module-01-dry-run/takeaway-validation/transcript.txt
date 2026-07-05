@@ -1,0 +1,86 @@
+=== BEFORE (naive: borrow + clone) ===
+--- cargo test ---
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running unittests src/lib.rs (target/debug/deps/logs-6b0ca3771258490a)
+
+running 3 tests
+test tests::empty_input_returns_none ... ok
+test tests::returns_none_when_no_match ... ok
+test tests::finds_first_matching_line ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests logs
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- cargo clippy -- -D warnings ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+
+=== AFTER (checklist applied: by-value loop, clone removed) ===
+--- cargo test ---
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src/lib.rs (target/debug/deps/logs-6b0ca3771258490a)
+
+running 3 tests
+test tests::empty_input_returns_none ... ok
+test tests::finds_first_matching_line ... ok
+test tests::returns_none_when_no_match ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests logs
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- cargo clippy -- -D warnings ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+error: manual implementation of `Iterator::find`
+  --> src/lib.rs:7:5
+   |
+ 7 | /     for line in lines {
+ 8 | |         if line.starts_with(prefix) {
+ 9 | |             return Some(line);
+...  |
+12 | |     None
+   | |________^ help: replace with an iterator: `lines.into_iter().find(|line| line.starts_with(prefix))`
+   |
+   = note: you may need to dereference some variables
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_find
+   = note: `-D clippy::manual-find` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::manual_find)]`
+
+error: could not compile `takeaway-validation` (lib) due to 1 previous error
+
+=== AFTER-2 (clippy's own manual_find suggestion applied: into_iter().find()) ===
+--- cargo test ---
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/lib.rs (target/debug/deps/logs-6b0ca3771258490a)
+
+running 3 tests
+test tests::empty_input_returns_none ... ok
+test tests::finds_first_matching_line ... ok
+test tests::returns_none_when_no_match ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests logs
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- cargo clippy -- -D warnings ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s

@@ -1,0 +1,16 @@
+--- src/lib.rs.naive-backup	2026-07-05 13:16:14
++++ src/lib.rs	2026-07-05 13:16:49
+@@ -4,12 +4,7 @@
+ /// `lines` and clones the matching line to return it, even though `lines` is
+ /// owned outright and never used again after this loop.
+ pub fn first_matching_line(lines: Vec<String>, prefix: &str) -> Option<String> {
+-    for line in &lines {
+-        if line.starts_with(prefix) {
+-            return Some(line.clone());
+-        }
+-    }
+-    None
++    lines.into_iter().find(|line| line.starts_with(prefix))
+ }
+ 
+ #[cfg(test)]

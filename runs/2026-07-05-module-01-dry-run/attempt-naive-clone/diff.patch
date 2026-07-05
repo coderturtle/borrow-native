@@ -1,0 +1,13 @@
+--- modules/01-ownership-move-semantics/exercise/src/lib.rs	2026-07-05 13:10:06
++++ runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise/src/lib.rs	2026-07-05 13:11:05
+@@ -14,5 +14,9 @@
+ /// each other, case-sensitive customer names, and zero-cent orders still
+ /// producing an entry.
+ pub fn merge_customer_totals(orders: Vec<Order>) -> HashMap<String, u64> {
+-    todo!("implement per SPEC.md")
++    let mut totals: HashMap<String, u64> = HashMap::new();
++    for order in &orders {
++        *totals.entry(order.customer.clone()).or_insert(0) += order.total_cents;
++    }
++    totals
+ }

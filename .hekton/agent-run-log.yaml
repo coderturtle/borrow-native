@@ -25,3 +25,31 @@ agent_runs:
       - "Governance records need review during first material session."
     next_actions:
       - "Run governance preflight before implementation."
+
+  - id: RUN-0002
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Coachgremlin (first real dry run, Module 01)"
+    intent: "Build Module 01's real exercise, dry-run it (good + naive-honest attempts), grade against a rubric, package and validate a takeaway."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: pending
+    files_touched:
+      - "modules/01-ownership-move-semantics/README.md"
+      - "modules/01-ownership-move-semantics/exercise/"
+      - "runs/2026-07-05-module-01-dry-run/"
+      - "runs/run-20260705-RW-001.yaml"
+      - ".claude/skills/ownership-move-checklist/SKILL.md"
+      - "modules/README.md"
+      - "README.md"
+    validation:
+      - "cargo test: 6/6 pass (both attempts)"
+      - "cargo clippy -- -D warnings: clean (both attempts, identically)"
+      - "Takeaway validated against a second, unrelated ownership problem"
+    risks:
+      - "This dry run graded its own constructed attempts, not an independent learner's."
+      - "Not yet reviewed by coderturtle; human_confirmed: false in runs/run-20260705-RW-001.yaml."
+    next_actions:
+      - "coderturtle to review and confirm (or not) this run's recommendation."
+      - "Author Modules 02-08 with the same dry-run discipline."

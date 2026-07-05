@@ -8,7 +8,7 @@ Every module's core exercise is run through your own coding-agent harness (Claud
 
 **Hands-on by design, not passive text.** No module here completes by reading it. Every module states a required gate: an artifact you produce or an action you're observed doing, checked first mechanically, then conceptually. If a module ever reduces to "read this, then move on," that's a defect. Every gate also has a stated **takeaway**: you keep something reusable, not just proof you did the exercise.
 
-> **Content status: skeleton only.** Every module below is structure, not content - the question, arc position, gate shape, and takeaway shape are decided; the actual exercise, fixture, and rubric are Coachgremlin's job, run later, one module at a time, per the Workshop Gremlin's own Completion Condition (it stops before content exists). Don't expect a working exercise yet.
+> **Content status:** Module 01's core exercise is real, not a placeholder: authored, actually run (a correct attempt and a deliberately naive, honest one), with a real evidenced finding (the deterministic gate alone can't tell them apart). Evidence: `runs/2026-07-05-module-01-dry-run/`. Modules 02-08 are still skeleton only - question, arc position, gate shape, and takeaway shape decided; the actual exercise, fixture, and rubric are Coachgremlin's job, run later, one module at a time, per the Workshop Gremlin's own Completion Condition (it stops before content exists).
 
 ## The arc
 

@@ -12,8 +12,10 @@
 
 ## This Week
 
-- [ ] Coachgremlin content-building pass: author Module 01 (Ownership & Move Semantics) first, real exercise + fixture + rubric, matching `terminal-velocity`'s own first-module dry-run discipline
-- [ ] Re-run the Workshop Review Panel once real module content exists (design-doc-only findings can't check exercise design or grader trust)
+- [x] Coachgremlin content-building pass: author Module 01 (Ownership & Move Semantics), real exercise + fixture + rubric + dry run, matching `terminal-velocity`'s own first-module dry-run discipline. Real finding: default clippy can't distinguish a correct move-based solution from a naive clone-heavy one; only Coachgremlin's conceptual tier can. See `runs/2026-07-05-module-01-dry-run/`.
+- [ ] **coderturtle to review Module 01's dry run and confirm (or not) its recommendation** — `runs/run-20260705-RW-001.yaml` has `human_confirmed: false`, per Coachgremlin's Human Gate.
+- [ ] Author Module 02 (Borrowing & References) next, same dry-run discipline: construct at least one honest-naive (non-gaming) attempt per module to keep checking whether the conceptual tier is load-bearing there too, rather than assuming Module 01's finding generalizes.
+- [ ] Re-run the Workshop Review Panel once several modules have real content (design-doc-only findings can't check exercise design or grader trust)
 - [ ] Retrofit the capstone's now-defined gate (added this session) into a real fixture once Coachgremlin builds it
 
 ## Later

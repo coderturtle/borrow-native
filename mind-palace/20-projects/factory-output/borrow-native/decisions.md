@@ -11,3 +11,5 @@
 | 2026-07-05 | Corrected certification-companion target from the Rust Foundation to Ardan Labs | Rust Foundation accredits training providers, not learners; Ardan Labs has a real proctored exam individuals can sit. |
 | 2026-07-05 | Added Module 07 (Async Programming); capstone renumbered 07 to 08 | Checking the arc against Ardan's exam topics found the one gap the original curriculum research missed. |
 | 2026-07-05 | coderturtle committed to sitting the real Ardan exam once module content exists | This workshop's own dogfooding evidence; stated intent, not yet done. |
+| 2026-07-05 | Installed Rust toolchain via Homebrew; added install script wired into check-prereqs.sh | Needed to actually run Module 01's deterministic gate for a real dry run. |
+| 2026-07-05 | Built Module 01's real exercise and ran Coachgremlin's first real dry run | Finding: default clippy can't distinguish a correct move-based solution from a naive clone-heavy one; only Coachgremlin's conceptual tier can. Fed back into coachgremlin.md. |

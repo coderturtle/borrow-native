@@ -57,3 +57,37 @@ Full Workshop Gremlin pipeline run in one session, this Gremlin's second end-to-
 ### Mind-palace updated
 
 Yes — vault card renamed to match (`borrow-native`), repo-local mirror kept in sync (`check-mirror-drift.sh` clean).
+
+## 2026-07-05 - Certification-target correction, Async module, Coachgremlin's first real dry run
+
+### What happened
+
+- Corrected the certification-companion target from "the Rust Foundation certification" (doesn't exist for individuals — RFTT accredits training providers only) to Ardan Labs' real proctored exam, per research against six external links. Checking this arc against Ardan's topics found a gap: added Module 07 (Async Programming), capstone renumbered 07 → 08. coderturtle committed to personally sitting the real exam once module content exists.
+- Installed the Rust toolchain (`brew install rust`), added `scripts/install-rust-toolchain.sh` (scoped to this project, portable enough to promote to `~/hekton/bootstrap/` later), wired into `scripts/check-prereqs.sh`.
+- Built Module 01's real exercise (`merge_customer_totals`, a cargo crate under `modules/01-ownership-move-semantics/exercise/`) and ran Coachgremlin's first real dry run for this workshop: a correct move-based attempt and a deliberately naive, honest (non-adversarial) clone-heavy attempt.
+- **Load-bearing finding:** both attempts pass `cargo test` (6/6) and default `cargo clippy -- -D warnings` (zero output) identically. The deterministic gate cannot tell them apart; only Coachgremlin's conceptual tier does. Checked whether `clippy::pedantic` closes the gap: it flags the naive attempt, but via a different, more general lint (`needless_pass_by_value`), noisily, and isn't a default most real projects enable — kept this module's stated gate at default clippy. Full evidence: `runs/2026-07-05-module-01-dry-run/`.
+- Packaged the takeaway (`.claude/skills/ownership-move-checklist/SKILL.md`) and validated it against a second, unrelated ownership problem (an early-return `Option` pattern) before calling it done — including an honest, unplanned wrinkle (the move-based fix itself tripped a different, unrelated clippy lint, `manual_find`, fixed by applying clippy's own suggestion).
+- Fed this real evidence back into `~/hekton/gremlins/coaching/coachgremlin.md`: Status/Version updated, Review Trigger run count now 2 of the 3+ needed for v0 (alongside `terminal-velocity`'s Module 04 dry run — two different workshops, two different failure modes caught).
+- Rewrote Module 01's README from skeleton to real authored content; updated `modules/README.md` and the top-level README's content-status banners to reflect Module 01 is real, Modules 02-08 are still skeleton.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added.
+
+### Risks
+
+- This dry run graded its own constructed attempts, not an independent learner's — same limitation `terminal-velocity`'s own retro named for its Module 04 dry run.
+- `runs/run-20260705-RW-001.yaml` has `human_confirmed: false` — this run's recommendation (go on authoring Modules 02-08 the same way) has not yet been reviewed by coderturtle.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: coderturtle to review this dry run's recommendation; then author Modules 02-08 with the same dry-run discipline.
+
+### Validation Status
+
+- `cargo test` and `cargo clippy -- -D warnings`: run for real against both attempts and the takeaway-validation crate, transcripts captured, not narrated.
+- `scripts/check-brand-lint.sh` and `scripts/check-mirror-drift.sh`: clean.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.
