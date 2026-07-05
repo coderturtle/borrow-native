@@ -34,7 +34,7 @@ agent_runs:
     autonomy_level: 3
     approvals:
       required: true
-      status: pending
+      status: approved
     files_touched:
       - "modules/01-ownership-move-semantics/README.md"
       - "modules/01-ownership-move-semantics/exercise/"
@@ -49,7 +49,30 @@ agent_runs:
       - "Takeaway validated against a second, unrelated ownership problem"
     risks:
       - "This dry run graded its own constructed attempts, not an independent learner's."
-      - "Not yet reviewed by coderturtle; human_confirmed: false in runs/run-20260705-RW-001.yaml."
     next_actions:
-      - "coderturtle to review and confirm (or not) this run's recommendation."
       - "Author Modules 02-08 with the same dry-run discipline."
+
+  - id: RUN-0003
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Coachgremlin (relay pivot revalidation, Module 01)"
+    intent: "Migrate Module 01's exercise into the shared relay project's first feature, re-run the dry run to confirm nothing was lost."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: approved
+    files_touched:
+      - "fixtures/relay/"
+      - "modules/01-ownership-move-semantics/README.md"
+      - "modules/README.md"
+      - "docs/workshop-design.md"
+      - "runs/2026-07-05-module-01-relay-dry-run/"
+      - "runs/run-20260705-RW-002.yaml"
+    validation:
+      - "cargo test: 5/5 pass (both attempts, against relay's finalize_session)"
+      - "cargo clippy -- -D warnings: clean (both attempts, identically)"
+      - "Original finding reproduced exactly against the real project's own types"
+    risks:
+      - "Not counted as a new run toward Coachgremlin's 3-run bar (same lesson re-instantiated)."
+    next_actions:
+      - "Author Module 02's feature (session statistics) against fixtures/relay/."

@@ -6,7 +6,7 @@ task_type: session
 engine: claude-sonnet-5
 status: done
 created: 2026-07-05
-human_confirmed: false
+human_confirmed: true
 human_notes: >
   Coachgremlin's first real run for this workshop (previously draft, no
   Rust-context run behind it). Two constructed attempts against the same
@@ -19,8 +19,7 @@ human_notes: >
   same dry-run discipline. This run also fed a real, evidenced update
   back into ~/hekton/gremlins/coaching/coachgremlin.md's Status/Version
   and Review Trigger run count (2 of 3+ needed for v0, alongside
-  terminal-velocity's Module 04 dry run). Not yet reviewed by coderturtle;
-  human_confirmed stays false until that review happens, per Coachgremlin's
-  own Human Gate.
+  terminal-velocity's Module 04 dry run). Reviewed and confirmed (go) by
+  coderturtle 2026-07-05.
 output_artifact: runs/2026-07-05-module-01-dry-run/
 failure_reason: ""
