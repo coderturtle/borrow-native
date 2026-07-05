@@ -143,7 +143,10 @@ and left alone (`runs/2026-07-05-module-02-dry-run/takeaway-validation/`).
 > clippy gives no additional signal for this particular naive-clone shape either) is evidenced in
 > `runs/2026-07-05-module-02-dry-run/`, not asserted. Reviewed against this workshop's teaching
 > agent's own required process, and by the Workshop Review Panel's first content-level batch:
-> `docs/review-panel/2026-07-05-modules-01-02-content.md`. One open finding from that review, not
-> yet resolved: this module's stated "hard prerequisite" on Module 01 is a conceptual dependency,
-> not one the exercise itself mechanically enforces - `session_stats`' own tests build a `Session`
-> directly, without going through `finalize_session` - tracked in `docs/next-actions.md`.
+> `docs/review-panel/2026-07-05-modules-01-02-content.md`. The one open finding from that review -
+> the stated "hard prerequisite" on Module 01 was conceptual only, not mechanically enforced - is
+> now resolved: `fixtures/relay/tests/session_stats.rs` builds every `Session` through
+> `finalize_session` rather than a `Session { .. }` literal, so this module is genuinely ungradable
+> until Module 01's exercise is solved. Verified both directions: with `finalize_session` still its
+> unsolved `todo!()` stub, all 6 of this module's tests panic before `session_stats` is ever reached;
+> with a correct `finalize_session` in place, all 6 pass unchanged. See `docs/decisions.md`.

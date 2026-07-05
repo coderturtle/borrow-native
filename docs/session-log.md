@@ -190,3 +190,36 @@ Pending — see next commit's mirror sync.
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 02 prerequisite resolved, clone-count-check trialed, Module 03 authored + dry run
+
+### What happened
+
+- **Resolved the deferred Module 02 prerequisite-enforcement decision: mechanical, not conceptual-only.** `fixtures/relay/tests/session_stats.rs` rewritten to build every `Session` via `finalize_session(label, drafts)` instead of a `Session { .. }` literal. Verified both directions: with `finalize_session` left at its unsolved `todo!()` stub, all 6 Module 02 tests now panic before `session_stats` runs; with a correct implementation temporarily restored, all 6 pass unchanged (11/11 total, clippy clean). Module 02's README status blockquote updated.
+- **Built and trialed `scripts/clone-count-check.sh`**, the other deferred item: counts `.clone()` calls on added diff lines against a per-module expected-max baseline. First pass used Module 02's rubric prose to set that baseline to 1 — wrong: the good attempt itself has two call sites for one conceptual value (a running-max loop). Recalibrated against each module's own reference-implementation diff (0 for Module 01, 2 for Module 02), it then cleanly discriminated good from naive in both. Adopted as an optional pre-filter, not a gate substitute — full trial and captured output in `runs/2026-07-05-clone-count-check-trial/trial.md`. Fed back into `~/hekton/gremlins/coaching/coachgremlin.md`'s Workflow step 3.
+- **Authored Module 03 (Structs, Enums & Pattern Matching):** `relay`'s `CheckpointTrigger`/`HumanResponse`/`NextAction` enums and `next_action`, an ARB-triggering but purely additive change to `src/lib.rs`/`SPEC.md` (resolved by confirming Modules 01-02's own tests were unaffected). Ran Coachgremlin's first real dry run: a correct attempt listing every `CheckpointTrigger` variant explicitly under `Ignored`, and a naive, honest attempt folding two of them into a `_` wildcard. Both pass `cargo test` (16/16) and default `cargo clippy -- -D warnings` identically — the deterministic gate can't tell them apart, a genuinely different mechanism from Modules 01-02's clone-shaped finding (no cloning involved at all). Sharper result than either prior module: `clippy::pedantic` doesn't just fail to help, it recommends the wrong direction (flags the good attempt's explicit arms via `match_same_arms`, suggesting the same collapse the naive attempt already made); the lint that actually catches the risk, `clippy::wildcard_enum_match_arm`, is off by default in clippy's `restriction` group. Independently reproduced on a second, unrelated order/refund-status example (`runs/2026-07-05-module-03-dry-run/takeaway-validation/`). The new clone-count-check pre-filter was also run here and correctly reported a true negative (this failure mode isn't clone-shaped).
+- Takeaway packaged: `.claude/skills/enum-modeling-playbook/SKILL.md`, validated against the unrelated order/refund example before being called done.
+- Module 03's README rewritten from skeleton to real content; `modules/README.md`'s content-status blockquote and takeaway table updated.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added (Module 02 prerequisite enforcement, clone-count-check adoption, Module 03's finding).
+
+### Risks
+
+- Module 03's dry run used one session (this one) constructing and grading both attempts, same single-grader limitation named in Modules 01-02's retros.
+- The `clippy::pedantic`-recommends-the-anti-pattern finding is one data point (now two, counting the unrelated validation example) — whether it generalizes beyond this specific "identical-body arms kept separate on purpose" shape isn't yet checked further.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: get coderturtle's review of Module 03's dry run (`runs/run-20260705-RW-004.yaml`, currently `human_confirmed: false`), then author Module 04 (Generics, Traits & Lifetimes) with the same dry-run discipline.
+
+### Validation Status
+
+- `fixtures/relay`: `cargo test`/`cargo clippy -- -D warnings` run for real at every step (public stub, both Module 03 dry-run attempts at four lint levels, the takeaway-validation crate before and after its fix) — see `runs/2026-07-05-module-03-dry-run/grading.md` and `takeaway-validation/README.md` for full transcripts.
+- `scripts/arb-trigger-check.sh --dry-run`: clean baseline confirmed before the Module 03 `lib.rs`/`SPEC.md` change, correct fire confirmed after.
+- `scripts/clone-count-check.sh`: run against Modules 01-03's real dry-run diffs; output captured in `runs/2026-07-05-clone-count-check-trial/trial.md` and `runs/2026-07-05-module-03-dry-run/grading.md`.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.

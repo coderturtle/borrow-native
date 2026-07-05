@@ -61,3 +61,44 @@ pub struct SessionStats {
 pub fn session_stats(session: &Session) -> SessionStats {
     todo!("implement per SPEC.md")
 }
+
+/// Why a checkpoint fired. Exactly one reason per checkpoint, by construction -
+/// an enum, not three `bool`/`Option` fields on a struct, because a checkpoint
+/// firing for more than one reason at once, or for none, isn't a state `relay`
+/// should be able to represent, let alone have to handle.
+pub enum CheckpointTrigger {
+    /// Seconds since the last checkpoint exceeded the configured interval.
+    TimeElapsed(u64),
+    /// Tool calls since the last checkpoint exceeded the configured count.
+    ToolCallCount(u32),
+    /// Fraction of the context budget used (0.0-1.0) exceeded the configured threshold.
+    ContextBudget(f64),
+}
+
+/// How a human responded to a checkpoint notification. Also exactly one of
+/// these per response, never a combination - see `CheckpointTrigger`'s doc
+/// comment for why that's modeled as an enum rather than flags.
+pub enum HumanResponse {
+    Acknowledged,
+    /// Snooze for this many seconds before the next checkpoint check.
+    Snoozed(u64),
+    Ignored,
+}
+
+/// What `relay` does next, given why a checkpoint fired and how the human responded.
+pub enum NextAction {
+    Continue,
+    PauseFor(u64),
+    EndSession,
+}
+
+/// Decide the next action for a checkpoint, given why it fired and how the
+/// human responded to it.
+///
+/// Edge cases this must handle (see `SPEC.md` for the full rule table):
+/// `Acknowledged` and `Snoozed` both resolve the same way regardless of which
+/// `CheckpointTrigger` fired - only `Ignored`'s outcome depends on the trigger,
+/// and only for one specific trigger.
+pub fn next_action(trigger: &CheckpointTrigger, response: &HumanResponse) -> NextAction {
+    todo!("implement per SPEC.md")
+}

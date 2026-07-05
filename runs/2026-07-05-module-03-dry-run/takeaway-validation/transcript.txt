@@ -1,0 +1,63 @@
+=== BEFORE (naive wildcard): cargo clippy -- -D warnings ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+
+=== BEFORE: cargo clippy -- -W clippy::wildcard_enum_match_arm ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+warning: wildcard match will also match any future added variants
+  --> src/lib.rs:20:9
+   |
+20 |         _ => RefundPolicy::FullRefund,
+   |         ^ help: try: `OrderStatus::Pending | OrderStatus::Cancelled`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#wildcard_enum_match_arm
+   = note: requested on the command line with `-W clippy::wildcard-enum-match-arm`
+
+warning: `takeaway-validation` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+=== AFTER (explicit arms): cargo clippy -- -D warnings ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+
+=== AFTER: cargo clippy -- -W clippy::wildcard_enum_match_arm ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+
+=== AFTER: cargo clippy -- -W clippy::pedantic ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+warning: this function could have a `#[must_use]` attribute
+  --> src/lib.rs:16:8
+   |
+16 | pub fn refund_policy(status: &OrderStatus) -> RefundPolicy {
+   |        ^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#must_use_candidate
+   = note: `-W clippy::must-use-candidate` implied by `-W clippy::pedantic`
+   = help: to override `-W clippy::pedantic` add `#[allow(clippy::must_use_candidate)]`
+help: add the attribute
+   |
+16 + #[must_use]
+17 | pub fn refund_policy(status: &OrderStatus) -> RefundPolicy {
+   |
+
+warning: these match arms have identical bodies
+  --> src/lib.rs:18:9
+   |
+18 |         OrderStatus::Pending => RefundPolicy::FullRefund,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19 |         OrderStatus::Cancelled => RefundPolicy::FullRefund,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: if this is unintentional make the arms return different values
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#match_same_arms
+   = note: `-W clippy::match-same-arms` implied by `-W clippy::pedantic`
+   = help: to override `-W clippy::pedantic` add `#[allow(clippy::match_same_arms)]`
+help: otherwise merge the patterns into a single arm
+   |
+18 -         OrderStatus::Pending => RefundPolicy::FullRefund,
+19 -         OrderStatus::Cancelled => RefundPolicy::FullRefund,
+18 +         OrderStatus::Pending | OrderStatus::Cancelled => RefundPolicy::FullRefund,
+   |
+
+warning: `takeaway-validation` (lib) generated 2 warnings (run `cargo clippy --fix --lib -p takeaway-validation -- -W clippy::pedantic` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
