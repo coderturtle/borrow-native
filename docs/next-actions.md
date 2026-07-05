@@ -13,10 +13,11 @@
 ## This Week
 
 - [x] Coachgremlin content-building pass: author Module 01 (Ownership & Move Semantics), real exercise + fixture + rubric + dry run, matching `terminal-velocity`'s own first-module dry-run discipline. Real finding: default clippy can't distinguish a correct move-based solution from a naive clone-heavy one; only Coachgremlin's conceptual tier can. See `runs/2026-07-05-module-01-dry-run/`.
-- [ ] **coderturtle to review Module 01's dry run and confirm (or not) its recommendation** — `runs/run-20260705-RW-001.yaml` has `human_confirmed: false`, per Coachgremlin's Human Gate.
-- [ ] Author Module 02 (Borrowing & References) next, same dry-run discipline: construct at least one honest-naive (non-gaming) attempt per module to keep checking whether the conceptual tier is load-bearing there too, rather than assuming Module 01's finding generalizes.
+- [x] Pivoted to one shared throughline project (`fixtures/relay/`, a restartable-handoff CLI for hybrid human-agent team pacing) instead of eight independent toy fixtures. Retired `merge_customer_totals`, migrated its lesson into `relay`'s first feature (`finalize_session`), re-confirmed the same finding transfers. See `docs/workshop-design.md`'s "The shared project: relay" section and `fixtures/relay/SPEC.md`.
+- [ ] **coderturtle to review both Module 01 dry runs and confirm (or not) their recommendation** — `runs/run-20260705-RW-001.yaml` and `runs/run-20260705-RW-002.yaml` both have `human_confirmed: false`, per Coachgremlin's Human Gate.
+- [ ] Author Module 02 (Borrowing & References) next: `relay`'s session-statistics feature, same dry-run discipline (construct at least one honest-naive attempt per module, don't assume Module 01's finding generalizes without checking).
 - [ ] Re-run the Workshop Review Panel once several modules have real content (design-doc-only findings can't check exercise design or grader trust)
-- [ ] Retrofit the capstone's now-defined gate (added this session) into a real fixture once Coachgremlin builds it
+- [ ] Build the capstone's real seeded bug into `relay` once Modules 02-07 have added enough features for a genuine multi-concept diagnosis to be possible
 
 ## Later
 

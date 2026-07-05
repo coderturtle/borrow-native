@@ -1,0 +1,17 @@
+--- ../../fixtures/relay/src/lib.rs	2026-07-05 13:40:26
++++ attempt-good/fixture/src/lib.rs	2026-07-05 13:41:32
+@@ -27,5 +27,13 @@
+ /// a single draft, multiple drafts preserving order, and risks (including an
+ /// empty list) preserved exactly as given.
+ pub fn finalize_session(label: String, drafts: Vec<DraftCheckpoint>) -> Session {
+-    todo!("implement per SPEC.md")
++    let checkpoints = drafts
++        .into_iter()
++        .map(|draft| CheckpointRecord {
++            goal: draft.goal,
++            summary: draft.summary,
++            risks: draft.risks,
++        })
++        .collect();
++    Session { label, checkpoints }
+ }

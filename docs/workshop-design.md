@@ -40,7 +40,40 @@ Every module's core exercise runs through the learner's own harness. Two gate ti
 1. **Deterministic tier (primary).** `cargo test` green and (where relevant) `cargo clippy` clean. This either passes or it doesn't — no judgment call, no rubric-reading required to know if the exercise's mechanical requirement was met.
 2. **Conceptual tier (secondary, Coachgremlin).** Idiom and approach: did the learner reach for `.clone()`/`unsafe`/`Rc<RefCell<_>>` to silence the compiler rather than understanding what it was telling them? Is the solution one a reviewer would accept in real code, not just one that happens to compile?
 
-Working hypothesis, not a proven finding (same honesty discipline `terminal-velocity` used): a deterministic first gate makes Coachgremlin's job *easier and more trustworthy* than `terminal-velocity`'s all-subjective rubric — but this hasn't been tested against a real learner attempt yet. That's the next real evidence this workshop needs, same as `terminal-velocity` needed its own first Coachgremlin dry run.
+Working hypothesis, not a proven finding (same honesty discipline `terminal-velocity` used): a deterministic first gate makes Coachgremlin's job *easier and more trustworthy* than `terminal-velocity`'s all-subjective rubric. Module 01's dry run gave this its first real evidence (`runs/2026-07-05-module-01-dry-run/`, re-confirmed after the shared-project pivot below in `runs/2026-07-05-module-01-relay-dry-run/`): a correct attempt and a deliberately naive, honest one passed identically at the deterministic tier, both times. That's one module's evidence, graded by this session's own constructed attempts, not an independent learner's — the next real test is a wider one, same as `terminal-velocity` needed more than its own first Coachgremlin dry run.
+
+## The shared project: `relay`
+
+Added 2026-07-05, at coderturtle's direction, after Module 01 had already shipped as a standalone
+toy exercise (`merge_customer_totals`, unrelated to any real product). Every module now builds one
+real feature onto the same project instead: `fixtures/relay/`, a CLI for **hybrid human-agent team
+pacing** — pomodoro-style checkpoints during an agent session, each producing a restartable-handoff
+summary (goal, changes, verification evidence, open risks) and notifying a human, a direct
+implementation of the "Restartable Handoff Loop" pattern this workshop's own research already named
+(see `modules/README.md`'s Sources). By Module 08, a learner has a real, usable tool, not eight
+disconnected snippets. Full product spec, and the same module-by-module build-out table repeated
+as the fixture's own source of truth: `fixtures/relay/SPEC.md`.
+
+**Deliberately narrower than a multi-agent cockpit:** `agent-mission-control-lab` already exists in
+this factory's `labs/` building a full multi-agent session cockpit. `relay` answers one narrower
+question — has this session reached a natural checkpoint, and what's the handoff — rather than
+competing with that lab's own scope. Module 06 does add multi-session tracking, but in service of
+that same narrow question asked across sessions, not a cockpit reimplementation.
+
+**This deliberately differs from `terminal-velocity`'s fixture shape**, and that difference is
+worth stating rather than silently copying the pattern: `receipts` is one static function
+engineered five different ways (prompted, curated-around, harnessed, fixed, sabotaged), which fits
+because agentic-engineering practice really is five lenses on one problem. `relay` grows one real
+feature per module instead, because Rust's concept arc (ownership → borrowing → ... → async) is an
+additive dependency chain — each concept is genuinely required to build the next feature, not a
+different lens on a feature that already exists.
+
+**What happened to Module 01's original exercise:** retired, not deleted. `merge_customer_totals`'s
+own dry run (`runs/2026-07-05-module-01-dry-run/`) remains valid supporting evidence for the
+deterministic-gate finding, which is a fact about Rust and clippy, not about that specific fixture.
+The exercise itself (own the input, move rather than clone) was re-instantiated as `relay`'s own
+first feature (`finalize_session`) and re-validated there — see `runs/2026-07-05-module-01-relay-
+dry-run/retro.md`.
 
 ## Canonical-curriculum anchor (research pass, 2026-07-05)
 
@@ -88,7 +121,7 @@ Per the Gremlin's takeaway requirement (`workshop-gremlin.md` Design Principle 4
 | 05 | Error Handling | A reusable custom-error-type template (`thiserror`/manual `impl Error`) |
 | 06 | Fearless Concurrency | A concurrency-pattern Skill (channel vs. shared-state decision guide). **Escape-hatch warning applies here specifically:** reaching for `unsafe impl Send`/`Sync` to silence a compiler error, instead of restructuring the data to be genuinely thread-safe, is exactly the unsafe habit this module must not let pass quietly — Coachgremlin's conceptual tier must check for it explicitly. |
 | 07 | Async Programming | An async-vs-threads decision guide, paired with Module 06's as a matched set — added 2026-07-05 to close the gap the Ardan Labs certification check found. |
-| 08 | Synthesis capstone | **Required gate (added 2026-07-05 — the initial draft left this undefined, a Review Panel Instructional Designer finding):** a small, multi-file, deliberately broken or non-idiomatic Rust program spanning 3+ arc concepts. The learner must get it to `cargo test`/`cargo clippy` green (deterministic tier) *and* correctly diagnose, in writing, which arc concept was the actual root cause before fixing it (conceptual tier) — mirrors `terminal-velocity`'s own capstone format (diagnose the bottleneck, fix it, defend the diagnosis in writing). Takeaway: a personal Rust diagnostic playbook compressing the whole arc into one checklist, built *from* that defended diagnosis, not a substitute for it. |
+| 08 | Synthesis capstone | **Required gate (defined 2026-07-05, a Review Panel Instructional Designer finding; updated after the shared-project pivot to test against the real `relay` codebase instead of a synthetic broken program):** a real, seeded bug or non-idiomatic pattern in the `relay` project accumulated by Modules 01-07, spanning 3+ concepts. The learner must get it to `cargo test`/`cargo clippy` green (deterministic tier) *and* correctly diagnose, in writing, which arc concept was the actual root cause before fixing it (conceptual tier) — mirrors `terminal-velocity`'s own capstone format (diagnose the bottleneck, fix it, defend the diagnosis in writing), but against a real project the learner helped build rather than a fixture manufactured just to be broken. Takeaway: a personal Rust diagnostic playbook compressing the whole arc into one checklist, built *from* that defended diagnosis, not a substitute for it. |
 
 ## Build-in-public build log
 
@@ -96,7 +129,9 @@ Published as a dated build-log/journal via GitHub Pages, using the same Astro-on
 
 ## What's explicitly out of scope for this design pass
 
-- Exact exercise specs, fixtures, and rubrics per module (Coachgremlin's job, run later, one concept at a time).
+- `relay`'s Features 2-8 (Modules 02-08's real content) — this pass only stands up the shared
+  project's skeleton plus Feature 1 (migrated from the original Module 01 work). Coachgremlin's job,
+  run later, one module at a time.
 - The Iterators & Closures optional extension's actual content (scoped above, not authored).
 - The actual Astro site content and first Pages deploy.
 - The real Ardan Labs exam attempt itself — a stated intent this session, not yet scheduled or sat.

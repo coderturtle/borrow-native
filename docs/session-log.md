@@ -88,6 +88,35 @@ Yes — vault card renamed to match (`borrow-native`), repo-local mirror kept in
 - `cargo test` and `cargo clippy -- -D warnings`: run for real against both attempts and the takeaway-validation crate, transcripts captured, not narrated.
 - `scripts/check-brand-lint.sh` and `scripts/check-mirror-drift.sh`: clean.
 
+## 2026-07-05 - Pivot to one shared throughline project (`relay`)
+
+### What happened
+
+- coderturtle proposed building one real, usable project across all 8 modules instead of independent per-module toy fixtures, plus a specific angle: applying pomodoro-style pacing to hybrid human-agent teams. Explored the idea, corrected an early tagline risk ("Claude crack" reads as drug-adjacent wordplay), and checked for overlap with `agent-mission-control-lab` (an existing multi-agent cockpit in this factory).
+- Resolved via three decisions: one throughline project (Terminal Velocity's shared-fixture pattern, reshaped for Rust's additive concept arc rather than copied as-is); product shape is a restartable-handoff CLI + hooks, narrower than the existing cockpit lab; tagline settled as "hybrid human-agent team pacing."
+- Designed the full module-to-feature mapping (Module 01: core types + `finalize_session`; 02: borrowing-based session stats; 03: trigger/response enums; 04: `Notifier` trait; 05: config/IO error handling; 06: concurrent session tracking; 07: async checkpoint waiting; 08: a real seeded bug in the accumulated project as the capstone).
+- Scaffolded `fixtures/relay/` (working name), wrote `SPEC.md` as the project's single source of truth, retired `modules/01-ownership-move-semantics/exercise/`, migrated its lesson into `relay`'s first feature.
+- Re-ran the dry run (good + naive-honest attempts) against the migrated feature: **the original finding reproduces exactly** — both pass `cargo test` (5/5) and default `cargo clippy -- -D warnings` identically. Confirms the pivot didn't lose or weaken Module 01's content. This re-run is explicitly *not* counted as new evidence toward Coachgremlin's 3-run bar (same lesson, not a new failure mode) — that count stays at 2.
+- Rewrote Module 01's README, `modules/README.md` (new "One shared project" section with the full feature table), and `docs/workshop-design.md` (new "The shared project: relay" section) to reflect the pivot. Added a build-log entry.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added.
+
+### Risks
+
+- `runs/run-20260705-RW-002.yaml` has `human_confirmed: false` — not yet reviewed by coderturtle.
+- Modules 02-08's features are still unbuilt; the module-to-feature mapping is a design, not yet evidenced per-feature the way Module 01's was.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: coderturtle to review both Module 01 dry runs; then author Module 02's feature (session statistics) against `fixtures/relay/`.
+
+### Validation Status
+
+- `cargo test` and `cargo clippy -- -D warnings`: run for real against both the migrated good and naive attempts, transcripts captured.
+- `scripts/check-brand-lint.sh` and `scripts/check-mirror-drift.sh`: clean.
+
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.

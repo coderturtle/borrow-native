@@ -8,7 +8,41 @@ Every module's core exercise is run through your own coding-agent harness (Claud
 
 **Hands-on by design, not passive text.** No module here completes by reading it. Every module states a required gate: an artifact you produce or an action you're observed doing, checked first mechanically, then conceptually. If a module ever reduces to "read this, then move on," that's a defect. Every gate also has a stated **takeaway**: you keep something reusable, not just proof you did the exercise.
 
-> **Content status:** Module 01's core exercise is real, not a placeholder: authored, actually run (a correct attempt and a deliberately naive, honest one), with a real evidenced finding (the deterministic gate alone can't tell them apart). Evidence: `runs/2026-07-05-module-01-dry-run/`. Modules 02-08 are still skeleton only - question, arc position, gate shape, and takeaway shape decided; the actual exercise, fixture, and rubric are Coachgremlin's job, run later, one module at a time, per the Workshop Gremlin's own Completion Condition (it stops before content exists).
+> **Content status:** Module 01's core exercise is real, not a placeholder: authored, actually run twice (a correct attempt and a deliberately naive, honest one, both before and after the shared-project pivot below), with a real evidenced finding (the deterministic gate alone can't tell them apart). Evidence: `runs/2026-07-05-module-01-dry-run/` and `runs/2026-07-05-module-01-relay-dry-run/`. Modules 02-08 are still skeleton only - question, arc position, gate shape, and takeaway shape decided; the actual feature, fixture code, and rubric are Coachgremlin's job, run later, one module at a time, per the Workshop Gremlin's own Completion Condition (it stops before content exists).
+
+## One shared project, not eight toy fixtures
+
+Added 2026-07-05, at coderturtle's direction, after Module 01 had already shipped as a standalone
+`merge_customer_totals` exercise. Every module now builds one real feature onto the same project,
+`fixtures/relay/` - a restartable-handoff CLI for **hybrid human-agent team pacing** (pomodoro-style
+checkpoints during an agent session, each producing a goal/diff/evidence/risks handoff summary and
+notifying a human). By the time you finish Module 08, you have a real, usable tool, not eight
+disconnected snippets and a pile of checklists. See `fixtures/relay/SPEC.md` for the full product
+spec and this exact build-out table, repeated there as the fixture's own source of truth.
+
+**This deliberately differs from `terminal-velocity`'s fixture shape.** That workshop's `receipts`
+fixture is one static function engineered five different ways (prompted, curated-around, harnessed,
+fixed, sabotaged) - appropriate there because agentic-engineering practice really is five lenses on
+one problem. `relay` grows one real feature per module instead, because Rust's own concept arc is an
+additive dependency chain: each concept is genuinely required to build the next feature, not a
+different lens on a feature that already exists. Copying `terminal-velocity`'s exact shape here
+would have been the easier default and the wrong one.
+
+**Why a pacing/handoff CLI, not a multi-agent cockpit:** `agent-mission-control-lab` already exists
+in this factory building a full multi-agent session cockpit. `relay` stays deliberately narrower -
+one CLI answering "has this session reached a natural checkpoint, and what's the handoff" - rather
+than a competing reimplementation of that lab's own scope.
+
+| # | Module | Feature added to `relay` |
+|---|---|---|
+| 01 | Ownership & Move Semantics | Core domain types (`DraftCheckpoint`, `CheckpointRecord`, `Session`) and `finalize_session`, sealing a session by moving fields |
+| 02 | Borrowing & References | Session statistics (average/longest checkpoint gap), computed by borrowing history, not consuming it |
+| 03 | Structs, Enums & Pattern Matching | `CheckpointTrigger` (time/tool-count/context-budget) and human-response enums, exhaustively matched |
+| 04 | Generics, Traits & Lifetimes | A `Notifier` trait (desktop/terminal-bell/stdout), implemented generically |
+| 05 | Error Handling | Config parsing and handoff-summary file I/O, real `Result`/custom error types |
+| 06 | Fearless Concurrency | Tracking multiple concurrent sessions reporting into one tracker |
+| 07 | Async Programming | The checkpoint trigger waits on a timer, a session-log file-watch, and a signal concurrently |
+| 08 | Synthesis capstone | A real, seeded bug in the accumulated project - diagnose the root-cause concept, fix it |
 
 ## The arc
 

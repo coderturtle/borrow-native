@@ -1,0 +1,21 @@
+schema_version: "1"
+run_id: run-20260705-RW-002
+project: borrow-native
+task_id: relay-pivot-module-01-revalidation
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: false
+human_notes: >
+  Re-validates Module 01's exercise/rubric/finding against the new shared
+  throughline project (fixtures/relay/) after retiring the standalone
+  merge_customer_totals toy fixture. Same finding reproduces exactly
+  (deterministic gate can't distinguish a move-based solution from a
+  naive clone-heavy one). Not counted as a new run toward Coachgremlin's
+  3-run bar (same lesson re-instantiated, not a new concept/failure
+  mode) - run-20260705-RW-001 still stands as that data point. See
+  runs/2026-07-05-module-01-relay-dry-run/retro.md for the full
+  reasoning. Not yet reviewed by coderturtle.
+output_artifact: runs/2026-07-05-module-01-relay-dry-run/
+failure_reason: ""
