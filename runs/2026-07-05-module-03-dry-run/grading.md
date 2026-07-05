@@ -70,15 +70,21 @@ warnings` can see this, for the same structural reason cloning was invisible to 
 of the *code's shape*, not of any input/output pair a test can observe.
 
 **Checked, not assumed, whether a stricter lint closes the gap - and this time the result runs in an
-unexpected direction.** `clippy::pedantic` does **not** flag the naive attempt at all. It instead
-flags **`attempt-good`**, with `match_same_arms` ("these match arms have identical bodies") on the two
-explicit, intentionally-separate `TimeElapsed`/`ToolCallCount` arms - and its own suggested fix is to
-merge them into an or-pattern, which is functionally the same simplification the naive attempt already
-made. Followed uncritically, `clippy::pedantic`'s own advice here would push a learner *toward* the
-anti-pattern rule 5 exists to catch, not away from it - a sharper caution than Modules 01-02's finding
-that pedantic gave a noisy-but-real signal (Module 01) or no signal (Module 02); here it gives a
-signal pointing the wrong way. `clippy::nursery` gives no discriminating signal (one `const fn`
-suggestion, identical on both). The one lint that does catch it,
+unexpected direction, though not as strong a direction as first claimed here.** `clippy::pedantic`
+does **not** flag the naive attempt at all. It instead flags **`attempt-good`**, with
+`match_same_arms` ("these match arms have identical bodies") on the two explicit, intentionally-
+separate `TimeElapsed`/`ToolCallCount` arms - and its own suggested fix is to merge them into an
+or-pattern (`TimeElapsed(_) | ToolCallCount(_) => Continue`). **Corrected 2026-07-05** (Modules
+03+04 Workshop Review Panel batch, AI/ML Practitioner persona, verified by compiling both forms
+after adding a fourth `CheckpointTrigger` variant): the or-pattern is *not* "functionally the same
+simplification the naive attempt already made" - an or-pattern still names every variant explicitly,
+so it still fails to compile (`E0004`, non-exhaustive) on the new variant, exactly like the two-
+separate-arms version. Following pedantic's suggestion here does not reintroduce rule 5's
+exhaustiveness gap. What it *does* cost is the readability signal that `TimeElapsed` and
+`ToolCallCount` were each considered on their own - a real but smaller caution than "pedantic
+actively recommends the anti-pattern," which overstated what the suggested fix actually changes.
+`clippy::nursery` gives no discriminating signal (one `const fn` suggestion, identical on both). The
+one lint that does catch the actual wildcard risk,
 `clippy::wildcard_enum_match_arm`, lives in clippy's `restriction` group - off by default, not
 included in `pedantic` or `nursery`, and clippy's own documentation is explicit that `restriction`
 lints are meant to be individually opted into, not bundled, since some conflict with idiomatic style

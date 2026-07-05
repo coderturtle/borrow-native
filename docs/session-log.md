@@ -223,3 +223,38 @@ Pending — see next commit's mirror sync.
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 04 authored + dry run, second content-level Review Panel batch, a real correction to Module 03
+
+### What happened
+
+- **Authored Module 04 (Generics, Traits & Lifetimes):** added `Notifier` (trait + `DesktopNotifier`/`TerminalBellNotifier`/`StdoutNotifier`), `Session::label()` (an elision-eligible contrast case), `CheckpointAlert`, and `alert_checkpoint` to `fixtures/relay/src/lib.rs`/`SPEC.md` - an ARB-triggering but purely additive change, resolved by confirming Modules 01-03's own test suites still fail identically to before (5+6+5 tests, all still panicking on their own unsolved `todo!()`s).
+- **Ran Coachgremlin's first real dry run for Module 04**, the first module to exercise explicit lifetime annotation: a correct attempt (`CheckpointAlert<'a>` borrowing `session_label: &'a str`, tying `'a` only to `session`), a deliberately naive, honest attempt (owned `String`, built via `.clone()` to sidestep the lifetime question), and a lighter third check for the module's other learning objective (unifying every reference parameter under one lifetime instead of scoping it to `session` alone). All three pass `cargo test` (22/22) and `cargo clippy -- -D warnings` identically. Checked further than any prior module: `clippy::pedantic`'s output is byte-for-byte identical between the correct and clone-avoidance attempts; the full `clippy::restriction` group (67 vs. 64 warnings) was also run and diffed by warning type, and its one difference (`single_char_lifetime_names`) flags the *correct* attempt, not the naive one. `scripts/clone-count-check.sh`, calibrated against the reference diff, correctly flagged the naive attempt - the first true positive this pre-filter has produced inside a module's own graded dry-run scoring. Takeaway packaged (`.claude/skills/trait-lifetime-cheatsheet/SKILL.md`) and validated against an unrelated generic config-store lookup problem.
+- **Ran the second content-level Workshop Review Panel batch** (Modules 03+04, 7 real parallel-subagent personas), due once Module 04 completed the 2-3-module window. Most significant finding of any batch so far: the AI/ML Practitioner persona, by actually compiling the claim, found Module 03's "clippy::pedantic actively recommends the anti-pattern" finding was factually overstated - the suggested or-pattern merge preserves exhaustiveness (verified by adding a fourth enum variant and confirming both forms fail to compile identically). Corrected across `modules/03-structs-enums-pattern-matching/README.md`, both `runs/2026-07-05-module-03-dry-run/{grading.md,retro.md}`, `.claude/skills/enum-modeling-playbook/SKILL.md`, its `takeaway-validation/README.md`, `~/hekton/gremlins/coaching/coachgremlin.md`'s Module 03 entry, and appended (not silently rewritten) to the already-human-confirmed `runs/run-20260705-RW-004.yaml`.
+- Eight more findings fixed same-pass: Module 04's "no lint anywhere"/"first true positive" claims re-verified (not just softened) by actually running the full `clippy::restriction` group and reconciling against the pre-adoption trial record; Module 03's LO1 given an honesty caveat; Module 04's dry-run-validated 7th rubric criterion (lifetime over-annotation) added to the shipped rubric; a leaked `~/hekton/...` path and the gate/scored/anti-gaming/structural vocabulary gap both fixed in `modules/README.md`; the arc table's Module 04 cell rewritten to name all three scored criteria; `scripts/arb-trigger-check.sh`'s silent-fail-open parser risk documented via comment; a "don't modify" note added to Module 04's given code.
+- Two findings deferred, recorded in `docs/next-actions.md`: the rubric spoiling its own answer before the learner attempts it (a real tension against Coachgremlin's own rubric-sharing requirement); and the workshop's pages reading as audit reports rather than pitches (a workshop-wide structural question).
+- Module 04's README rewritten from skeleton to real content; `fixtures/relay/SPEC.md`'s status table and `modules/README.md`'s content-status blockquote/arc table updated.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added (Module 04's finding, the panel batch and its most significant correction).
+
+### Risks
+
+- Module 04's dry run used one session (this one) constructing and grading all three variants (good, naive-clone, naive-overannotated) - same single-grader limitation named in every prior module's retro.
+- The rubric-spoils-the-answer tension (deferred this pass) means Module 03/04's "Valid alternate terminal" framing currently promises a discovery experience the Rubric section's own wording undercuts - flagged, not yet resolved.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: get coderturtle's review of Module 04's dry run (`runs/run-20260705-RW-005.yaml`, currently `human_confirmed: false`), then author Module 05 (Error Handling) with the same dry-run discipline.
+
+### Validation Status
+
+- `fixtures/relay`: `cargo test`/`cargo clippy` run for real at every step, including all three Module 04 attempts across default/`pedantic`/`nursery`/full-`restriction` lint levels - see `runs/2026-07-05-module-04-dry-run/grading.md` for full transcripts.
+- The Module 03 pedantic correction was independently re-verified, not just re-worded: compiled both the suggested or-pattern and the explicit-arms version after adding a new `CheckpointTrigger` variant, confirmed both fail identically (`E0004`).
+- `scripts/arb-trigger-check.sh --dry-run`: clean baseline confirmed before the Module 04 `lib.rs`/`SPEC.md` change, correct fire confirmed after; still fires correctly after the comment-only limitation note was added.
+- Shipped stub final state confirmed: `cargo build` clean, all four modules' test suites (6+5+5+6) fail identically to their pre-session state (still panicking on their own unsolved `todo!()`s).
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.

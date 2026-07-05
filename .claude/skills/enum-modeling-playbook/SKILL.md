@@ -35,14 +35,18 @@ yourself.
    `ToolCallCount(_) => Continue` as separate arms costs a few extra characters and buys a compile
    error the moment a new trigger variant is added anywhere in the codebase, forcing a deliberate
    decision about that arm instead of a silent default.
-4. **Don't trust `clippy::pedantic` to push you toward this, or even to stay neutral - checked
-   directly, it can push the other way.** `next_action`'s good attempt (explicit arms) triggers
-   pedantic's `match_same_arms` lint, which recommends merging the identical-body arms into one - the
-   exact simplification the naive attempt already made. The lint that actually catches the wildcard
-   risk, `clippy::wildcard_enum_match_arm`, lives in clippy's `restriction` group: off by default, not
-   part of `pedantic` or `nursery`, and meant to be enabled individually rather than as a bundle
-   (clippy's own docs note restriction lints can conflict with idiomatic style). If a workshop or
-   codebase cares about this property, that specific lint needs to be turned on by name - inheriting
+4. **Don't trust `clippy::pedantic` to praise this decision - checked directly, it flags it as
+   duplication, though not as dangerously as it first looks.** `next_action`'s good attempt (explicit
+   arms) triggers pedantic's `match_same_arms` lint, which recommends merging the identical-body arms
+   into an or-pattern. Verified by compiling both forms after adding a new enum variant: the
+   or-pattern still names every variant explicitly, so it still fails to compile on the new one,
+   exactly like the two-separate-arms version - following pedantic's suggestion here does not
+   reintroduce the wildcard's exhaustiveness gap, only its per-variant readability. The lint that
+   actually catches the wildcard risk, `clippy::wildcard_enum_match_arm`, lives in clippy's
+   `restriction` group: off by default, not part of `pedantic` or `nursery`, and meant to be enabled
+   individually rather than as a bundle (clippy's own docs note restriction lints can conflict with
+   idiomatic style). If a workshop or codebase cares about this property, that specific lint needs to
+   be turned on by name - inheriting
    it from a broader lint group won't happen.
 5. **A green `cargo test` and a clean `cargo clippy -- -D warnings` prove today's behavior is right,
    never that the modeling will still be right after the next change.** This is the same caution

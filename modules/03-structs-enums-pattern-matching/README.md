@@ -107,16 +107,24 @@ full arc and why this order.
 - Recognize when a `bool`/`Option` flag on a struct is really a hidden enum trying to get out - a
   value with a small number of genuinely mutually-exclusive states belongs in an enum, so the type
   system rules out the combinations that can never actually happen, rather than a comment or a test
-  hoping no one constructs them.
+  hoping no one constructs them. **Not hands-on gated by the core exercise** (flagged 2026-07-05,
+  Modules 03+04 Workshop Review Panel batch, Instructional Designer persona): `CheckpointTrigger`/
+  `HumanResponse`/`NextAction` are given to you already modeled as enums, so this objective is
+  demonstrated in the type design you read, not produced by a decision you make. Nothing in this
+  module's required exercise asks you to choose enum-vs-flags for yourself.
 - Write an exhaustive `match` and understand what forcing every variant to be handled explicitly
   actually buys you: a compile error the moment a new variant is added, rather than a silent default.
 - Recognize that a `_` wildcard arm covering several variants that happen to resolve the same way
   today is not free - it trades away exactly that forced-decision guarantee, in a way no test run can
   detect until a new variant actually gets added later. The specific shape this exercise's own dry run
   found.
-- Recognize that a linter's own suggestion isn't automatically the idiomatic choice - checked
-  directly in this exercise, `clippy::pedantic` recommends *collapsing* the explicit, forward-safe
-  arms back into a wildcard, which would undo the point of criterion 5.
+- Recognize that a linter's own suggestion isn't automatically worth taking at face value - checked
+  directly in this exercise, `clippy::pedantic` flags the explicit, forward-safe arms as
+  duplicative and suggests merging them into an or-pattern. Verified directly: the merge does *not*
+  reintroduce the wildcard's exhaustiveness gap (an or-pattern still names every variant, so a new
+  variant added later still fails to compile), but it does erase the readability signal that each
+  variant was considered on its own - a real, if smaller, cost than the module's original framing of
+  this lint claimed.
 
 ## Why this is hard, and what actually turned out to matter
 
@@ -137,14 +145,21 @@ That claim was tested directly, not just asserted: an implementation that lists 
 `CheckpointTrigger` variants explicitly under `Ignored`, and one that covers `ContextBudget` explicitly
 but folds `TimeElapsed`/`ToolCallCount` into a single `_ => NextAction::Continue`, pass `cargo test`
 (16/16) and default `cargo clippy -- -D warnings` (zero output) identically. Escalating to
-`clippy::pedantic` doesn't just fail to help here - checked fresh, it actively recommends the wrong
-direction: it flags the explicit version's two identical-body arms (`match_same_arms`) and suggests
-merging them, which is functionally the same collapse the wildcard version already made. The lint that
-actually catches the wildcard risk, `clippy::wildcard_enum_match_arm`, lives in clippy's `restriction`
-group - off by default, not bundled into `pedantic` or `nursery`, and clippy's own documentation says
-restriction lints are meant to be enabled individually, not as a group, since some conflict with
-idiomatic style outright. Full evidence, both the original finding and its independent reproduction on
-an unrelated order/refund-status example: `runs/2026-07-05-module-03-dry-run/grading.md` and
+`clippy::pedantic` doesn't help here either, though not for the reason first claimed here: checked
+fresh, it flags the explicit version's two identical-body arms (`match_same_arms`) and suggests
+merging them into an or-pattern (`TimeElapsed(_) | ToolCallCount(_) => Continue`). Verified directly
+by compiling both forms after adding a fourth `CheckpointTrigger` variant: the or-pattern still names
+every variant explicitly, so it still fails to compile (`E0004`, non-exhaustive) exactly like the
+two-separate-arms version - pedantic's suggestion does *not* reintroduce the wildcard's
+exhaustiveness gap, contrary to this module's original framing of the finding. What it does cost is
+the readability signal that each variant's fate was considered individually, and it can read as
+"pedantic thinks your explicit arms are wrong" to a learner who hasn't checked what the suggestion
+actually preserves. The lint that actually catches the wildcard risk itself,
+`clippy::wildcard_enum_match_arm`, lives in clippy's `restriction` group - off by default, not
+bundled into `pedantic` or `nursery`, and clippy's own documentation says restriction lints are meant
+to be enabled individually, not as a group, since some conflict with idiomatic style outright. Full
+evidence, both the original finding and its independent reproduction on an unrelated order/refund-
+status example: `runs/2026-07-05-module-03-dry-run/grading.md` and
 `runs/2026-07-05-module-03-dry-run/takeaway-validation/`.
 
 What actually distinguishes the two solutions, concretely: the wildcard version writes `_ =>
@@ -175,11 +190,16 @@ left alone (`runs/2026-07-05-module-03-dry-run/takeaway-validation/`).
 > Content status: this module's core exercise is real, not a placeholder: authored, actually run once
 > so far (a correct attempt and a deliberately naive, honest one, not a rubric-gaming attempt), and
 > the resulting finding (the deterministic gate alone cannot distinguish the two, and `clippy::pedantic`
-> doesn't just fail to help - it recommends the wrong direction) is evidenced in
-> `runs/2026-07-05-module-03-dry-run/`, including an independent reproduction of the pedantic finding
-> on a second, unrelated example, not asserted. This module's Module-01/02 prerequisite is conceptual
+> doesn't help either) is evidenced in `runs/2026-07-05-module-03-dry-run/`, including an independent
+> reproduction on a second, unrelated example, not asserted. Corrected 2026-07-05 (Modules 03+04
+> Workshop Review Panel batch, AI/ML Practitioner persona): the original version of this finding
+> claimed pedantic's suggested fix "recommends the wrong direction" / reintroduces the wildcard
+> anti-pattern - verified by compiling both forms after adding a new trigger variant, the suggested
+> or-pattern merge still names every variant and still fails to compile on the new one, so it does
+> *not* erode exhaustiveness the way a true `_` wildcard does. See "Why this is hard" above for the
+> corrected, narrower claim. This module's Module-01/02 prerequisite is conceptual
 > (borrowing/method-receiver fluency), consistent with how `modules/README.md` frames arc dependencies
 > generally - unlike Module 02's now-resolved case, there's no shared-fixture mechanism here that could
-> make it mechanically enforceable, since `next_action` doesn't take a `Session` at all. Not yet
-> reviewed by the Workshop Review Panel: Module 03 is the first module of content since the Modules
-> 01+02 batch, inside the 2-3-module cadence window, not yet due (`docs/next-actions.md`).
+> make it mechanically enforceable, since `next_action` doesn't take a `Session` at all. Reviewed by
+> the Workshop Review Panel as part of the Modules 03+04 batch:
+> `docs/review-panel/2026-07-05-modules-03-04-content.md`.

@@ -34,7 +34,16 @@ pub struct Session {
 /// a single draft, multiple drafts preserving order, and risks (including an
 /// empty list) preserved exactly as given.
 pub fn finalize_session(label: String, drafts: Vec<DraftCheckpoint>) -> Session {
-    todo!("implement per SPEC.md")
+    let checkpoints = drafts
+        .into_iter()
+        .map(|draft| CheckpointRecord {
+            goal: draft.goal,
+            summary: draft.summary,
+            risks: draft.risks,
+            elapsed_secs: draft.elapsed_secs,
+        })
+        .collect();
+    Session { label, checkpoints }
 }
 
 /// Summary statistics over a session's checkpoint gaps, computed by borrowing
@@ -59,7 +68,35 @@ pub struct SessionStats {
 /// session (no checkpoints), a single checkpoint, and multiple checkpoints
 /// with a tie for the longest gap (first occurrence wins).
 pub fn session_stats(session: &Session) -> SessionStats {
-    todo!("implement per SPEC.md")
+    let checkpoints = &session.checkpoints;
+
+    if checkpoints.is_empty() {
+        return SessionStats {
+            checkpoint_count: 0,
+            average_gap_secs: 0.0,
+            longest_gap_secs: 0,
+            longest_gap_goal: String::new(),
+        };
+    }
+
+    let total: u64 = checkpoints.iter().map(|c| c.elapsed_secs).sum();
+    let average_gap_secs = total as f64 / checkpoints.len() as f64;
+
+    let mut longest_gap_secs = checkpoints[0].elapsed_secs;
+    let mut longest_gap_goal = checkpoints[0].goal.clone();
+    for checkpoint in checkpoints.iter().skip(1) {
+        if checkpoint.elapsed_secs > longest_gap_secs {
+            longest_gap_secs = checkpoint.elapsed_secs;
+            longest_gap_goal = checkpoint.goal.clone();
+        }
+    }
+
+    SessionStats {
+        checkpoint_count: checkpoints.len(),
+        average_gap_secs,
+        longest_gap_secs,
+        longest_gap_goal,
+    }
 }
 
 /// Why a checkpoint fired. Exactly one reason per checkpoint, by construction -
@@ -100,7 +137,15 @@ pub enum NextAction {
 /// `CheckpointTrigger` fired - only `Ignored`'s outcome depends on the trigger,
 /// and only for one specific trigger.
 pub fn next_action(trigger: &CheckpointTrigger, response: &HumanResponse) -> NextAction {
-    todo!("implement per SPEC.md")
+    match response {
+        HumanResponse::Acknowledged => NextAction::Continue,
+        HumanResponse::Snoozed(secs) => NextAction::PauseFor(*secs),
+        HumanResponse::Ignored => match trigger {
+            CheckpointTrigger::ContextBudget(_) => NextAction::EndSession,
+            CheckpointTrigger::TimeElapsed(_) => NextAction::Continue,
+            CheckpointTrigger::ToolCallCount(_) => NextAction::Continue,
+        },
+    }
 }
 
 impl Session {
@@ -166,23 +211,44 @@ impl Notifier for StdoutNotifier {
 
 /// A record of one checkpoint notification: which session it belongs to,
 /// what message was sent, and whether the notifier reported success.
-pub struct CheckpointAlert {
-    pub session_label: String,
+/// `session_label` borrows straight from the `Session` that produced this
+/// alert rather than cloning it - there's nothing here that needs to
+/// outlive that session, so an explicit lifetime, connecting the two, is
+/// the correct shape once the compiler forces the question.
+pub struct CheckpointAlert<'a> {
+    pub session_label: &'a str,
     pub message: String,
     pub sent: bool,
 }
 
 /// Build a checkpoint's alert message and hand it to any `Notifier`.
 ///
-/// Edge cases this must handle (see `SPEC.md` for the full message-format
-/// table): a distinct, exactly-formatted message per `CheckpointTrigger`
-/// variant, a `sent` field that reflects whatever `notifier.notify`
-/// actually returns rather than an assumed `true`, and a `session_label`
-/// that identifies the session passed in, not a different one.
-pub fn alert_checkpoint<N: Notifier>(
-    notifier: &N,
-    session: &Session,
-    trigger: &CheckpointTrigger,
-) -> CheckpointAlert {
-    todo!("implement per SPEC.md")
+/// `'a` is tied only to `session` - the one reference this function's
+/// output actually borrows from. `notifier` and `trigger` deliberately
+/// don't share it: nothing about them needs to outlive the returned
+/// `CheckpointAlert`, and unifying all three under one lifetime would
+/// only over-constrain callers who don't happen to give all three
+/// arguments the same lifetime.
+pub fn alert_checkpoint<'a, N: Notifier>(
+    notifier: &'a N,
+    session: &'a Session,
+    trigger: &'a CheckpointTrigger,
+) -> CheckpointAlert<'a> {
+    let message = match trigger {
+        CheckpointTrigger::TimeElapsed(secs) => {
+            format!("Checkpoint: {secs}s since last checkpoint")
+        }
+        CheckpointTrigger::ToolCallCount(n) => {
+            format!("Checkpoint: {n} tool calls since last checkpoint")
+        }
+        CheckpointTrigger::ContextBudget(frac) => {
+            format!("Checkpoint: {:.0}% of context budget used", frac * 100.0)
+        }
+    };
+    let sent = notifier.notify(&message);
+    CheckpointAlert {
+        session_label: session.label(),
+        message,
+        sent,
+    }
 }

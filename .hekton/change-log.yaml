@@ -58,3 +58,47 @@ changes:
       - "docs/decisions.md"
       - "docs/next-actions.md"
       - ".hekton/review-log.yaml"
+
+  - id: CHG-0004
+    date: 2026-07-05
+    title: "Module 04 (Generics, Traits & Lifetimes) authored: Notifier trait, CheckpointAlert, alert_checkpoint"
+    intent: "Give Module 04 a real, dry-run-evidenced exercise (alert_checkpoint), the first in this workshop to exercise explicit lifetime annotation."
+    changed_by: "claude-sonnet-5"
+    change_type: feature
+    risk_level: medium
+    validation:
+      - "cargo test: 22/22 pass on the correct dry-run attempt; identical on the naive clone-avoidance and over-annotation attempts"
+      - "cargo clippy -- -D warnings: clean on all three attempts"
+      - "cargo clippy -- -W clippy::pedantic / -W clippy::nursery / -W clippy::restriction: all run and diffed between attempts, not just default"
+      - "ARB trigger fired and was resolved (Modules 01-03's own test suites re-run, identical still-failing-on-todo output confirmed) before the shared-type change landed"
+      - "Takeaway Skill validated against a second, unrelated generic config-store lookup problem"
+    approvals:
+      required: true
+      status: approved
+    links:
+      - "runs/2026-07-05-module-04-dry-run/"
+      - "runs/run-20260705-RW-005.yaml"
+      - "docs/decisions.md"
+      - "docs/session-log.md"
+
+  - id: CHG-0005
+    date: 2026-07-05
+    title: "Second content-level Workshop Review Panel batch (Modules 03+04), findings triaged and fixed"
+    intent: "Get independent, multi-lens critique on Modules 03+04's real content per Coachgremlin's batch-review cadence, due once Module 04 completed the 2-3-module window."
+    changed_by: "claude-sonnet-5"
+    change_type: fix
+    risk_level: medium
+    validation:
+      - "Technical correction (Module 03's pedantic/or-pattern claim) independently re-verified by compiling both forms after adding a new enum variant, not just re-worded"
+      - "Module 04's 'no lint helps' claim re-verified by actually running the full clippy::restriction group and diffing warning types"
+      - "cargo build/test (fixtures/relay): clean after all doc/comment edits"
+      - "scripts/arb-trigger-check.sh: still fires correctly after the comment-only limitation note was added"
+    approvals:
+      required: true
+      status: approved
+    links:
+      - "docs/review-panel/2026-07-05-modules-03-04-content.md"
+      - "docs/review-panel/2026-07-05-modules-03-04-personas/"
+      - "docs/decisions.md"
+      - "docs/next-actions.md"
+      - ".hekton/review-log.yaml"

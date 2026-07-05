@@ -29,18 +29,22 @@ see this retro's "What's still open" section.
 
 **Checked whether a stricter deterministic tier would close the gap, rather than assuming Module
 02's `clippy::pedantic`-gives-no-signal result carries over unchanged.**
-Yes, and it didn't carry over the way either prior module would have predicted - `clippy::pedantic`
-doesn't just fail to help here, it recommends the wrong direction. It flags `attempt-good`'s two
-explicit, intentionally-separate arms (`match_same_arms`) and suggests merging them - the same
-simplification `attempt-naive-wildcard-match` already made. Followed uncritically, pedantic's own
-advice here would push a learner toward the anti-pattern this module's rubric exists to catch, not
-away from it. `clippy::nursery` gives no discriminating signal. The lint that does catch it,
-`clippy::wildcard_enum_match_arm`, lives in clippy's `restriction` group - off by default, not bundled
-into `pedantic` or `nursery`, and clippy's own documentation says `restriction` lints are meant to be
-opted into individually, not as a group, since some conflict with idiomatic style outright. Decision:
-this module's stated deterministic gate stays at default `cargo clippy`, same as Modules 01-02 - the
-conceptual tier is doing the real discriminating work, and in this case a stricter default lint tier
-would have actively misled rather than merely fallen short.
+Yes, and it didn't carry over the way either prior module would have predicted, though the original
+version of this retro overstated how far it diverged. `clippy::pedantic` flags `attempt-good`'s two
+explicit, intentionally-separate arms (`match_same_arms`) and suggests merging them into an
+or-pattern. **Corrected 2026-07-05** (Modules 03+04 Workshop Review Panel batch, AI/ML Practitioner
+persona, verified by compiling both forms after adding a fourth trigger variant): that or-pattern is
+*not* the same simplification `attempt-naive-wildcard-match` made - it still names every variant, so
+it still fails to compile on a new one, unlike a true `_` wildcard. Pedantic's suggestion costs
+readability (the two variants no longer read as individually considered), not the exhaustiveness
+guarantee rule 5 protects. `clippy::nursery` gives no discriminating signal. The lint that does catch
+the actual wildcard risk, `clippy::wildcard_enum_match_arm`, lives in clippy's `restriction` group -
+off by default, not bundled into `pedantic` or `nursery`, and clippy's own documentation says
+`restriction` lints are meant to be opted into individually, not as a group, since some conflict with
+idiomatic style outright. Decision: this module's stated deterministic gate stays at default `cargo
+clippy`, same as Modules 01-02 - the conceptual tier is doing the real discriminating work, though
+here (unlike this retro's original claim) a stricter default lint tier would have been unhelpful
+noise, not an actively misleading signal.
 
 **Coachgremlin's feedback references the actual diff, gives one concrete next try, and never hands
 the fix over.**

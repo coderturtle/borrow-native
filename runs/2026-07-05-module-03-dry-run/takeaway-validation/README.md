@@ -46,13 +46,16 @@ over from `next_action` just because the shape looks similar.
 RefundPolicy::FullRefund` and `OrderStatus::Cancelled => RefundPolicy::FullRefund` arms (`diff.patch`).
 
 **Step 4 (does `clippy::pedantic` help or hurt here?):** Checked fresh on this second example, not
-assumed from `next_action` - and it reproduces the exact same wrong-direction result.
+assumed from `next_action` - and it reproduces the same suggestion, though not the same risk.
 `cargo clippy -- -W clippy::pedantic` on the *fixed* version fires `match_same_arms` on the two
-explicit `FullRefund` arms and suggests merging them back into `OrderStatus::Pending |
-OrderStatus::Cancelled => RefundPolicy::FullRefund` - functionally the same collapse as the original
-`_` wildcard. `cargo clippy -- -W clippy::wildcard_enum_match_arm` on the *naive* version correctly
-flags the `_` arm by name; on the fixed version, silent. Full output, both versions, all three lint
-checks: `transcript.txt`.
+explicit `FullRefund` arms and suggests merging them into `OrderStatus::Pending |
+OrderStatus::Cancelled => RefundPolicy::FullRefund`. **Corrected 2026-07-05** (Modules 03+04
+Workshop Review Panel batch, AI/ML Practitioner persona): this or-pattern is not "the same collapse
+as the original `_` wildcard" - it still names both variants, so it still fails to compile if a fifth
+`OrderStatus` variant is added, unlike the wildcard. Pedantic's suggestion here costs the
+per-variant readability signal, not the exhaustiveness guarantee. `cargo clippy -- -W
+clippy::wildcard_enum_match_arm` on the *naive* version correctly flags the `_` arm by name; on the
+fixed version, silent. Full output, both versions, all three lint checks: `transcript.txt`.
 
 **Step 5 (does a green test/clippy run prove the modeling holds up under change?):** Confirmed
 directly: both the naive and fixed versions compile and (if a test suite existed here) would pass it
@@ -64,7 +67,8 @@ evidence the modeling will still be correct after that change.
 
 The playbook generalized: applied cold to an order/refund domain with zero relationship to `relay` or
 checkpoints, it correctly identified the same class of `_`-wildcard risk, and independently
-reproduced the `clippy::pedantic`-recommends-the-anti-pattern finding on a second, unrelated example -
-strengthening confidence that finding is a property of the lint's own logic (identical-body arms get
-flagged for merging, regardless of *why* they were kept separate), not a one-off quirk of `relay`'s
+reproduced the `clippy::pedantic`-flags-explicit-arms-as-duplicative finding on a second, unrelated
+example - strengthening confidence that finding is a property of the lint's own logic (identical-body
+arms get flagged for merging, regardless of *why* they were kept separate), not a one-off quirk of
+`relay`'s
 specific enums.

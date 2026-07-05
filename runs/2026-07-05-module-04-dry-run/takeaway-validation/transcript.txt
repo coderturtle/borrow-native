@@ -1,0 +1,26 @@
+=== NAIVE VERSION ===
+--- cargo build ---
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+EXIT: 0
+--- cargo clippy -D warnings ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+EXIT: 0
+--- cargo clippy pedantic ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+EXIT: 0
+=== FIXED VERSION ===
+--- cargo build ---
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+EXIT: 0
+--- cargo clippy -D warnings ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+EXIT: 0
+--- cargo clippy pedantic ---
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+EXIT: 0

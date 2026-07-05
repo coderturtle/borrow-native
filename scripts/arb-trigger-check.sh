@@ -41,6 +41,16 @@ fi
 # `pattern:`/`reason:`/`review_type:` triple, in that order - parsed
 # positionally rather than with a YAML library to keep this script
 # dependency-free.
+#
+# Known limitation (flagged 2026-07-05, Modules 03+04 Workshop Review Panel
+# batch, Security-Conscious Reviewer persona): the regexes below only match
+# double-quoted values in this exact key order. A governance.yaml reformatted
+# with single quotes, folded/multiline values, or reordered keys would fail
+# to match silently - patterns/reasons/review_types would stay empty and this
+# script would report "no triggers configured" (exit 0) rather than erroring
+# loudly. Verified against the current governance.yaml's actual shape (still
+# matches); not yet hardened against format drift - a real YAML parser would
+# close this, at the cost of the dependency-free property above.
 patterns=()
 reasons=()
 review_types=()

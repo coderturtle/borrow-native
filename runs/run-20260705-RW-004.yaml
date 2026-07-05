@@ -32,5 +32,19 @@ human_notes: >
   runs/2026-07-05-module-03-dry-run/retro.md for the full go/no-go
   reasoning. Recommendation is a go on authoring Module 04 with the same
   dry-run discipline. Reviewed and confirmed (go) by coderturtle 2026-07-05.
+
+  CORRECTION (2026-07-05, Modules 03+04 Workshop Review Panel batch,
+  AI/ML Practitioner persona): the "pedantic actively points the wrong
+  way" / "recommending the same collapse-to-wildcard" claim above is
+  overstated. Verified by compiling both the suggested or-pattern merge
+  and the explicit-arms version after adding a fourth CheckpointTrigger
+  variant: both fail to compile (E0004, non-exhaustive) identically -
+  the or-pattern still names every variant, so it does not reintroduce
+  the wildcard's exhaustiveness gap. Pedantic's suggestion costs
+  per-variant readability, not the safety property rubric criterion 5
+  protects. The underlying finding this run's go/no-go rested on (the
+  deterministic gate cannot distinguish the two attempts) is unaffected
+  by this correction. See docs/review-panel/2026-07-05-modules-03-04-content.md
+  and runs/2026-07-05-module-03-dry-run/grading.md's corrected version.
 output_artifact: runs/2026-07-05-module-03-dry-run/
 failure_reason: ""
