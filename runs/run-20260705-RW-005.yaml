@@ -1,0 +1,44 @@
+schema_version: "1"
+run_id: run-20260705-RW-005
+project: borrow-native
+task_id: coachgremlin-module-04-generics-traits-lifetimes-dry-run
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: true
+human_notes: >
+  Coachgremlin's first real dry run for Module 04 (Generics, Traits &
+  Lifetimes): a correct attempt (CheckpointAlert<'a> borrowing
+  session_label as &'a str, alert_checkpoint<'a, N: Notifier> tying 'a
+  only to session), a deliberately naive, honest attempt (owned
+  session_label: String, built via session.label.clone() to sidestep the
+  lifetime question entirely), and a lighter third check targeting the
+  module's other learning objective (unifying all three reference
+  parameters under one lifetime rather than scoping it to session alone).
+  All three compile and pass cargo test (22/22) and cargo clippy -- -D
+  warnings identically. Checked fresh, not assumed from Modules 01-03:
+  clippy::pedantic's output is byte-for-byte identical between the
+  correct and clone-avoidance attempts (diffed directly); the full
+  clippy::restriction group was also run and diffed by warning type, and
+  its only difference (single_char_lifetime_names) flags the *correct*
+  attempt for naming its lifetime 'a, not the naive one - unlike Module
+  03, no lint at any level rescues this. scripts/clone-count-check.sh,
+  calibrated against the reference implementation's own diff (baseline
+  2, both inherited from Module 02), correctly flags the naive attempt's
+  diff (3 clones) - the first true positive this pre-filter has produced
+  inside a module's own graded dry-run scoring (Module 03's own use of it
+  was a true negative). Takeaway packaged
+  (.claude/skills/trait-lifetime-cheatsheet/SKILL.md) and validated
+  against a second, unrelated generic config-store lookup problem before
+  being called done (runs/2026-07-05-module-04-dry-run/takeaway-validation/).
+  This same session also ran the Modules 03+04 Workshop Review Panel
+  batch (see REV-0003), which found and this run's own docs corrected a
+  real technical overclaim in Module 03's pedantic finding (verified by
+  compiling both forms after adding a new enum variant: the or-pattern
+  clippy suggests preserves exhaustiveness, contrary to the original
+  claim). See runs/2026-07-05-module-04-dry-run/retro.md for the full
+  go/no-go reasoning. Recommendation is a go on authoring Module 05 next.
+  Reviewed and confirmed (go) by coderturtle 2026-07-05.
+output_artifact: runs/2026-07-05-module-04-dry-run/
+failure_reason: ""

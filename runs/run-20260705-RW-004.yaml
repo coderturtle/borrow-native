@@ -1,0 +1,50 @@
+schema_version: "1"
+run_id: run-20260705-RW-004
+project: borrow-native
+task_id: coachgremlin-module-03-structs-enums-pattern-matching-dry-run
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: true
+human_notes: >
+  Coachgremlin's first real dry run for Module 03 (Structs, Enums & Pattern
+  Matching): a correct attempt that lists every CheckpointTrigger variant
+  explicitly under next_action's Ignored arm, and a deliberately naive,
+  honest (non-adversarial) attempt that covers two of the three variants
+  with a single `_` wildcard instead. Finding, checked fresh per
+  docs/next-actions.md's own instruction not to assume Modules 01-02's
+  clone-shaped finding generalizes to a concept with no cloning in it:
+  both attempts pass cargo test (16/16) and default cargo clippy -- -D
+  warnings identically. clippy::pedantic gives a result stronger than
+  either prior module's: it does not catch the naive attempt at all, and
+  instead flags the good attempt's explicit arms (match_same_arms),
+  recommending the same collapse-to-wildcard the naive attempt already
+  made - pedantic actively points the wrong way here, not just short of
+  useful. The lint that does catch it, clippy::wildcard_enum_match_arm,
+  lives in clippy's off-by-default restriction group. This same finding
+  was independently reproduced on a second, unrelated order/refund-status
+  example in takeaway-validation/. Also: this run trialed the new
+  clone-count-check.sh pre-filter (added this same day from the Modules
+  01-02 review-panel batch's deferred item) and confirmed it correctly
+  stays silent here - this module's failure mode isn't clone-shaped, a
+  true negative rather than a coverage gap. See
+  runs/2026-07-05-module-03-dry-run/retro.md for the full go/no-go
+  reasoning. Recommendation is a go on authoring Module 04 with the same
+  dry-run discipline. Reviewed and confirmed (go) by coderturtle 2026-07-05.
+
+  CORRECTION (2026-07-05, Modules 03+04 Workshop Review Panel batch,
+  AI/ML Practitioner persona): the "pedantic actively points the wrong
+  way" / "recommending the same collapse-to-wildcard" claim above is
+  overstated. Verified by compiling both the suggested or-pattern merge
+  and the explicit-arms version after adding a fourth CheckpointTrigger
+  variant: both fail to compile (E0004, non-exhaustive) identically -
+  the or-pattern still names every variant, so it does not reintroduce
+  the wildcard's exhaustiveness gap. Pedantic's suggestion costs
+  per-variant readability, not the safety property rubric criterion 5
+  protects. The underlying finding this run's go/no-go rested on (the
+  deterministic gate cannot distinguish the two attempts) is unaffected
+  by this correction. See docs/review-panel/2026-07-05-modules-03-04-content.md
+  and runs/2026-07-05-module-03-dry-run/grading.md's corrected version.
+output_artifact: runs/2026-07-05-module-03-dry-run/
+failure_reason: ""

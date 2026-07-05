@@ -1,0 +1,49 @@
+schema_version: "1"
+run_id: run-20260705-RW-006
+project: borrow-native
+task_id: coachgremlin-module-05-error-handling-dry-run
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: true
+human_notes: >
+  Coachgremlin's first real dry run for Module 05 (Error Handling as Idiomatic
+  Control Flow): a correct attempt (HandoffError::Io wrapping the real
+  std::io::Error, From<std::io::Error> enabling bare ?, Error::source()
+  overridden to return it), a deliberately naive, honest attempt (keeps the
+  shipped Io(String) shape, converting the I/O error to a message the instant
+  it's caught via e.to_string()), and a lighter second check targeting the
+  module's other learning objective (rewriting parse_config's ? uses as
+  explicit match blocks). All pass cargo test (32/32) and cargo clippy -- -D
+  warnings identically for the primary attempt pair. Checked fresh, not
+  assumed from Modules 01-04: clippy::pedantic and clippy::nursery give zero
+  discriminating signal on the HandoffError finding; the full
+  clippy::restriction group (diffed programmatically via
+  --message-format=json, not spot-checked) surfaces one weak, generic partial
+  signal (clippy::missing_trait_methods, since the naive attempt's Error impl
+  doesn't override source()) and one lint pointing the wrong direction
+  (clippy::question_mark_used, which flags the correct attempt for using ?).
+  scripts/clone-count-check.sh correctly reports a true negative on both
+  diffs (baseline 0, this failure mode isn't clone-shaped). For the second,
+  ?-avoidance check: clippy::question_mark, part of the DEFAULT "style" lint
+  group, genuinely fails a same-type Result -> Result manual match with no
+  error transformation, but stays silent on the analogous Option -> Result
+  case - confirmed by isolating each case separately. This is the first
+  module where default clippy (no escalation at all) rescues part of a naive
+  shape outright. Takeaway packaged
+  (.claude/skills/custom-error-type-template/SKILL.md) and validated against
+  a second, unrelated retry-policy-parsing problem before being called done
+  (runs/2026-07-05-module-05-dry-run/takeaway-validation/) - that validation
+  also refined the Skill's own question_mark claim (silent on a
+  type-converting manual match too, not just same-type passthroughs). See
+  runs/2026-07-05-module-05-dry-run/retro.md for the full go/no-go reasoning.
+  Recommendation is a go on authoring Module 06 next. Batch-review cadence
+  not due yet (1 of 2-3 modules since the Modules 03+04 batch). Reviewed and
+  confirmed (go) by coderturtle 2026-07-05. Same session: coderturtle
+  authorized adding `thiserror` as a real Cargo dependency (previously
+  avoided solely due to this project's `dependency_changes: human_required`
+  governance gate, not a design objection) - see docs/decisions.md for the
+  follow-up retrofit this unblocked.
+output_artifact: runs/2026-07-05-module-05-dry-run/
+failure_reason: ""

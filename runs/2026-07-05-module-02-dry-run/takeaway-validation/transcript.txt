@@ -1,0 +1,45 @@
+=== BEFORE: cargo test ===
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running unittests src/lib.rs (target/debug/deps/takeaway_validation-a9240cd72991f606)
+
+running 3 tests
+test tests::paragraphs_still_usable_after_the_call ... ok
+test tests::counts_words_across_paragraphs ... ok
+test tests::empty_slice_is_zero ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests takeaway_validation
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+=== BEFORE: cargo clippy -- -D warnings ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+
+=== AFTER (playbook fix applied): cargo test ===
+   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+     Running unittests src/lib.rs (target/debug/deps/takeaway_validation-a9240cd72991f606)
+
+running 3 tests
+test tests::counts_words_across_paragraphs ... ok
+test tests::paragraphs_still_usable_after_the_call ... ok
+test tests::empty_slice_is_zero ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests takeaway_validation
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+=== AFTER: cargo clippy -- -D warnings ===
+    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s

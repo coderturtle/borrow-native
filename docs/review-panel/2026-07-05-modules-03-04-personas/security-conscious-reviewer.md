@@ -1,0 +1,17 @@
+# Security-Conscious Reviewer — Module 04 (2026-07-05)
+
+## Security-Conscious Review — Module 04
+
+**Top finding: `scripts/arb-trigger-check.sh`'s governance-file parser can silently fail open, the same bug class already found once in this script.**
+
+Lines 50-69 hand-roll a positional YAML parser instead of using a library: it only recognizes `arb_review_triggers:` entries shaped exactly as double-quoted `pattern: "..."` / `reason: "..."` / `review_type: ...` lines, in that fixed order, and it requires `review_type:` to be the line that flushes a triple onto the `patterns`/`reasons`/`review_types` arrays. If `.hekton/governance.yaml` is ever reformatted in a way that's still valid YAML but doesn't match this exact shape — single quotes instead of double (`pattern: 'foo'`), a folded/multiline value, or reason/pattern reordered — the regex matches silently fail, `patterns` stays empty, and line 71-74 reports `"No arb_review_triggers configured"` and **exits 0**. That's a false "nothing to block here" from a script whose entire job is to block. It's the same failure category the task description says was already caught once (the script always exiting 0 even on a real fire) — just reachable through format drift in the config file rather than through the exit-code logic itself. Given this script gates whether a later module's change to `fixtures/relay/src/lib.rs` gets a human review, a governance gremlin script that goes quiet on reformatting is worth flagging even though it currently works against today's `governance.yaml` (verified — the two entries there match the expected quoted/ordered shape).
+
+Everything else checked out:
+
+- **`Notifier`/`alert_checkpoint`**: no bad habit modeled. The three stub implementations always returning `true` is explicitly scoped out in comments (`fixtures/relay/src/lib.rs:132-165`) and — critically — the exercise's own test suite forces the learner to thread through the *real* return value (`alert_checkpoint` "must ... report back whatever it actually returned in `sent` — not an assumed `true`", README lines 70-71; rubric criterion 4 explicitly fails a hardcoded `sent: true`). This is the opposite of teaching silent-swallowing; it's gated against it.
+- **`scripts/clone-count-check.sh`**: no exit-code or injection issues found; string handling is plain substring parsing over diff text, no `eval`, no unquoted expansion risk.
+- **`scripts/arb-trigger-check.sh` otherwise**: exact-string path matching (not glob) is correct given current governance patterns are literal paths; quoting/rename handling in the porcelain-parsing pipeline (lines 80-83) looks sound; missing-governance-file case correctly fails closed (`exit 1`, line 38).
+
+## Disposition
+
+**Fixed, scoped to a comment, not a rewrite.** Adding a real YAML parser is a bigger scope change than this pass warrants (trades away the script's stated dependency-free design goal). Added a comment directly above the parsing block documenting the exact limitation (which config shapes it does and doesn't handle) so the risk is visible to whoever next touches `governance.yaml`, rather than discovered by a silent failure. Confirmed the script still fires correctly against the current, real `governance.yaml` after the comment-only change. A structural fix (real YAML library, or a self-check that the parsed trigger count matches a raw grep count) is deferred, recorded in `docs/next-actions.md`.

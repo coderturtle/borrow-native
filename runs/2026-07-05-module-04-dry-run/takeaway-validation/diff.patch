@@ -1,0 +1,28 @@
+--- naive version
++++ fixed version
+@@ -10,16 +10,19 @@
+ }
+ 
+ /// The result of looking a key up in a `Store`: which key was asked for,
+-/// what value (if any) came back.
+-pub struct LookupResult {
+-    pub key: String,
++/// what value (if any) came back. `key` borrows the caller's own key rather
++/// than cloning it - nothing here needs to outlive that string.
++pub struct LookupResult<'a> {
++    pub key: &'a str,
+     pub value: Option<String>,
+ }
+ 
+-/// Look a key up in any `Store`.
+-pub fn lookup<S: Store>(store: &S, key: &str) -> LookupResult {
++/// Look a key up in any `Store`. `'a` is tied only to `key`, the one
++/// reference the output actually borrows - `store` doesn't share it, since
++/// nothing about the store needs to outlive the returned `LookupResult`.
++pub fn lookup<'a, S: Store>(store: &S, key: &'a str) -> LookupResult<'a> {
+     LookupResult {
+-        key: key.to_string(),
++        key,
+         value: store.get(key),
+     }
+ }

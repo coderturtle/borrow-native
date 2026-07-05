@@ -16,3 +16,7 @@ build/
 # Rust module exercise crates (each module's exercise/ is a real cargo crate)
 target/
 Cargo.lock
+
+# Each learner's own certification-tracker progress (.claude/skills/certification-tracker/) -
+# personal completion state, not workshop content. See docs/certification-mapping.md.
+.cert-progress.local.yaml

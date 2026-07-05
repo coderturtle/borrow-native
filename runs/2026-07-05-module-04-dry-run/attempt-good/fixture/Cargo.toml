@@ -1,0 +1,14 @@
+[package]
+name = "relay"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "A restartable-handoff CLI for hybrid human-agent team pacing. Borrow Native's shared throughline project: each module adds one real feature."
+
+[lib]
+name = "relay"
+path = "src/lib.rs"
+
+[[bin]]
+name = "relay"
+path = "src/main.rs"

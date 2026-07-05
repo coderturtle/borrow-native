@@ -15,3 +15,63 @@ reviews:
     findings: []
     follow_ups:
       - "Run scripts/governance-check.sh after first material change."
+
+  - id: REV-0002
+    date: 2026-07-05
+    reviewer: "Workshop Review Panel (7 personas: AI/ML Practitioner, Developer Evangelist, End-User/Learner, Technical Writer, Skeptical Critic, Instructional Designer, Security-Conscious Reviewer)"
+    review_type: content
+    scope:
+      - "modules/01-ownership-move-semantics/README.md"
+      - "modules/02-borrowing-references/README.md"
+      - "fixtures/relay/SPEC.md"
+      - "fixtures/relay/src/lib.rs"
+      - "fixtures/relay/tests/finalize_session.rs"
+      - "fixtures/relay/tests/session_stats.rs"
+      - "scripts/arb-trigger-check.sh"
+    result: findings_fixed
+    findings:
+      - "Spoiler placement: 'Why this is hard' names the diagnosis before the exercise is attempted (2 personas, fixed)"
+      - "'One correct clone' framing overstated a lifetime-scoping caveat as settled fact (2 personas, fixed)"
+      - "scripts/arb-trigger-check.sh always exited 0, even on a fire (fixed)"
+      - "git status --porcelain parsing fragile on renames/quoted paths (fixed)"
+      - "Missing cd fixtures/relay instruction in both module exercise blocks (fixed)"
+      - "retro.md overclaim ('confirms' vs. its own later hedge) (fixed)"
+      - "Em dash in SPEC.md violating brand rule (fixed)"
+      - "Internal ~/hekton path in public-facing status blockquotes (fixed)"
+      - "Module 02 LO3 not actually exercised by the content (fixed)"
+      - "Module 02's Module-01 prerequisite not mechanically enforced (deferred)"
+      - "No cheap deterministic check tried before Coachgremlin's subjective read (deferred)"
+      - "gate/tier terminology drift across README.md/modules/README.md/rubrics (deferred)"
+    follow_ups:
+      - "See docs/next-actions.md for the three deferred findings."
+      - "Full report: docs/review-panel/2026-07-05-modules-01-02-content.md"
+
+  - id: REV-0003
+    date: 2026-07-05
+    reviewer: "Workshop Review Panel (7 personas: AI/ML Practitioner, Developer Evangelist, End-User/Learner, Technical Writer, Skeptical Critic, Instructional Designer, Security-Conscious Reviewer)"
+    review_type: content
+    scope:
+      - "modules/03-structs-enums-pattern-matching/README.md"
+      - "modules/04-generics-traits-lifetimes/README.md"
+      - "fixtures/relay/SPEC.md"
+      - "fixtures/relay/src/lib.rs"
+      - "fixtures/relay/tests/next_action.rs"
+      - "fixtures/relay/tests/alert_checkpoint.rs"
+      - "modules/README.md"
+      - "scripts/arb-trigger-check.sh"
+      - "scripts/clone-count-check.sh"
+    result: findings_fixed
+    findings:
+      - "Module 03's 'clippy::pedantic recommends the anti-pattern' claim was factually overstated - verified by compiling both forms after adding a new enum variant, the suggested or-pattern preserves exhaustiveness (fixed across README/grading.md/retro.md/enum-modeling-playbook/coachgremlin.md)"
+      - "Module 04's 'no lint anywhere' and 'first true positive' claims rested on partial/imprecise searches - re-verified by actually running the full clippy::restriction group and reconciling against docs/next-actions.md's own pre-adoption trial record (fixed)"
+      - "Module 03 LO1 (hidden-enum-in-a-struct) is demonstrated in given code, never gated by the exercise (fixed: honesty caveat added)"
+      - "Module 04's dry-run-validated 7th rubric criterion (lifetime over-annotation) never made it into the shipped rubric (fixed: added)"
+      - "Leaked ~/hekton/... path recurred in modules/README.md; gate/scored/anti-gaming/structural rubric vocabulary never reconciled with the 'shared vocabulary' table (both fixed in the same edit)"
+      - "modules/README.md's arc table under-described Module 04's scored criteria (fixed)"
+      - "scripts/arb-trigger-check.sh's hand-rolled YAML parser silently fails open on config-format drift (fixed: documented via comment, not restructured)"
+      - "Given Notifier code in Module 04 lacked a 'don't modify' note (fixed)"
+      - "Rubric sections spoil the exercise's own answer before the learner attempts it (deferred - conflicts with Coachgremlin's own rubric-sharing requirement, needs a real design decision)"
+      - "Module pages read as audit reports/lab notebooks rather than workshop pitches; Takeaway placed last (deferred - workshop-wide structural item)"
+    follow_ups:
+      - "See docs/next-actions.md for the deferred findings."
+      - "Full report: docs/review-panel/2026-07-05-modules-03-04-content.md"

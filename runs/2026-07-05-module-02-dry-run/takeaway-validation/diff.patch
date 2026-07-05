@@ -1,0 +1,14 @@
+--- .before/lib.rs	2026-07-05 14:38:59
++++ src/lib.rs	2026-07-05 14:39:04
+@@ -1,8 +1,7 @@
+-/// Naive first attempt: clones the entire borrowed slice into an owned `Vec`
+-/// before reading it, out of the same habit `session_stats`'s naive attempt
+-/// had. See `../README.md` for the fix applied.
++/// Reads directly through the borrowed slice - no clone at all, since nothing
++/// here needs to outlive the borrow. See `../README.md` for the naive version
++/// this replaced and the playbook steps that found the fix.
+ pub fn total_word_count(paragraphs: &[String]) -> usize {
+-    let paragraphs = paragraphs.to_vec();
+     paragraphs.iter().map(|p| p.split_whitespace().count()).sum()
+ }
+ 
