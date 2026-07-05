@@ -15,3 +15,5 @@
 | 2026-07-05 | Built Module 01's real exercise and ran Coachgremlin's first real dry run | Finding: default clippy can't distinguish a correct move-based solution from a naive clone-heavy one; only Coachgremlin's conceptual tier can. Fed back into coachgremlin.md. |
 | 2026-07-05 | Pivoted to one shared throughline project (fixtures/relay/, a human-agent pacing CLI), retiring the per-module toy fixture | Modules should build one real, usable tool. Migrated Module 01's lesson in; same finding reproduced exactly. |
 | 2026-07-05 | Designed the full module-to-feature mapping for relay (Modules 01-08) | Rust's additive concept arc maps to one growing project, not five lenses on one static fixture (terminal-velocity's shape). |
+| 2026-07-05 | coderturtle reviewed and confirmed both Module 01 dry runs | Both runs flipped to human_confirmed: true. |
+| 2026-07-05 | Added a scoped ARB trigger for relay's shared files, plus a Coachgremlin workflow step | ARB is a mechanical governance.yaml file-pattern trigger, not a persona panel; catches a later module silently breaking an earlier module's shipped gate. |

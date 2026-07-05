@@ -40,3 +40,16 @@ agent_defaults:
   update_session_log_for_material_changes: true
   prefer_dry_run_before_mutation: true
   never_commit_secrets: true
+
+# Added 2026-07-05, after pivoting to one shared throughline project (fixtures/relay/)
+# across all 8 modules: a later module's feature could silently change or break an
+# earlier module's already-shipped, already-graded gate. Checked by
+# scripts/arb-trigger-check.sh (reads this list), per Coachgremlin's Workflow step 0
+# (~/hekton/gremlins/coaching/coachgremlin.md).
+arb_review_triggers:
+  - pattern: "fixtures/relay/src/lib.rs"
+    reason: "relay's core domain types/public API changed - a later module's feature could silently break an earlier module's already-shipped exercise or rubric"
+    review_type: governance
+  - pattern: "fixtures/relay/SPEC.md"
+    reason: "relay's single source of truth changed - every module README that cites it may now be stale"
+    review_type: governance
