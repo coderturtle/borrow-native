@@ -38,6 +38,22 @@ for cmd in git bash sed date mkdir printf; do
   fi
 done
 
+# Workshop-specific: the Rust toolchain itself. See scripts/install-rust-toolchain.sh.
+for cmd in cargo rustc; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    log "OK: $cmd ($($cmd --version))"
+  else
+    log "MISSING: $cmd — run scripts/install-rust-toolchain.sh"
+    missing=1
+  fi
+done
+if command -v cargo >/dev/null 2>&1 && cargo clippy --version >/dev/null 2>&1; then
+  log "OK: cargo clippy ($(cargo clippy --version))"
+else
+  log "MISSING: cargo clippy — run scripts/install-rust-toolchain.sh"
+  missing=1
+fi
+
 if [ "$missing" -ne 0 ]; then
   log "Prerequisite check failed"
   exit 1
