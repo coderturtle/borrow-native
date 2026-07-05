@@ -43,7 +43,7 @@ Our working hypothesis, not a settled finding: a deterministic first gate (the c
 
 ## Build in public
 
-This workshop's own build will be published as a dated journal, the maintainer's record of building the workshop and its reusable Gremlin tooling at the same time, once the build-log site is live (not yet, see status above).
+This workshop's own build is published as a dated journal at `coderturtle.github.io/borrow-native` once the first deploy is triggered (site built and locally validated, live deploy still pending human confirmation): the maintainer's record of building the workshop and its reusable Gremlin tooling at the same time, written deliberately rather than auto-generated from session logs.
 
 ## Something wrong?
 

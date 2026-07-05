@@ -1,0 +1,119 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../components/layout/BaseLayout.astro";
+
+const REPO = "https://github.com/coderturtle/borrow-native";
+const base = import.meta.env.BASE_URL;
+
+const recentEntries = (await getCollection("buildlog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Borrow Native: guide"
+  description="Learn Rust the way you already work, with your agent, and let the compiler be the first gate."
+>
+  <h1 class="text-3xl font-bold">Borrow Native</h1>
+  <p class="mt-2 text-lg opacity-80">
+    Learn Rust the way you already work, with your agent, and let the compiler, not an opinion, be the first gate.
+  </p>
+
+  <div class="post-body mt-10">
+    <p>
+      This page is the guide for anyone landing on the deployed site rather than the repo
+      directly. The workshop itself, seven modules covering ownership through concurrency plus a
+      synthesis capstone, lives in the <a href={REPO}>repo</a>, whose own README covers the same
+      ground in more detail once you've cloned it. Nothing here substitutes for cloning it; this
+      is orientation, not the content.
+    </p>
+
+    <h2>Two gates, not one</h2>
+    <p>
+      Every exercise runs through your own coding-agent harness (Claude Code, Codex, or
+      equivalent). A <strong>deterministic gate</strong> checks first: <code>cargo test</code>{" "}
+      green, <code>cargo clippy</code> clean, no judgment call. Then a{" "}
+      <strong>conceptual gate</strong>: Coachgremlin, this workshop's teaching agent (a role you
+      run yourself, inside your own harness, not a hosted service), checks whether you worked
+      with the borrow checker or just found a way around it. A green compiler is necessary,
+      never sufficient on its own.
+    </p>
+
+    <h2>Rust already has great teaching material. This isn't a replacement for it.</h2>
+    <p>
+      The official Rust Book, Rustlings, and Exercism already teach this language well. Borrow
+      Native's arc is anchored to them, not built to replace them; what it adds is delivery
+      through your own agent, a deterministic-plus-conceptual gate instead of a bare pass/fail,
+      and a keepable takeaway per module. See the repo's{" "}
+      <code>docs/workshop-design.md</code> for the full curriculum-anchor research.
+    </p>
+
+    <h2>What you walk away with</h2>
+    <p>
+      Two different things get built during each module: your own judgment, and a reusable
+      artifact your agent can load next time. See each module's own README (once authored) for
+      the evidence behind its specific gate.
+    </p>
+    <ul>
+      <li>
+        <strong>You</strong> get practiced judgment: reading a borrow-checker error and finding
+        the real fix instead of a workaround, modeling data so illegal states are
+        unrepresentable, and diagnosing which concept is actually the bottleneck when something
+        doesn't compile or doesn't feel idiomatic.
+      </li>
+      <li>
+        <strong>Your agent</strong> gets the packaged takeaways: a move-error diagnostic
+        checklist, a borrow-checker playbook, an idiomatic-modeling checklist, a
+        trait-bound/lifetime cheat-sheet, a custom-error-type template, a concurrency decision
+        guide, and a personal Rust diagnostic playbook tying it all together.
+      </li>
+    </ul>
+
+    <h2>The runbook</h2>
+    <ol>
+      <li>
+        Prerequisites: comfortable with git, the CLI, and reading a diff; general programming
+        fluency in another language; already using a coding-agent harness regularly; Rust and
+        <code>cargo</code> installed.
+      </li>
+      <li>
+        Clone it: <code>git clone {REPO}.git</code>
+      </li>
+      <li>
+        Start at <code>modules/README.md</code>. It has the full arc, in order, and a table of
+        what each module's gate requires and what you keep from it.
+      </li>
+      <li>
+        Work through the seven modules in order: ownership, borrowing, structs/enums,
+        generics/traits/lifetimes, error handling, concurrency, then the synthesis capstone. Each
+        states a hard prerequisite on an earlier one.
+      </li>
+      <li>
+        No module completes by reading it. Every module states a required gate, checked first
+        mechanically, then conceptually. If a module ever reduces to "read this, then move on,"
+        or a link here is broken, that's a defect: <a href={`${REPO}/issues`}>open an issue</a>.
+      </li>
+    </ol>
+  </div>
+
+  {
+    recentEntries.length > 0 && (
+      <>
+        <h2 class="mt-14 text-xl font-semibold">Recent from the build log</h2>
+        <ul class="mt-6 space-y-4">
+          {recentEntries.map((entry) => (
+            <li>
+              <a href={`${base}build-log/${entry.id}/`} class="entry-card">
+                <p class="entry-title text-lg font-semibold">{entry.data.title}</p>
+                <p class="mt-1 text-sm opacity-80">{entry.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm opacity-70">
+          See the <a href={`${base}build-log/`} class="underline">full index</a>.
+        </p>
+      </>
+    )
+  }
+</BaseLayout>
