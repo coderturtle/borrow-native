@@ -21,7 +21,7 @@ different lens on a feature that already exists.
 `relay` is a CLI for **hybrid human-agent team pacing**: bounded work-unit checkpoints (a
 pomodoro-style rhythm, sized for a coding-agent session rather than a human's 25 minutes) that each
 produce a **restartable-handoff summary** (goal, changes, verification evidence, open risks) and
-notify a human that a checkpoint was reached - a direct implementation of the "Restartable Handoff
+notify a human that a checkpoint was reached — a direct implementation of the "Restartable Handoff
 Loop" pattern named in `terminal-velocity/docs/workshop-design.md`'s own research, this time as a
 real, running tool instead of a described pattern.
 
@@ -36,8 +36,8 @@ across sessions, not a reimplementation of the cockpit's own scope.
 
 | # | Module | Feature | Status |
 |---|---|---|---|
-| 01 | Ownership & Move Semantics | Core domain types (`DraftCheckpoint`, `CheckpointRecord`, `Session`) and `finalize_session`, sealing a session's drafts into records | **Exercise authored + dry-run complete** (`runs/2026-07-05-module-01-dry-run/`, `runs/2026-07-05-module-01-relay-dry-run/`). Stub + tests shipped; learner's own implementation intentionally left as the open exercise. |
-| 02 | Borrowing & References | Session statistics (average/longest checkpoint gap) computed by borrowing session history | **Exercise authored + dry-run complete** (`runs/2026-07-05-module-02-dry-run/`). Stub + tests shipped; learner's own implementation intentionally left as the open exercise. |
+| 01 | Ownership & Move Semantics | Core domain types (`DraftCheckpoint`, `CheckpointRecord`, `Session`) and `finalize_session`, sealing a session's drafts into records | **This pass: stub + tests shipped, unstarted (see below)** |
+| 02 | Borrowing & References | Session statistics (average/longest checkpoint gap) computed by borrowing session history | Not started |
 | 03 | Structs, Enums & Pattern Matching | `CheckpointTrigger` (time/tool-count/context-budget) and human-response (`Acknowledged`/`Snoozed`/`Ignored`) enums | Not started |
 | 04 | Generics, Traits & Lifetimes | `Notifier` trait (desktop/terminal-bell/stdout), implemented generically | Not started |
 | 05 | Error Handling | Config parsing and handoff-summary file I/O with real `Result`/custom error types | Not started |
@@ -127,10 +127,8 @@ pub fn session_stats(session: &Session) -> SessionStats {
 - `average_gap_secs`/`longest_gap_secs`: computed directly over each `CheckpointRecord.elapsed_secs`
   in `session.checkpoints` - no wall-clock reads, so results are deterministic and testable.
 - `longest_gap_goal`: the `goal` of the checkpoint with the longest gap. Returned as an owned
-  `String` on purpose - `SessionStats` has no lifetime parameter (lifetimes arrive in Module 04), so
-  this value must be owned to leave the function. Given that type shape, cloning it here once is
-  the correct move, not a habit to unlearn - a `SessionStats<'a>` borrowing instead would remove
-  even this clone, out of scope for this module.
+  `String` on purpose - it has to outlive the borrow of `session` that produced it, so this is the
+  one clone in this exercise that's actually correct, not a habit to unlearn.
 
 ### Required edge cases
 

@@ -14,8 +14,10 @@ build-out table). Module 01 adds the project's core domain types and its first f
 > `fixtures/relay/src/lib.rs`: seal a session's drafted checkpoints into finalized records. Five
 > edge cases are checked by the provided test suite (`fixtures/relay/tests/finalize_session.rs`):
 > empty drafts, a single draft, multiple drafts preserving order, empty risks preserved (not
-> dropped), and multiple risks preserved in order. Get `cargo test` green, from your own harness,
-> without narrating the fix as you go, then check it against the rubric below.
+> dropped), and multiple risks preserved in order. Run everything from `fixtures/relay/`
+> (`cd fixtures/relay && cargo test` - there's no top-level `Cargo.toml`, so `cargo test` from the
+> repo root won't find this crate). Get `cargo test` green, from your own harness, without
+> narrating the fix as you go, then check it against the rubric below.
 
 ## Rubric
 
@@ -69,6 +71,10 @@ See [`modules/README.md`](../README.md) for the full arc and why this order.
 
 ## Why this is hard, and what actually turned out to matter
 
+**Don't read this section before your first attempt either** - it names the diagnosis directly,
+same as the Takeaway Skill below. Attempt the exercise first; come back here once you have a
+working `cargo test` pass (or you're genuinely stuck on tooling, not the concept).
+
 An experienced developer picking up Rust already knows how to solve `finalize_session` in whatever
 language they came from: iterate a list, build up a new one. Rust's version of that same pattern
 has a landmine in it precisely because it *compiles* either way: borrow-and-clone builds the exact
@@ -114,6 +120,5 @@ still apply without modification when this module's own exercise migrated to `re
 > before and after the shared-project pivot), and the resulting finding (the deterministic gate
 > alone cannot distinguish the two) is evidenced in `runs/2026-07-05-module-01-dry-run/` and
 > `runs/2026-07-05-module-01-relay-dry-run/`, not asserted. Reviewed against Coachgremlin's own
-> Workflow steps 3-6 (`~/hekton/gremlins/coaching/coachgremlin.md`), not yet by the Workshop Review
-> Panel (deferred to a batched re-run once more modules have real content - see
-> `docs/next-actions.md`).
+> Workflow steps 3-6 by this workshop's teaching agent, and by the Workshop Review Panel's first
+> content-level batch: `docs/review-panel/2026-07-05-modules-01-02-content.md`.

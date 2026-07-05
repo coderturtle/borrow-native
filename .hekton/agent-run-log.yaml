@@ -76,3 +76,76 @@ agent_runs:
       - "Not counted as a new run toward Coachgremlin's 3-run bar (same lesson re-instantiated)."
     next_actions:
       - "Author Module 02's feature (session statistics) against fixtures/relay/."
+
+  - id: RUN-0004
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Coachgremlin (Module 02 content-authoring pass)"
+    intent: "Author Module 02's real exercise (session_stats, borrowing relay's session history) and run Coachgremlin's dry run against it, checking fresh whether Module 01's deterministic-gate-blind-spot finding generalizes to a borrowing concept."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: pending
+    files_touched:
+      - "scripts/arb-trigger-check.sh"
+      - "fixtures/relay/src/lib.rs"
+      - "fixtures/relay/SPEC.md"
+      - "fixtures/relay/tests/finalize_session.rs"
+      - "fixtures/relay/tests/session_stats.rs"
+      - "modules/02-borrowing-references/README.md"
+      - "runs/2026-07-05-module-02-dry-run/"
+      - "runs/run-20260705-RW-003.yaml"
+      - ".claude/skills/borrow-checker-playbook/SKILL.md"
+      - "modules/README.md"
+      - "README.md"
+      - "docs/decisions.md"
+      - "docs/next-actions.md"
+    validation:
+      - "cargo test: 11/11 pass (both attempts)"
+      - "cargo clippy -- -D warnings: clean (both attempts, identically)"
+      - "cargo clippy -- -W clippy::pedantic: identical output on both attempts (no discriminating signal, unlike Module 01)"
+      - "Takeaway validated against a second, unrelated borrowing problem"
+      - "scripts/arb-trigger-check.sh verified against a clean baseline and a real touch to fixtures/relay/src/lib.rs"
+    risks:
+      - "This dry run graded its own constructed attempts, not an independent learner's."
+      - "scripts/arb-trigger-check.sh was previously claimed complete but did not exist - now written and verified for real."
+    next_actions:
+      - "coderturtle to review this run's recommendation (run-20260705-RW-003.yaml)."
+      - "Run the first content-level Workshop Review Panel batch (Modules 01+02)."
+      - "Author Module 03 (Structs, Enums & Pattern Matching) with the same dry-run discipline."
+
+  - id: RUN-0005
+    date: 2026-07-05
+    agent: "claude-sonnet-5"
+    role: "Workshop Review Panel (7 personas, invoked by Coachgremlin's batch cadence)"
+    intent: "Run the first content-level Review Panel batch against Modules 01+02, coderturtle's go-ahead; triage and fix cheap findings same-pass."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: approved
+    files_touched:
+      - "docs/review-panel/2026-07-05-modules-01-02-content.md"
+      - "docs/review-panel/2026-07-05-modules-01-02-personas/"
+      - "scripts/arb-trigger-check.sh"
+      - "modules/01-ownership-move-semantics/README.md"
+      - "modules/02-borrowing-references/README.md"
+      - "fixtures/relay/SPEC.md"
+      - "fixtures/relay/src/lib.rs"
+      - ".claude/skills/borrow-checker-playbook/SKILL.md"
+      - "runs/2026-07-05-module-02-dry-run/retro.md"
+      - "runs/run-20260705-RW-003.yaml"
+      - "modules/README.md"
+      - "docs/decisions.md"
+      - "docs/next-actions.md"
+    validation:
+      - "7/7 personas returned distinct findings, no empty/generic outputs"
+      - "cargo check --tests (fixtures/relay): clean after all doc-comment/wording edits"
+      - "scripts/arb-trigger-check.sh: verified fires and exits 1 on a real touch, exits 0 clean"
+      - "scripts/check-brand-lint.sh: clean after em-dash fix"
+    risks:
+      - "Panel findings were triaged and fixed by the same agent that authored the reviewed content, not an independent editor."
+      - "Three findings deferred, not fixed: Module 02's prerequisite-enforcement gap, an untried cheap deterministic check, gate/tier terminology drift."
+    next_actions:
+      - "Decide whether Module 02's Module-01 prerequisite should be mechanically enforced or reworded as conceptual-only."
+      - "Try a cheap deterministic clone-count check before Coachgremlin's subjective read, starting Module 03."
+      - "Author Module 03 with the same dry-run discipline."

@@ -120,3 +120,73 @@ Yes — vault card renamed to match (`borrow-native`), repo-local mirror kept in
 ### Mind-palace updated
 
 Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 02 (Borrowing & References) authored, ARB trigger check written for real
+
+### What happened
+
+- Ran Coachgremlin Workflow step 0 for real before touching `fixtures/relay/`'s already-shipped shared files, and discovered `scripts/arb-trigger-check.sh` — claimed complete in `docs/decisions.md` and referenced in `.hekton/governance.yaml` as "verified firing correctly" — did not actually exist anywhere in the repo or git history. Wrote it for real (portable bash, matches the existing `scripts/*.sh` logging convention), verified it against a clean baseline and a real touch to `fixtures/relay/src/lib.rs` (fires correctly, reverts cleanly). Flagged the discrepancy in `docs/decisions.md` rather than quietly patching over it.
+- Extended `relay`'s shared types for Module 02: added `elapsed_secs: u64` to `DraftCheckpoint`/`CheckpointRecord` (seconds since the previous checkpoint; `relay` never reads the system clock directly, keeping tests deterministic). This is an ARB-triggering change — confirmed the trigger fires, then resolved it by updating Module 01's already-shipped `tests/finalize_session.rs` to include the new field and re-confirming it still compiles and exhibits the same `todo!()`-stub behavior as before.
+- Authored Module 02's real exercise: `session_stats(session: &Session) -> SessionStats`, computing average/longest checkpoint-gap statistics by borrowing `relay`'s session history rather than consuming it. Added `fixtures/relay/tests/session_stats.rs` (6 edge cases: empty session, single checkpoint, average-vs-last-vs-running-total, longest-gap-identifies-the-right-checkpoint, tied-longest-gap resolves to first occurrence, session still usable afterward).
+- Ran Coachgremlin's first real dry run for Module 02: a correct attempt reading through the borrow (one legitimate clone, `longest_gap_goal`, since it must outlive the borrow) and a deliberately naive, honest attempt that clones the entire checkpoint collection into an owned copy before reading it.
+- **Load-bearing finding, checked fresh rather than assumed to generalize from Module 01:** both attempts pass `cargo test` (11/11) and default `cargo clippy -- -D warnings` (zero output) identically. Checked `clippy::pedantic` (identical output on both attempts — zero discriminating signal, starker than Module 01, where pedantic at least caught a noisy proxy lint) and `clippy::nursery`'s `redundant_clone` specifically (clean on both — that lint targets owned-value clones, not clones of data reached through a reference). Full evidence: `runs/2026-07-05-module-02-dry-run/`.
+- Packaged the takeaway (`.claude/skills/borrow-checker-playbook/SKILL.md`) and validated it against a second, unrelated borrowing problem (`total_word_count`, a pure read-only word-count aggregation with zero legitimate clones — a useful contrast case, since `session_stats` has exactly one).
+- Rewrote Module 02's README from skeleton to real authored content; updated `modules/README.md`, top-level `README.md`, and `fixtures/relay/SPEC.md`'s status table to reflect Module 02 is real.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added.
+
+### Risks
+
+- This dry run graded its own constructed attempts, not an independent learner's — same limitation named in every prior dry run's retro.
+- `runs/run-20260705-RW-003.yaml` has `human_confirmed: false` — not yet reviewed by coderturtle.
+- The first content-level Workshop Review Panel batch (Modules 01+02) is now due per Coachgremlin's own batch-review cadence, but was deliberately not run in this same pass (real-cost, ~7 parallel subagents) — left as an explicit next action rather than bundled in.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: coderturtle to review this dry run's recommendation; run the first content-level Workshop Review Panel batch; then author Module 03 with the same dry-run discipline.
+
+### Validation Status
+
+- `cargo test` and `cargo clippy -- -D warnings`: run for real against both attempts and the takeaway-validation crate, transcripts captured, not narrated.
+- `cargo clippy -- -W clippy::pedantic` and `-W clippy::nursery`: run for real for comparison, not assumed from Module 01's result.
+- `scripts/arb-trigger-check.sh`: run for real against a clean baseline and a real touch to `fixtures/relay/src/lib.rs`.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.
+
+## 2026-07-05 - Module 02 dry run confirmed (go); Review Trigger question resolved; first content-level Review Panel batch run
+
+### What happened
+
+- coderturtle reviewed Module 02's dry run and confirmed (go) — `runs/run-20260705-RW-003.yaml` flipped to `human_confirmed: true`.
+- Resolved the open question of whether Module 02's dry run counts as a new data point toward Coachgremlin's "3+ runs across 2+ workshops" Review Trigger: decided it counts as **depth** evidence for the two-tier grading extension within one workshop, not new **breadth** toward the cross-workshop bar — the same distinction the Workshop Review Panel's own maturity note already draws for an identical-shaped bar. Run count toward that bar stays at 2 (`terminal-velocity`; `borrow-native`, counted once regardless of module count). Recorded in `~/hekton/gremlins/coaching/coachgremlin.md`'s Review Triggers section.
+- Ran the first content-level Workshop Review Panel batch (Modules 01+02): 7 personas, real parallel subagents, no cross-visibility. All seven returned distinct findings. Two cross-persona agreements (a spoiler-placement issue in "Why this is hard," independently caught by End-User/Learner and Technical Writer; the "one correct clone" framing overstating what's true only pre-lifetimes, independently caught by AI/ML Practitioner and Skeptical Critic) plus 11 single-persona findings.
+- Most significant single finding: Security-Conscious Reviewer caught a real bug in `scripts/arb-trigger-check.sh` (written earlier this session) — it always exited 0, even when a trigger fired, meaning it could never actually block anything gated on its exit code.
+- Fixed nine findings in the same pass: the script's exit code and `git status --porcelain` parsing; added an explicit spoiler guard above "Why this is hard" in both modules (mirroring the existing Takeaway guard); softened the lifetime-scoped clone framing across Module 02's README/SPEC.md/lib.rs/SKILL.md; added the missing `cd fixtures/relay` instruction to both modules; softened `retro.md`'s "confirms" overclaim; fixed an em dash in `SPEC.md`; removed an internal `~/hekton/...` path from both modules' public-facing status blockquotes; reworded Module 02's third learning objective to match what the exercise actually exercises.
+- Deferred three findings on the record (`docs/next-actions.md`): whether Module 02's stated Module-01 prerequisite should be mechanically enforced or reworded as conceptual-only (the panel found `session_stats.rs`'s tests never call `finalize_session`); trying a cheap deterministic clone-count check before Coachgremlin's subjective read, starting Module 03; harmonizing "gate"/"tier" terminology across README.md/modules/README.md/rubrics.
+
+### Decisions Made
+
+- See `docs/decisions.md` for the full ADR log this session added.
+
+### Risks
+
+- The three deferred panel findings are real, not hypothetical — most notably, Module 02's prerequisite claim currently overstates what the exercise itself enforces.
+- Panel findings were triaged and fixed by the same agent that authored the content being reviewed, not an independent human editor — same limitation named in the panel's own Risks section for any single run.
+
+### Next Actions
+
+- See `docs/next-actions.md`. Immediate: author Module 03 (Structs, Enums & Pattern Matching) with the same dry-run discipline, factoring in the deferred panel findings (especially trying a cheap deterministic check before assuming Coachgremlin's subjective read is the only option).
+
+### Validation Status
+
+- `scripts/arb-trigger-check.sh`: fix verified against both a clean baseline and a real touch to `fixtures/relay/src/lib.rs` (fires, exits 1; clean case exits 0).
+- `cargo check --tests` (fixtures/relay): clean after all doc-comment/wording edits.
+- `scripts/check-brand-lint.sh`: clean after the em-dash fix.
+
+### Mind-palace updated
+
+Pending — see next commit's mirror sync.

@@ -1,0 +1,36 @@
+schema_version: "1"
+run_id: run-20260705-RW-003
+project: borrow-native
+task_id: coachgremlin-module-02-borrowing-references-dry-run
+task_type: session
+engine: claude-sonnet-5
+status: done
+created: 2026-07-05
+human_confirmed: true
+human_notes: >
+  Coachgremlin's first real dry run for Module 02 (Borrowing & References):
+  a correct attempt that reads relay's Session through a &Session borrow,
+  and a deliberately naive, honest (non-adversarial) attempt that clones
+  the entire borrowed checkpoint collection into an owned copy before
+  reading it. Finding, checked fresh per docs/next-actions.md's own
+  instruction not to assume Module 01's finding generalizes: both attempts
+  pass cargo test (11/11) and default cargo clippy -- -D warnings
+  identically. clippy::pedantic gives zero discriminating signal here
+  (identical warnings on both attempts), a starker result than Module 01
+  (where pedantic at least caught a noisy proxy lint). Required extending
+  relay's shared types (elapsed_secs on DraftCheckpoint/CheckpointRecord)
+  to give the exercise real timing data - an ARB-triggering change,
+  resolved per Coachgremlin Workflow step 0 (updated Module 01's
+  already-shipped test file, confirmed it still compiles). Also found and
+  fixed a real discrepancy: scripts/arb-trigger-check.sh was claimed to
+  exist and be verified but wasn't in the repo - written for real this
+  session. See runs/2026-07-05-module-02-dry-run/retro.md for the full
+  go/no-go reasoning and takeaway-validation/ for the packaged Skill's
+  validation against a second, unrelated borrowing problem. Recommendation
+  is a go on authoring Module 03 with the same dry-run discipline, and
+  that the first content-level Workshop Review Panel batch (Modules 01+02)
+  is now due. Reviewed and confirmed (go) by coderturtle 2026-07-05. See
+  docs/decisions.md for the resolution of whether this run counts toward
+  Coachgremlin's 3-run/2-workshop bar.
+output_artifact: runs/2026-07-05-module-02-dry-run/
+failure_reason: ""

@@ -34,7 +34,16 @@ pub struct Session {
 /// a single draft, multiple drafts preserving order, and risks (including an
 /// empty list) preserved exactly as given.
 pub fn finalize_session(label: String, drafts: Vec<DraftCheckpoint>) -> Session {
-    todo!("implement per SPEC.md")
+    let checkpoints = drafts
+        .into_iter()
+        .map(|draft| CheckpointRecord {
+            goal: draft.goal,
+            summary: draft.summary,
+            risks: draft.risks,
+            elapsed_secs: draft.elapsed_secs,
+        })
+        .collect();
+    Session { label, checkpoints }
 }
 
 /// Summary statistics over a session's checkpoint gaps, computed by borrowing
@@ -45,10 +54,8 @@ pub struct SessionStats {
     pub average_gap_secs: f64,
     pub longest_gap_secs: u64,
     /// The goal of the checkpoint that produced the longest gap. Owned, on
-    /// purpose: `SessionStats` has no lifetime parameter (lifetimes arrive in
-    /// Module 04), so this value must be owned to leave the function - given
-    /// that shape, cloning it here once isn't a habit to unlearn, it's the
-    /// correct move.
+    /// purpose: this value must outlive the borrow of `session` that produced
+    /// it, so cloning it here isn't a habit to unlearn - it's the actual fix.
     pub longest_gap_goal: String,
 }
 
@@ -59,5 +66,46 @@ pub struct SessionStats {
 /// session (no checkpoints), a single checkpoint, and multiple checkpoints
 /// with a tie for the longest gap (first occurrence wins).
 pub fn session_stats(session: &Session) -> SessionStats {
-    todo!("implement per SPEC.md")
+    // Not sure what I can do with a borrowed `&Session`, so build my own
+    // owned copy of the checkpoint history first, field by field, then work
+    // with that - same instinct as Module 01's naive attempt, just aimed at
+    // a borrow this time instead of an owned `Vec`.
+    let checkpoints: Vec<CheckpointRecord> = session
+        .checkpoints
+        .iter()
+        .map(|c| CheckpointRecord {
+            goal: c.goal.clone(),
+            summary: c.summary.clone(),
+            risks: c.risks.clone(),
+            elapsed_secs: c.elapsed_secs,
+        })
+        .collect();
+
+    if checkpoints.is_empty() {
+        return SessionStats {
+            checkpoint_count: 0,
+            average_gap_secs: 0.0,
+            longest_gap_secs: 0,
+            longest_gap_goal: String::new(),
+        };
+    }
+
+    let total: u64 = checkpoints.iter().map(|c| c.elapsed_secs).sum();
+    let average_gap_secs = total as f64 / checkpoints.len() as f64;
+
+    let mut longest_gap_secs = checkpoints[0].elapsed_secs;
+    let mut longest_gap_goal = checkpoints[0].goal.clone();
+    for checkpoint in checkpoints.iter().skip(1) {
+        if checkpoint.elapsed_secs > longest_gap_secs {
+            longest_gap_secs = checkpoint.elapsed_secs;
+            longest_gap_goal = checkpoint.goal.clone();
+        }
+    }
+
+    SessionStats {
+        checkpoint_count: checkpoints.len(),
+        average_gap_secs,
+        longest_gap_secs,
+        longest_gap_goal,
+    }
 }
