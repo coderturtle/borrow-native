@@ -8,7 +8,7 @@
 - [x] Astro build-log/Pages site built and locally validated (`npm run build` + `astro check` clean, base-path links confirmed in built HTML)
 - [x] Certification-companion target corrected from the Rust Foundation (no individual credential exists) to Ardan Labs' real proctored exam; arc checked against its topic list, which found the Module 07 (Async) gap
 - [ ] Get a human to enable GitHub Pages (Settings > Pages > Source: GitHub Actions) and trigger the first real `workflow_dispatch` deploy, then confirm the Actions run actually succeeds (not just the local build)
-- [ ] Triage RISK-0002 (4 inherited `npm audit` vulnerabilities in the Astro starter chain) before that first real deploy
+- [x] Triage RISK-0002 (4 inherited `npm audit` vulnerabilities in the Astro starter chain) — done 2026-07-08 by the new Vulnerability Gremlin (`~/hekton/gremlins/red-team/vulnerability-gremlin.md`), closed as accepted risk (none reachable given `output: "static"`; confirmed identical to `half-life`'s already-verified finding via direct version comparison). Also ran `cargo audit` against `fixtures/relay/` (RISK-0003): 0 vulnerabilities, recorded as a clean baseline. See `docs/risks.md`.
 
 ## This Week
 
