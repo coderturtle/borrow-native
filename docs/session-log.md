@@ -443,3 +443,39 @@ Property-phrased criteria are a first attempt at this shape across 5 already-shi
 
 - [ ] Author Module 06 with the new rubric pattern
 - [ ] Get the third Review Panel batch's read on the new phrasing once due
+
+## 2026-07-08 - Vulnerability Gremlin's second real run (RISK-0002/RISK-0003)
+
+Ran the new Vulnerability Gremlin (`~/hekton/gremlins/red-team/vulnerability-gremlin.md`, born
+earlier today from `half-life`'s RISK-0002 triage) for real against this project - its second run,
+and first on the cargo/Rust ecosystem, per that Gremlin's own Follow-Up Actions requiring a
+second-ecosystem run before it could move past `draft` status.
+
+Installed `cargo-audit` via Homebrew. Ran it against `fixtures/relay/Cargo.lock`: 0 vulnerabilities
+across 7 crates, 1,159 RustSec advisories loaded - a clean baseline, recorded as RISK-0003.
+
+Ran `npm audit` against `site/`'s dependencies: same 4 findings `half-life` already triaged.
+Discovered RISK-0002 had been flagged during this project's own scaffolding (2026-07-05) but never
+closed, and `.hekton/risk-register.yaml` had silently drifted from `docs/risks.md` - missing the
+entry entirely. Checked reachability directly against this project's own code (not copied from
+`half-life`'s conclusion): no `define:vars`/server-island usage, `output: "static"`, CI only runs
+`npm run build`. Confirmed via direct lockfile inspection that both projects resolve to identical
+dependency versions (`astro@5.18.2`, `@astrojs/tailwind@6.0.2`), so `half-life`'s already-verified
+upgrade-attempt finding (breaks on `@astrojs/tailwind`/Astro 7) transfers exactly - did not
+re-attempt the broken upgrade here, since re-deriving an already-verified fact from an identical
+lockfile isn't more rigorous, just redundant. Closed RISK-0002 as accepted risk; fixed the
+registry-vs-markdown drift in the same pass.
+
+### Decisions Made
+
+- See `docs/decisions.md`'s 2026-07-08 entry.
+
+### Risks
+
+- RISK-0002: closed, accepted (not fixed) - see `docs/risks.md` for full reachability reasoning.
+- RISK-0003: closed, informational - clean `cargo audit` baseline for `fixtures/relay/`.
+
+### Next Actions
+
+- Author Module 06 (Fearless Concurrency) next, per the existing plan - unaffected by this session.
+- Re-run `cargo audit` against `fixtures/relay/` as its dependency tree grows across later modules.

@@ -15,3 +15,27 @@ risks:
     reviewed_date: 2026-07-05
     links:
       - "docs/risks.md"
+  - id: RISK-0002
+    title: "site/ starter dependencies carry inherited npm vulnerabilities"
+    category: dependency
+    likelihood: high
+    impact: low
+    status: closed
+    owner: coderturtle
+    mitigation: "Triaged 2026-07-08 by the Vulnerability Gremlin (2nd real run): none of the 5 advisories reachable (no define:vars/server-islands, output:static, CI never runs astro dev). Confirmed identical dependency versions to half-life's own RISK-0002 (astro@5.18.2, @astrojs/tailwind@6.0.2) via direct lockfile inspection, so that project's already-verified upgrade-breaks-tailwind finding transfers without re-deriving it. Accepted as-is; re-open if output mode changes from static."
+    raised_date: 2026-07-05
+    reviewed_date: 2026-07-08
+    links:
+      - "docs/risks.md"
+  - id: RISK-0003
+    title: "fixtures/relay cargo audit — clean baseline"
+    category: dependency
+    likelihood: none
+    impact: none
+    status: closed
+    owner: coderturtle
+    mitigation: "Vulnerability Gremlin's 2nd real run, first on the cargo/Rust ecosystem: cargo audit against fixtures/relay/Cargo.lock, 0 vulnerabilities across 7 crates (1,159 RustSec advisories loaded). Recorded as a clean baseline; re-run as relay's dependency tree grows across later modules."
+    raised_date: 2026-07-08
+    reviewed_date: 2026-07-08
+    links:
+      - "docs/risks.md"
