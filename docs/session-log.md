@@ -479,3 +479,51 @@ registry-vs-markdown drift in the same pass.
 
 - Author Module 06 (Fearless Concurrency) next, per the existing plan - unaffected by this session.
 - Re-run `cargo audit` against `fixtures/relay/` as its dependency tree grows across later modules.
+
+---
+
+## 2026-07-18 - Fixed a fully-broken custom domain, found while building coderturtle.io's Workshops page
+
+**Agent:** Claude
+
+### What changed
+
+- Building a Workshops listing page on `coderturtle.io` surfaced a real, live bug: `curl` against
+  `borrow-native.coderturtle.io` returned 404 on every path (not a cert issue — checked over plain
+  HTTP too), and the `coderturtle.github.io/borrow-native/` fallback just 301-redirected back into
+  the same 404. No working URL existed for this workshop at all.
+- Root cause: DNS (Route53 CNAME + TXT) and GitHub Pages' own `cname`/domain-verification were
+  already live and `"verified"` (from `agentic-infra-lab`'s `github-pages-dns` onboarding), but
+  `site/astro.config.mjs` still had `site: "https://coderturtle.github.io"` / `base:
+  "/borrow-native/"` and no `site/public/CNAME` existed — the repo-side half of the cutover
+  `terminal-velocity`/`closed-book` already went through was never done here.
+- Fixed on branch `agent/claude/custom-domain-cutover`: `astro.config.mjs` (`site`/`base` to the
+  domain root), new `site/public/CNAME`, `.github/workflows/deploy-pages.yml`'s stale "no custom
+  domain" comment corrected. `npm run build` reconfirmed clean, `dist/CNAME` present.
+
+### Decisions Made
+
+See `docs/decisions.md`'s 2026-07-18 entry.
+
+### Assumptions
+
+None new.
+
+### Risks
+
+No new RISK entry — a real, currently-broken deploy fixed same session, not a residual risk.
+
+### Next Actions
+
+Review/merge the cutover PR, then trigger the first real deploy under the corrected config and
+confirm the site is actually live (not just that the workflow reports success).
+
+### Validation
+
+- Real `curl` checks (custom domain, plain HTTP, insecure-TLS, and the project-page redirect
+  target) confirmed the break before fixing, not assumed from DNS/Pages state alone.
+- `npm run build` clean; `dist/CNAME` = `borrow-native.coderturtle.io`.
+
+### Mind-palace updated
+
+No — not yet authorised this session.
