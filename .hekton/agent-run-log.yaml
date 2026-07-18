@@ -239,3 +239,25 @@ agent_runs:
     next_actions:
       - "Author Module 06 with the new rubric pattern"
       - "Get the third Review Panel batch's read on the new phrasing once due"
+
+  - id: RUN-0114a080
+    date: 2026-07-18
+    agent: "Claude Sonnet 5"
+    role: "Build Agent"
+    intent: "Fixed a live, fully-broken custom domain and first-ever deploy — borrow-native.coderturtle.io was 404ing on every path (DNS/Pages config live, site-side cutover never done) - found while building coderturtle.io's Workshops page. Fixed astro.config.mjs/public/CNAME, triggered and confirmed the first real deploy, enabled the push trigger"
+    autonomy_level: 3
+    approvals:
+      required: false
+      status: not_required
+    files_touched:
+      - "docs/next-actions.md"
+      - "docs/session-log.md"
+      - "mind-palace/20-projects/factory-output/borrow-native/session-log.md"
+      - "docs/blog-signals.md"
+    validation:
+      - "not recorded"
+    risks:
+      - "None new - a real, currently-broken deploy fixed same session"
+    next_actions:
+      - "Author Module 06 (Fearless Concurrency)"
+      - "continuing the existing content plan - unaffected by this session's infra fix"

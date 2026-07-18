@@ -527,3 +527,29 @@ confirm the site is actually live (not just that the workflow reports success).
 ### Mind-palace updated
 
 No — not yet authorised this session.
+---
+
+## Session: Fixed a live, fully-broken custom domain and first-ever deploy
+
+**Date:** 2026-07-18 20:58
+
+### What Changed
+
+borrow-native.coderturtle.io was 404ing on every path (DNS/Pages config live, site-side cutover never done) - found while building coderturtle.io's Workshops page. Fixed astro.config.mjs/public/CNAME, triggered and confirmed the first real deploy, enabled the push trigger
+
+### Decisions
+
+See docs/decisions.md's 2026-07-18 entry
+
+### Assumptions
+
+None new
+
+### Risks
+
+None new - a real, currently-broken deploy fixed same session
+
+### Next Actions
+
+- [ ] Author Module 06 (Fearless Concurrency)
+- [ ] continuing the existing content plan - unaffected by this session's infra fix

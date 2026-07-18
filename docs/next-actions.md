@@ -57,3 +57,8 @@
 
 - [ ] Author Module 06 with the new rubric pattern
 - [ ] Get the third Review Panel batch's read on the new phrasing once due
+
+## Session Update: 2026-07-18 — Fixed a live, fully-broken custom domain and first-ever deploy
+
+- [ ] Author Module 06 (Fearless Concurrency)
+- [ ] continuing the existing content plan - unaffected by this session's infra fix
