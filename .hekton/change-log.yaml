@@ -164,3 +164,18 @@ changes:
       status: not_required
     links:
       - "docs/session-log.md"
+
+  - id: CHG-4cd7b824
+    date: 2026-07-18
+    title: "Custom domain cutover and first deploy"
+    intent: "borrow-native.coderturtle.io was 404ing on every path (DNS/Pages config live, site-side cutover never done) - found while building coderturtle.io's Workshops page. Fixed astro.config.mjs/public/CNAME, triggered and confirmed the first real deploy, enabled the push trigger"
+    changed_by: "Claude Sonnet 5"
+    change_type: build
+    risk_level: low
+    validation:
+      - "not recorded"
+    approvals:
+      required: false
+      status: not_required
+    links:
+      - "docs/session-log.md"
