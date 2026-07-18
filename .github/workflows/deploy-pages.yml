@@ -43,11 +43,11 @@ jobs:
         run: npm run build
         working-directory: site
 
-      # Default GitHub Pages project hosting (coderturtle.github.io/borrow-native/),
-      # no custom domain for this workshop - unlike terminal-velocity's later cutover
-      # to terminal-velocity.coderturtle.io, which needed a real Route53 change via
-      # agentic-infra-lab. Pages enablement itself is still a one-time, human-run step
-      # (Settings > Pages > Source: GitHub Actions) before the first dispatch succeeds.
+      # Custom domain: borrow-native.coderturtle.io, via agentic-infra-lab's
+      # github-pages-dns pattern (Route53 CNAME + TXT verification). site/public/CNAME
+      # declares the domain; Pages enablement and the custom-domain setting were
+      # done as one-time, human-run `gh api` steps (GITHUB_TOKEN cannot do either -
+      # see agentic-infra-lab's interpreter-notes.md), not by this workflow.
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
