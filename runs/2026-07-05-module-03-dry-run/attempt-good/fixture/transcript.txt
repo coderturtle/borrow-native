@@ -54,11 +54,11 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 $ cargo clippy -- -D warnings
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
 
 $ cargo clippy -- -W clippy::pedantic
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
 warning: this function could have a `#[must_use]` attribute
   --> src/lib.rs:27:8
    |
@@ -150,7 +150,7 @@ warning: `relay` (lib) generated 7 warnings (run `cargo clippy --fix --lib -p re
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
 
 $ cargo clippy -- -W clippy::nursery
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
 warning: first doc comment paragraph is too long
    --> src/lib.rs:104:1
     |
@@ -189,5 +189,5 @@ warning: `relay` (lib) generated 2 warnings (run `cargo clippy --fix --lib -p re
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
 
 $ cargo clippy -- -W clippy::wildcard_enum_match_arm
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-good/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s

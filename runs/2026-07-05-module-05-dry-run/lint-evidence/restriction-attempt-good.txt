@@ -1,4 +1,4 @@
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-05-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-05-dry-run/attempt-good/fixture)
 warning: `clippy::restriction` is not meant to be enabled as a group
   |
   = note: because of the command line `--warn clippy::restriction`

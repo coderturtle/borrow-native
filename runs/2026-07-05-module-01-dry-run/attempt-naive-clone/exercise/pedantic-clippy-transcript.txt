@@ -1,5 +1,5 @@
 === cargo clippy -- -W clippy::pedantic -D warnings (NOT part of this module's stated gate; run to check whether a stricter lint level catches the over-cloning) ===
-    Checking module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise)
+    Checking module-01-ownership-move-semantics v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-naive-clone/exercise)
 error: this function could have a `#[must_use]` attribute
   --> src/lib.rs:16:8
    |

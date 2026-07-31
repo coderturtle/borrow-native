@@ -37,3 +37,9 @@ docs/depth-decision.md
 docs/local-assumptions.md
 docs/blog-signals.md
 docs/gremlin-radar.md
+
+# Agent config: describes the Hekton control plane and machine layout, not the product.
+AGENTS.md
+CLAUDE.md
+CODEX.md
+.env.example

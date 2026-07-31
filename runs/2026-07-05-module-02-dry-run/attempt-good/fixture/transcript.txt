@@ -43,11 +43,11 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 === cargo clippy -- -D warnings ===
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/attempt-good/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
 
 === cargo clippy -- -W clippy::pedantic (informational, not the module's stated gate) ===
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/attempt-good/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/attempt-good/fixture)
 warning: this function could have a `#[must_use]` attribute
   --> src/lib.rs:36:8
    |

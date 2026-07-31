@@ -1,9 +1,9 @@
 === BEFORE (naive wildcard): cargo clippy -- -D warnings ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 
 === BEFORE: cargo clippy -- -W clippy::wildcard_enum_match_arm ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
 warning: wildcard match will also match any future added variants
   --> src/lib.rs:20:9
    |
@@ -16,15 +16,15 @@ warning: wildcard match will also match any future added variants
 warning: `takeaway-validation` (lib) generated 1 warning
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 === AFTER (explicit arms): cargo clippy -- -D warnings ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
 
 === AFTER: cargo clippy -- -W clippy::wildcard_enum_match_arm ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 
 === AFTER: cargo clippy -- -W clippy::pedantic ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/takeaway-validation)
 warning: this function could have a `#[must_use]` attribute
   --> src/lib.rs:16:8
    |

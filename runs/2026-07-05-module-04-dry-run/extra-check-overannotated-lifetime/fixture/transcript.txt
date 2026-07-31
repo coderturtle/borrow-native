@@ -1,5 +1,5 @@
 === cargo test ===
-   Compiling relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/extra-check-overannotated-lifetime/fixture)
+   Compiling relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/extra-check-overannotated-lifetime/fixture)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.25s
      Running unittests src/lib.rs (target/debug/deps/relay-554c7824a57565a6)
 
@@ -67,6 +67,6 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 EXIT: 0
 === default clippy -D warnings ===
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/extra-check-overannotated-lifetime/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-04-dry-run/extra-check-overannotated-lifetime/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
 EXIT: 0

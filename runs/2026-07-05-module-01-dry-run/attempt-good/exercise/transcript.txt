@@ -1,5 +1,5 @@
 === cargo test ===
-   Compiling module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-good/exercise)
+   Compiling module-01-ownership-move-semantics v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-good/exercise)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
      Running unittests src/lib.rs (target/debug/deps/ledger-f651645db1e4c5ee)
 
@@ -27,5 +27,5 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 === cargo clippy -- -D warnings ===
-    Checking module-01-ownership-move-semantics v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-good/exercise)
+    Checking module-01-ownership-move-semantics v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-01-dry-run/attempt-good/exercise)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.42s

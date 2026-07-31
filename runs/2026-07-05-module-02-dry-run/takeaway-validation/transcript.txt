@@ -1,5 +1,5 @@
 === BEFORE: cargo test ===
-   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+   Compiling takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.26s
      Running unittests src/lib.rs (target/debug/deps/takeaway_validation-a9240cd72991f606)
 
@@ -18,11 +18,11 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 === BEFORE: cargo clippy -- -D warnings ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
 
 === AFTER (playbook fix applied): cargo test ===
-   Compiling takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+   Compiling takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
      Running unittests src/lib.rs (target/debug/deps/takeaway_validation-a9240cd72991f606)
 
@@ -41,5 +41,5 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 === AFTER: cargo clippy -- -D warnings ===
-    Checking takeaway-validation v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
+    Checking takeaway-validation v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-02-dry-run/takeaway-validation)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
