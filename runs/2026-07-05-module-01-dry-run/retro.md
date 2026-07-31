@@ -66,7 +66,7 @@ rather than assuming this Module 01 finding generalizes without checking.
 
 ## Revision fed back
 
-1. **`~/hekton/gremlins/coaching/coachgremlin.md`**: this run is real evidence, not just a design,
+1. **`<hekton-machinery>/gremlins/coaching/coachgremlin.md`**: this run is real evidence, not just a design,
    that the two-tier grading extension (added 2026-07-05, before this run) does real work — updated
    that file's Version/Status line to cite this run and its specific finding (default clippy misses
    architecturally-unnecessary cloning; a stricter lint group catches a proxy for it via a

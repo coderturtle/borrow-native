@@ -94,7 +94,7 @@ Proceeding with the same per-module dry-run discipline for Modules 04-08.
 
 ## Revision fed back
 
-1. **`~/hekton/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's fourth real dry run and
+1. **`<hekton-machinery>/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's fourth real dry run and
    third workshop-internal one for `borrow-native` (fifth counting the same-day clone-count-check
    trial as a distinct, if narrower, extension) - Version/Status line updated to cite this run's
    finding (a third, mechanically distinct instance of "the deterministic gate misses a real

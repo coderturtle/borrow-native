@@ -2,7 +2,7 @@
 # Checks pending (uncommitted) changes against .hekton/governance.yaml's
 # arb_review_triggers list. Run before starting work on fixtures/relay/'s
 # already-shipped shared files (Coachgremlin Workflow step 0,
-# ~/hekton/gremlins/coaching/coachgremlin.md) - a later module's feature can
+# <hekton-machinery>/gremlins/coaching/coachgremlin.md) - a later module's feature can
 # silently change or break an earlier module's already-graded gate.
 set -euo pipefail
 

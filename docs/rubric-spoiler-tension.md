@@ -27,7 +27,7 @@ Coachgremlin's own Workflow requires the rubric to exist and be shared *before* 
 
 > **Set the rubric** - 3-6 observable criteria, scored, before the learner starts. Shared with the
 > learner so there's no guessing what's graded.
-> - `~/hekton/gremlins/coaching/coachgremlin.md`, Workflow step 2
+> - `<hekton-machinery>/gremlins/coaching/coachgremlin.md`, Workflow step 2
 
 That's a deliberate, good design choice on its own terms (no learner should be graded against a
 secret standard). The collision is that a scored/conceptual criterion, by construction, has to

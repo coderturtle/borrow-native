@@ -15,4 +15,4 @@ I compiled and ran the actual `relay` fixture with `cargo clippy` (clippy 0.1.96
 
 ## Disposition
 
-The pedantic/or-pattern overclaim was independently re-verified by the operating session (compiled both forms, added a new enum variant, confirmed `E0004` on the or-pattern) and corrected across `modules/03-structs-enums-pattern-matching/README.md`, `runs/2026-07-05-module-03-dry-run/{grading.md,retro.md}`, `.claude/skills/enum-modeling-playbook/SKILL.md`, `runs/2026-07-05-module-03-dry-run/takeaway-validation/README.md`, and `~/hekton/gremlins/coaching/coachgremlin.md`'s Module 03 entry. All other findings confirmed no issue.
+The pedantic/or-pattern overclaim was independently re-verified by the operating session (compiled both forms, added a new enum variant, confirmed `E0004` on the or-pattern) and corrected across `modules/03-structs-enums-pattern-matching/README.md`, `runs/2026-07-05-module-03-dry-run/{grading.md,retro.md}`, `.claude/skills/enum-modeling-playbook/SKILL.md`, `runs/2026-07-05-module-03-dry-run/takeaway-validation/README.md`, and `<hekton-machinery>/gremlins/coaching/coachgremlin.md`'s Module 03 entry. All other findings confirmed no issue.

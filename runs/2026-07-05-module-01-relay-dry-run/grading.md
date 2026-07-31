@@ -55,7 +55,7 @@ lose or weaken Module 01's actual pedagogical content — the exercise, rubric, 
 transferred cleanly.
 
 **Isn't:** a new, independent data point toward Coachgremlin's 3-run Review Trigger. This is the
-same lesson re-instantiated, not a new concept or a new failure mode — `~/hekton/gremlins/coaching/
+same lesson re-instantiated, not a new concept or a new failure mode — `<hekton-machinery>/gremlins/coaching/
 coachgremlin.md`'s run count stays at 2 (terminal-velocity Module 04, borrow-native Module 01),
 not 3.
 

@@ -86,6 +86,6 @@ gate on its own (see Limitations below):
    It is a prioritization signal for where Coachgremlin's conceptual read should look first, not a
    pass/fail gate that can stand in for that read.
 
-Wired into `~/hekton/gremlins/coaching/coachgremlin.md`'s Workflow step 3 (two-tier grading) as an
+Wired into `<hekton-machinery>/gremlins/coaching/coachgremlin.md`'s Workflow step 3 (two-tier grading) as an
 optional sub-step, starting with Module 03: run this script against the diff before the conceptual
 read, using a baseline calibrated from that module's own known-good attempt once one exists.

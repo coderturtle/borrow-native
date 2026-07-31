@@ -254,7 +254,7 @@ treat it as part of the curriculum.
    independent of and before whichever candidate is chosen.
 3. **A cross-cutting takeaway, not a per-module one**: an "agentic learning discipline" Skill
    (parallel to the per-module playbooks, but workshop-wide, maybe factory-wide - Coachgremlin's
-   own `~/hekton/gremlins/` home suggests this could be reusable beyond `borrow-native`, the same
+   own `<hekton-machinery>/gremlins/` home suggests this could be reusable beyond `borrow-native`, the same
    way the Gremlin model itself is) that gives a learner a concrete self-check: *before* accepting
    an agent-produced diff for a module's own exercise, can you (a) name which concept it
    demonstrates without looking at the code, (b) predict whether it would pass the deterministic

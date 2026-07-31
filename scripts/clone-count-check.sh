@@ -5,7 +5,7 @@
 # a solution that clones a whole borrowed/owned collection "to be safe"
 # passes `cargo test` and default `cargo clippy -- -D warnings` identically
 # to one that doesn't. This does not replace Coachgremlin's conceptual read
-# (Workflow step 3, `~/hekton/gremlins/coaching/coachgremlin.md`) - it's a
+# (Workflow step 3, `<hekton-machinery>/gremlins/coaching/coachgremlin.md`) - it's a
 # pre-filter that runs before it: cheap, textual, and gameable by construction
 # (see Limitations below). Trialed against both dry runs' real diffs before
 # being adopted; see docs/decisions.md, 2026-07-05.

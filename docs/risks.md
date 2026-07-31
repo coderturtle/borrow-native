@@ -13,7 +13,7 @@ Markdown file as the human-readable explanation of material risks and mitigation
 
 ## RISK-0002 triage detail (2026-07-08, Vulnerability Gremlin's second real run)
 
-This is the Vulnerability Gremlin's (`~/hekton/gremlins/red-team/vulnerability-gremlin.md`) second
+This is the Vulnerability Gremlin's (`<hekton-machinery>/gremlins/red-team/vulnerability-gremlin.md`) second
 real run, after `half-life`'s RISK-0002 (2026-07-08) — same finding, same starter, confirmed via
 direct lockfile inspection to resolve to **identical versions** (`astro@5.18.2`,
 `@astrojs/tailwind@6.0.2`), not merely assumed similar.

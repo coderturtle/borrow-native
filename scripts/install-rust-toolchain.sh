@@ -2,14 +2,14 @@
 # install-rust-toolchain.sh: Install the Rust toolchain (cargo, rustc, clippy,
 # rustfmt) via Homebrew, per this factory's install policy
 # (prefer_homebrew: true, avoid_opaque_installers: true, see .hekton/project.yaml
-# and ~/hekton/bootstrap/install-cli-tools.sh for the same pattern).
+# and <hekton-machinery>/bootstrap/install-cli-tools.sh for the same pattern).
 #
 # Scope note: this script lives in borrow-native for now, not
-# ~/hekton/bootstrap/, since this is the first Hekton project that actually
+# <hekton-machinery>/bootstrap/, since this is the first Hekton project that actually
 # needs a Rust toolchain. If a second project needs it, promote this file
 # (unchanged, it has no borrow-native-specific paths) to
-# ~/hekton/bootstrap/install-rust-toolchain.sh and call it from
-# ~/hekton/bootstrap/run-all.sh, the same promotion path any other bootstrap
+# <hekton-machinery>/bootstrap/install-rust-toolchain.sh and call it from
+# <hekton-machinery>/bootstrap/run-all.sh, the same promotion path any other bootstrap
 # script would take.
 #
 # Usage:
