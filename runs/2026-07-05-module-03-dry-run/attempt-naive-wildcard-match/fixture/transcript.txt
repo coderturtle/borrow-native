@@ -54,11 +54,11 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 $ cargo clippy -- -D warnings
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
 
 $ cargo clippy -- -W clippy::pedantic
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
 warning: this function could have a `#[must_use]` attribute
   --> src/lib.rs:27:8
    |
@@ -132,7 +132,7 @@ warning: `relay` (lib) generated 6 warnings (run `cargo clippy --fix --lib -p re
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
 
 $ cargo clippy -- -W clippy::nursery
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
 warning: this could be a `const fn`
    --> src/lib.rs:106:1
     |
@@ -156,7 +156,7 @@ warning: `relay` (lib) generated 1 warning (run `cargo clippy --fix --lib -p rel
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
 
 $ cargo clippy -- -W clippy::wildcard_enum_match_arm
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-03-dry-run/attempt-naive-wildcard-match/fixture)
 warning: wildcard match will also match any future added variants
    --> src/lib.rs:112:13
     |

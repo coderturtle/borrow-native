@@ -43,7 +43,7 @@ Agent-literate practitioners: comfortable with git, the CLI, reading a diff, and
 
 Self-paced, public repo. Matches `terminal-velocity`'s precedent and the "public workshop" framing — no facilitator required, scales without a cohort.
 
-## Subject vs. method (see `~/hekton/gremlins/workshop/workshop-gremlin.md`'s "Variant: Tech/Language Workshops")
+## Subject vs. method (see `<hekton-machinery>/gremlins/workshop/workshop-gremlin.md`'s "Variant: Tech/Language Workshops")
 
 `terminal-velocity` conflated these — its subject (agentic engineering) and its method (learning by doing it in a harness) were the same thing. Here they're deliberately separate:
 

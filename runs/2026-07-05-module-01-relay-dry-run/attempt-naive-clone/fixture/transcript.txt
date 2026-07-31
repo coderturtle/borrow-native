@@ -1,5 +1,5 @@
 === cargo test ===
-   Compiling relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-relay-dry-run/attempt-naive-clone/fixture)
+   Compiling relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-01-relay-dry-run/attempt-naive-clone/fixture)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
      Running unittests src/lib.rs (target/debug/deps/relay-554c7824a57565a6)
 
@@ -32,5 +32,5 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 
 === cargo clippy -- -D warnings ===
-    Checking relay v0.1.0 (/Users/hekton/Development/hekton/factory-output/borrow-native/runs/2026-07-05-module-01-relay-dry-run/attempt-naive-clone/fixture)
+    Checking relay v0.1.0 (<hekton>/factory-output/borrow-native/runs/2026-07-05-module-01-relay-dry-run/attempt-naive-clone/fixture)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s

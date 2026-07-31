@@ -114,7 +114,7 @@ messier result to smooth over. Proceeding with the same per-module dry-run disci
 
 ## Revision fed back
 
-1. **`~/hekton/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's sixth real dry run and
+1. **`<hekton-machinery>/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's sixth real dry run and
    fifth workshop-internal one for `borrow-native` - Version/Status line updated to cite this run's
    finding (a fifth, mechanically distinct instance of "the deterministic gate misses a real
    idiom/design smell," this time a genuinely mixed result rather than a uniformly blind or

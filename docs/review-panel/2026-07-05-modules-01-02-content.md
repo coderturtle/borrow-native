@@ -24,7 +24,7 @@ All seven personas returned genuinely distinct, non-generic findings — no pers
 - **Developer Evangelist**: the top-level README's pitch lands in the first few lines, then buries the actual "clone and run" moment under three successive hedges (cert-not-yet-attempted, 6-of-8-skeleton status, "working hypothesis not settled finding") before a reader reaches "How to start."
 - **Developer Evangelist**: `relay`'s "you keep a real, usable tool" promise is credible as a roadmap but not yet demonstrable — at 2/8 modules, nothing in `main.rs` is runnable yet.
 - **Professional Technical Writer**: three different vocabularies for the same two-tier concept across README.md / modules/README.md / the per-module rubrics ("deterministic gate" vs. "deterministic tier" vs. "(gate, deterministic)"), despite `modules/README.md` explicitly claiming "every module uses this vocabulary."
-- **Professional Technical Writer**: both module READMEs' status blockquotes cited an internal `~/hekton/...` path meaningless to anyone outside the Hekton system, in a repo marked `privacy boundary: public`.
+- **Professional Technical Writer**: both module READMEs' status blockquotes cited an internal `<hekton-machinery>/...` path meaningless to anyone outside the Hekton system, in a repo marked `privacy boundary: public`.
 - **Professional Technical Writer**: a literal em dash in `fixtures/relay/SPEC.md`, violating the brand lint rule the rest of the repo passes — SPEC.md's exemption status (design doc vs. published content) was undefined.
 - **AI/ML Practitioner**: `average_gap_secs` is the mean over *all* checkpoints including the first one's mandatory `elapsed_secs: 0`, not the mean of the actual inter-checkpoint gaps — deterministic and test-correct, but "average gap between checkpoints" slightly misdescribes what's computed.
 
@@ -36,7 +36,7 @@ All seven personas returned genuinely distinct, non-generic findings — no pers
 4. **Added the missing `cd fixtures/relay` instruction** directly into both module READMEs' exercise blockquotes.
 5. **Softened Module 02's `retro.md`** — "confirms the workshop's central bet generalizes" changed to "is consistent with," removing the self-contradiction with its own later hedge.
 6. **Fixed the em dash in `SPEC.md`** to match the rest of the repo's brand rule.
-7. **Removed the internal `~/hekton/...` path** from both module READMEs' status blockquotes, replaced with a description that doesn't assume Hekton-system access.
+7. **Removed the internal `<hekton-machinery>/...` path** from both module READMEs' status blockquotes, replaced with a description that doesn't assume Hekton-system access.
 8. **Reworded Module 02's third learning objective** to match what this exercise actually exercises (predicting borrow legality up front, not reading a real conflict error), with an honest forward-pointer to where a real conflict does appear.
 9. **Deferred, on the record, not actioned this pass:**
    - The mechanical, not-just-conceptual Module 01→02 prerequisite gap (Instructional Designer's top finding) — fixing this properly means deciding whether `session_stats.rs` should require `finalize_session` to be already implemented (which would make Module 02 ungradable until Module 01 is solved, a real design tradeoff) or whether the prerequisite claim should just be reworded to "conceptual, not enforced." Needs a decision, not a quick edit — added to `docs/next-actions.md`.

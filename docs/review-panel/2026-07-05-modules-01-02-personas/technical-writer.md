@@ -14,7 +14,7 @@
 
 **Terminology drift, three ways to say the same thing.** Top-level `README.md` calls the two checks a "deterministic gate" and a "conceptual check" (never "tier"). `modules/README.md` calls them "deterministic tier"/"conceptual tier" and headlines a table "Gate tiers (**every module uses this vocabulary**)" — a claim the top README itself doesn't honor. Module 01/02 rubric items use yet a third form: tags like "(gate, deterministic)" and "(scored, conceptual)."
 
-**Internal paths leaking into public learner content.** `docs/maintainers.md` states module READMEs are learner-facing and follow brand voice. Yet both modules end with a status blockquote citing `~/hekton/gremlins/coaching/coachgremlin.md` — a path meaningless (and inaccessible) to anyone outside the Hekton system, in a repo marked `privacy boundary: public`.
+**Internal paths leaking into public learner content.** `docs/maintainers.md` states module READMEs are learner-facing and follow brand voice. Yet both modules end with a status blockquote citing `<hekton-machinery>/gremlins/coaching/coachgremlin.md` — a path meaningless (and inaccessible) to anyone outside the Hekton system, in a repo marked `privacy boundary: public`.
 
 **Brand rule violation:** `fixtures/relay/SPEC.md:24` contains a literal em dash ("reached — a direct implementation"), violating `docs/brand.md`'s "no em dash characters" rule. SPEC.md is directly required reading from both module READMEs, so its exemption status (design doc vs. published content) is undefined and should be.
 

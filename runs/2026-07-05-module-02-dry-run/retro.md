@@ -75,7 +75,7 @@ assuming any prior module's finding generalizes.
 
 ## Revision fed back
 
-1. **`~/hekton/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's third real run and
+1. **`<hekton-machinery>/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's third real run and
    second workshop-internal one for `borrow-native` - update its Version/Status line to cite this
    run's finding (a second, mechanically distinct instance of "default clippy can't see a defensive
    clone," this time with pedantic giving *zero* signal rather than a noisy partial one).

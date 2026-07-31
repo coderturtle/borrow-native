@@ -1,6 +1,6 @@
 # Workshop Gremlin — Design (Track A)
 
-> Canonical definitions live in `~/hekton/gremlins/workshop/workshop-gremlin.md`, `~/hekton/gremlins/coaching/coachgremlin.md`, and `~/hekton/gremlins/workshop/workshop-review-panel.md`. This doc records what changed in those canonical files during *this* run — the Gremlin's second, and its first on a subject other than agentic engineering.
+> Canonical definitions live in `<hekton-machinery>/gremlins/workshop/workshop-gremlin.md`, `<hekton-machinery>/gremlins/coaching/coachgremlin.md`, and `<hekton-machinery>/gremlins/workshop/workshop-review-panel.md`. This doc records what changed in those canonical files during *this* run — the Gremlin's second, and its first on a subject other than agentic engineering.
 
 ## Why this run matters to the Gremlin, not just this workshop
 
@@ -13,14 +13,14 @@
 3. **Canonical-curriculum anchor.** Rather than design this workshop's arc from scratch, it's anchored to the Book's chapter structure and Rustlings' exercise-to-chapter mapping (both fetched and read directly this run, not assumed from memory) — see `docs/workshop-design.md`. Added as the other Deliverables-agent input.
 4. **Subject/method decoupling.** `terminal-velocity` named its subject and method as the same thing ("the harness is the classroom"). This workshop's subject (Rust) and method (agent-native delivery) are named separately in `docs/workshop-design.md`, per the new note in `workshop-gremlin.md`.
 
-All four are documented in `~/hekton/gremlins/workshop/workshop-gremlin.md`'s new **"Variant: Tech/Language Workshops"** section — a minor version step (contracts extended within the existing roster), not a new roster item, per `gremlin-model.md`'s versioning rules. The Workshop Review Panel's Instructional Designer persona also gained a matching check (deterministic-gate-vs-subjective-rubric) in `workshop-review-panel.md`.
+All four are documented in `<hekton-machinery>/gremlins/workshop/workshop-gremlin.md`'s new **"Variant: Tech/Language Workshops"** section — a minor version step (contracts extended within the existing roster), not a new roster item, per `gremlin-model.md`'s versioning rules. The Workshop Review Panel's Instructional Designer persona also gained a matching check (deterministic-gate-vs-subjective-rubric) in `workshop-review-panel.md`.
 
 ## Key decisions this run
 
 | Decision | Choice | Why |
 |---|---|---|
 | Reuse the existing Gremlin roster as-is for scaffolding | Yes — no new roster step | Scaffolding, naming, review panel, deliverables/branding, and the build-log publisher are all subject-agnostic already; only the deliverables agent's *inputs* needed extending, not the pipeline shape. |
-| Where the augmentation lives | Canonical Gremlin definitions (`~/hekton/gremlins/`), not this repo only | Explicit coderturtle direction this session: future tech/language workshops should inherit this without re-deriving it. |
+| Where the augmentation lives | Canonical Gremlin definitions (`<hekton-machinery>/gremlins/`), not this repo only | Explicit coderturtle direction this session: future tech/language workshops should inherit this without re-deriving it. |
 | Audience | Agent-literate practitioners, new to Rust specifically (not true beginners) | Keeps Coachgremlin's existing "agent-literate practitioner" assumption valid unchanged — the augmentation needed was about the *subject* (Rust) having a deterministic checker, not about the *audience* needing a different Coachgremlin. |
 | Deterministic gate is additive, not a replacement for Coachgremlin | Coachgremlin still grades the conceptual tier on top of a green compiler/test run | A green terminal state was already flagged as insufficient evidence on its own in `coachgremlin.md` (from `terminal-velocity`'s Module 04 dry run) — a subject with a real checker strengthens the first gate, it doesn't remove the need for the second. |
 | Module count | 7 core modules + capstone (vs. `terminal-velocity`'s 5 + capstone; revised same-day from an initial 6 + capstone) | Anchored to real dependency structure found in the Book/Rustlings/Exercism research, not picked to match the prior workshop's count. Iterators/Closures deliberately folded into Module 04 as an optional extension rather than given a standalone module, reusing `terminal-velocity`'s validated "required core + optional extensions" shape instead of inventing a new one. Module 07 (Async) added after the fact — see the Ardan Labs row, below. |

@@ -10,7 +10,7 @@ This is the internal/agent-facing doc. Learners should read the top-level `READM
 This repo has two goals:
 
 1. **Ship a workshop** teaching Rust (ownership, borrowing, structs/enums, generics/traits/lifetimes, error handling, concurrency) to agent-literate practitioners, taught by running every exercise through a real harness with the compiler and test suite as a deterministic gate, and Coachgremlin grading the conceptual/idiomatic layer on top.
-2. **Feed evidence back into the reusable machinery**: this is the Workshop Gremlin's *second* real run (`terminal-velocity` was its first) and its first on a subject other than agentic engineering. It found and wrote back a genuine augmentation — a deterministic-gate tier, concept-dependency arc, and canonical-curriculum-anchor research step — into the canonical **Workshop Gremlin** and **Coachgremlin** definitions (`~/hekton/gremlins/`), for reuse by future tech/language workshops.
+2. **Feed evidence back into the reusable machinery**: this is the Workshop Gremlin's *second* real run (`terminal-velocity` was its first) and its first on a subject other than agentic engineering. It found and wrote back a genuine augmentation — a deterministic-gate tier, concept-dependency arc, and canonical-curriculum-anchor research step — into the canonical **Workshop Gremlin** and **Coachgremlin** definitions (`<hekton-machinery>/gremlins/`), for reuse by future tech/language workshops.
 
 ## Implementation Status
 

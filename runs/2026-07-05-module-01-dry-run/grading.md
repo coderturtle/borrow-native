@@ -1,7 +1,7 @@
 # Coachgremlin's first real dry run: Module 01 core, graded
 
 Per `docs/coachgremlin-implementation-plan.md`-equivalent discipline for this workshop (no
-separate plan doc written yet; this run follows `~/hekton/gremlins/coaching/coachgremlin.md`'s
+separate plan doc written yet; this run follows `<hekton-machinery>/gremlins/coaching/coachgremlin.md`'s
 Workflow directly). Two attempts against the same exercise (`modules/01-ownership-move-semantics/
 exercise/`, spec in that directory's `SPEC.md`): a deliberately correct, move-based one
 (`attempt-good/`) and a deliberately naive, clone-heavy one (`attempt-naive-clone/`) that is

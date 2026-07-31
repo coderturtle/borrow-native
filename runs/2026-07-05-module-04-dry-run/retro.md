@@ -120,7 +120,7 @@ dry-run discipline for Modules 05-08.
 
 ## Revision fed back
 
-1. **`~/hekton/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's fifth real dry run and
+1. **`<hekton-machinery>/gremlins/coaching/coachgremlin.md`**: this is Coachgremlin's fifth real dry run and
    fourth workshop-internal one for `borrow-native` - Version/Status line updated to cite this run's
    finding (a fourth, mechanically distinct instance of "the deterministic gate misses a real
    idiom/design smell," this time with zero lint signal at any level rather than a noisy, absent, or
