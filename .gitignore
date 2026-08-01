@@ -63,3 +63,10 @@ AGENTS.md
 CLAUDE.md
 CODEX.md
 # <<< hekton-boundary <<<
+
+# >>> hekton-boundary: factory run ledger (D17, 2026-08-01) >>>
+# Factory run ledger: engine used, human-confirmation state, session rationale.
+# Execution state, never shippable. Product content under runs/<date>-<slug>/ is
+# deliberately NOT ignored — in this repo those dry-run directories are the deliverable.
+runs/run-*.yaml
+# <<< hekton-boundary <<<
